@@ -1,0 +1,42 @@
+import { isFeatureMovie } from "../data/schema.js";
+
+const cases = [
+  { title: "Nosferatu", durationSeconds: 5519 },
+  { title: "The General", durationSeconds: 79 * 60 },
+  { title: "Example Documentary", description: "documentary film", durationSeconds: 3600, expected: false },
+  { title: "Example Trailer", description: "official trailer", durationSeconds: 120, expected: false },
+  { title: "Example Short", description: "short film", durationSeconds: 1800, expected: false },
+  { title: "Example Feature", durationSeconds: 35 * 60, expected: false }
+];
+
+for (const item of cases) {
+  const actual = isFeatureMovie(item);
+  const expected = item.expected ?? true;
+  if (actual !== expected) {
+    throw new Error(`Feature-movie filter failed for "${item.title}": expected ${expected}, got ${actual}`);
+  }
+}
+
+const archiveMeta = await fetch("https://archive.org/metadata/TheGeneral1926");
+if (!archiveMeta.ok) throw new Error("Archive metadata endpoint failed: " + archiveMeta.status);
+const archive = await archiveMeta.json();
+const archiveFiles = Array.isArray(archive.files) ? archive.files : [];
+const archiveVideo = archiveFiles.find(file => /\\.(mp4|m4v|webm|ogv)$/i.test(String(file.name || "")));
+if (!archiveVideo) throw new Error("Archive test movie has no playable video file");
+const archiveUrl = "https://archive.org/download/TheGeneral1926/" + String(archiveVideo.name).split("/").map(encodeURIComponent).join("/");
+const archiveHead = await fetch(archiveUrl, { method: "HEAD" });
+if (!archiveHead.ok) throw new Error("Archive test movie media failed: " + archiveHead.status);
+
+const commonsApi = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&titles=File%3ANosferatu%20%281922%29.webm&prop=imageinfo&iiprop=url%7Cmime%7Cextmetadata%7Cthumburl&iiurlwidth=400";
+const commonsResponse = await fetch(commonsApi);
+if (!commonsResponse.ok) throw new Error("Wikimedia API failed: " + commonsResponse.status);
+const commons = await commonsResponse.json();
+const commonsPage = Object.values(commons.query?.pages || {})[0];
+const commonsInfo = commonsPage?.imageinfo?.[0];
+if (!commonsInfo?.url || !String(commonsInfo.mime || "").startsWith("video/")) {
+  throw new Error("Wikimedia movie test did not return a playable video");
+}
+const commonsHead = await fetch(commonsInfo.url, { method: "HEAD" });
+if (!commonsHead.ok) throw new Error("Wikimedia movie media failed: " + commonsHead.status);
+
+console.log("MOVIE_INTEGRITY_OK");

@@ -48,7 +48,11 @@ function renderResults(items, query) {
   items.forEach(movie => {
     const card = document.createElement("article");
     card.className = "result-card";
-    const playable = (movie.sources || []).some(s => s.status === "ready");
+    const sources = Array.isArray(movie.sources) ? movie.sources : [];
+    const playable = sources.some(s => s.status === "ready");
+    const sourceCount = sources.length;
+    const providerCount = new Set(sources.map(s => s.provider).filter(Boolean)).size;
+    const rightsReview = sources.some(s => s.rightsStatus === "review" || s.rightsStatus === "unknown");
 
     card.innerHTML =
       '<div><h3>' + escapeHtml(movie.title) + '</h3>' +
@@ -57,7 +61,11 @@ function renderResults(items, query) {
       escapeHtml((movie.genres || []).join(" · ") || "Movie") +
       '</div><div class="result-source">' +
       (playable ? "SOURCE READY" : "SOURCE AVAILABLE") +
-      '</div></div>' +
+      ' · ' + sourceCount + ' SOURCE' + (sourceCount === 1 ? "" : "S") +
+      (providerCount > 1 ? ' · ' + providerCount + ' PROVIDERS' : '') +
+      '</div>' +
+      (rightsReview ? '<div class="result-note">SOURCE RIGHTS REQUIRE REVIEW</div>' : '') +
+      '</div>' +
       '<button class="play-button" data-id="' + escapeAttribute(movie.id) + '">OPEN</button>';
 
     results.appendChild(card);

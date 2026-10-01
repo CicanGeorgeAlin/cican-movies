@@ -2,6 +2,7 @@ import { createMovie } from "../data/schema.js";
 import { youtubeSource } from "./youtube.js";
 
 const API_URL = "https://www.googleapis.com/youtube/v3/search";
+const VIDEO_API_URL = "https://www.googleapis.com/youtube/v3/videos";
 
 function getApiKey() {
   return String(globalThis.CICAN_CONFIG?.youtubeApiKey || "").trim();
@@ -23,7 +24,7 @@ export async function getYouTubeMovieById(id) {
     key: globalThis.CICAN_CONFIG.youtubeApiKey
   });
 
-  const response = await fetch(API_URL + "videos?" + params.toString());
+  const response = await fetch(VIDEO_API_URL + "?" + params.toString());
   if (!response.ok) throw new Error("YouTube video lookup failed");
 
   const data = await response.json();

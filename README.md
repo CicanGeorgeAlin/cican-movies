@@ -81,12 +81,17 @@ The repository currently contains:
 - asynchronous source resolution;
 - Internet Archive provider adapter;
 - centralized provider registry for controlled source expansion;
+- optional official YouTube search adapter using the YouTube Data API;
 - embedded-player path;
 - direct-media playback path;
 - external-source fallback;
 - normalized movie/source schema;
 - source-engine documentation;
 - a preserved V1 demo branch.
+
+## Optional YouTube search
+
+CICAN includes an optional YouTube search adapter built around the official YouTube Data API. It activates only when a YouTube API key is explicitly configured; the browser never attempts to scrape YouTube search pages. The API's search method is quota-controlled, so this provider is deliberately optional and bounded. citeturn0search0turn0search1
 
 ## Internet Archive foundation
 

@@ -1,4 +1,4 @@
-import { createMovie, createSource, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
+import { createMovie, createSource, isFeatureMovie, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
 
 const SEARCH_URL = "https://archive.org/advancedsearch.php";
 const METADATA_URL = "https://archive.org/metadata/";
@@ -63,8 +63,7 @@ async function enrichItem(item) {
     const file = pickPlayableFile(metadata.files || []);
     const sourcePage = "https://archive.org/details/" + encodeURIComponent(identifier);
 
-    const source = file
-      ? createSource({
+    const durationSeconds = Number(file?.length || metadata.metadata?.runtime || 0);\n    const movieCandidate = { title: String(metadata.metadata?.title || item.title || identifier).replace(/\\s+/g, " ").trim(), description: metadata.metadata?.description || item.description || "", searchTerms: movieCandidate.searchTerms,\n      durationSeconds, durationSeconds };\n    if (!isFeatureMovie(movieCandidate)) return null;\n\n    const source = file\n      ? createSource({
           id: "archive-" + identifier,
           provider: "archive.org",
           name: "Internet Archive",

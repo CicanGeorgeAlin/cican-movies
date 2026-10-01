@@ -128,6 +128,8 @@ function mergeMovieInto(existing, movie) {
     ...existing,
     year: existing.year || movie.year || null,
     description: existing.description || movie.description || "",
+    posterUrl: existing.posterUrl || movie.posterUrl || "",
+    durationSeconds: existing.durationSeconds || movie.durationSeconds || 0,
     genres: existing.genres?.length ? existing.genres : (movie.genres || []),
     searchTerms: [...new Set([
       ...(existing.searchTerms || []),

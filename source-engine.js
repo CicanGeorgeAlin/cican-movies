@@ -139,7 +139,7 @@ function mergeMovieInto(existing, movie) {
   };
 }
 
-function mergeMovies(localMovies, remoteMovies, query) {
+function mergeMovies(localMovies, remoteMovies, query, browseLetter = "") {
   const groups = [];
 
   [...localMovies, ...remoteMovies].forEach(movie => {
@@ -169,7 +169,9 @@ function mergeMovies(localMovies, remoteMovies, query) {
         ...group.movie,
         sources: rankSources(group.movie.sources || [])
       },
-      score: scoreMovie(group.movie, query)
+      score: browseLetter
+        ? (String(group.movie.title || "").trim().toLowerCase().startsWith(browseLetter) ? 100 : 0)
+        : scoreMovie(group.movie, query)
     }))
     .filter(item =>
       item.score > 0 &&
@@ -261,7 +263,7 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
     sources: movie.sources || []
   }));
 
-  const merged = mergeMovies(seedMatches, remoteMovies, query);
+  const merged = mergeMovies(seedMatches, remoteMovies, query, browseLetter);
 
   if (browseLetter) {
     const letterMovies = merged

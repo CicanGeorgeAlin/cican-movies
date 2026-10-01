@@ -1,4 +1,4 @@
-import { createMovie, createSource, isFeatureMovie, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
+import { createMovie, createSource, isFeatureMovie, parseDurationSeconds, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
 
 const API_URL = "https://www.loc.gov/film-and-videos/";
 
@@ -45,7 +45,7 @@ function toMovie(item) {
   const date = String(item.date || item.created_published || "");
   const yearMatch = date.match(/\b(18|19|20)\d{2}\b/);
   const mediaUrl = findMediaUrl(item);
-  const durationSeconds = Number(item.duration || item.duration_seconds || 0);
+  const durationSeconds = parseDurationSeconds(item.duration || item.duration_seconds || 0);
   const candidate = {
     title,
     description: clean(item.description),

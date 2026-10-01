@@ -63,7 +63,17 @@ async function enrichItem(item) {
     const file = pickPlayableFile(metadata.files || []);
     const sourcePage = "https://archive.org/details/" + encodeURIComponent(identifier);
 
-    const durationSeconds = Number(file?.length || metadata.metadata?.runtime || 0);\n    const movieCandidate = { title: String(metadata.metadata?.title || item.title || identifier).replace(/\\s+/g, " ").trim(), description: metadata.metadata?.description || item.description || "", searchTerms: movieCandidate.searchTerms,\n      durationSeconds, durationSeconds };\n    if (!isFeatureMovie(movieCandidate)) return null;\n\n    const source = file\n      ? createSource({
+    const durationSeconds = Number(file?.length || metadata.metadata?.runtime || 0);
+    const movieCandidate = {
+      title: String(metadata.metadata?.title || item.title || identifier).replace(/\s+/g, " ").trim(),
+      description: metadata.metadata?.description || item.description || "",
+      searchTerms: [metadata.metadata?.creator || item.creator || "", identifier].filter(Boolean),
+      durationSeconds
+    };
+    if (!isFeatureMovie(movieCandidate)) return null;
+
+    const source = file
+      ? createSource({
           id: "archive-" + identifier,
           provider: "archive.org",
           name: "Internet Archive",
@@ -92,7 +102,8 @@ async function enrichItem(item) {
       description: metadata.metadata?.description || item.description || "",
       posterUrl: "https://archive.org/services/img/" + encodeURIComponent(identifier),
       genres: [],
-      searchTerms: [metadata.metadata?.creator || item.creator || "", identifier].filter(Boolean),
+      searchTerms: movieCandidate.searchTerms,
+      durationSeconds,
       sources: [source]
     });
   } catch {

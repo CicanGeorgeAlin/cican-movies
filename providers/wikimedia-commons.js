@@ -52,7 +52,7 @@ function toMovie(page) {
   return createMovie({
     id: "wikimedia-" + String(page.pageid),
     title: title || "Wikimedia Commons video",
-    contentType: "archive",
+    contentType: "movie",
     description: info.extmetadata?.ImageDescription?.value || "",
     searchTerms: [String(page.title || ""), "Wikimedia Commons"],
     sources: [source]

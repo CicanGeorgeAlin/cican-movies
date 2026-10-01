@@ -270,7 +270,7 @@ form.addEventListener("submit", async event => {
 
 const initialWatchId = new URLSearchParams(window.location.search).get("watch");
 if (initialWatchId) {
-  resolveMovies(initialWatchId)
+  resolveMovies(initialWatchId, { id: initialWatchId })
     .then(items => {
       const movie = items.find(item => item.id === initialWatchId);
       if (movie) openMovie(movie);

@@ -79,26 +79,26 @@ export function isFeatureMovie(movie = {}) {
   ].join(" ")).toLowerCase();
 
   const excluded = [
-    /\\bdocumentar(y|ies)?\\b/,
-    /\\bshort film\\b/,
-    /\\bshort movie\\b/,
-    /\\btrailer\\b/,
-    /\\bteaser\\b/,
-    /\\bclip\\b/,
-    /\\bexcerpt\\b/,
-    /\\bscene from\\b/,
-    /\\bepisode\\b/,
-    /\\bseries\\b/,
-    /\\binterview\\b/,
-    /\\blecture\\b/,
-    /\\bnewsreel\\b/,
-    /\\bnews\\s+film\\b/,
-    /\\bpromotional\\b/,
-    /\\bbehind the scenes\\b/,
-    /\\bmusic video\\b/,
-    /\\bconcert film\\b/,
-    /\\bcommercial\\b/,
-    /\\badvertisement\\b/
+    /\bdocumentar(y|ies)?\b/,
+    /\bshort film\b/,
+    /\bshort movie\b/,
+    /\btrailer\b/,
+    /\bteaser\b/,
+    /\bclip\b/,
+    /\bexcerpt\b/,
+    /\bscene from\b/,
+    /\bepisode\b/,
+    /\bseries\b/,
+    /\binterview\b/,
+    /\blecture\b/,
+    /\bnewsreel\b/,
+    /\bnews\s+film\b/,
+    /\bpromotional\b/,
+    /\bbehind the scenes\b/,
+    /\bmusic video\b/,
+    /\bconcert film\b/,
+    /\bcommercial\b/,
+    /\badvertisement\b/
   ];
 
   if (excluded.some(pattern => pattern.test(text))) return false;

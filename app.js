@@ -4,6 +4,8 @@ import { createVoiceSearch, isVoiceSearchSupported } from "./voice-search.js";
 const form = document.querySelector("#search-form");
 const input = document.querySelector("#search-input");
 const results = document.querySelector("#results");
+const featured = document.querySelector("#featured");
+const featuredGrid = document.querySelector("#featured-grid");
 const playerView = document.querySelector("#player-view");
 const playerTitle = document.querySelector("#player-title");
 const playerStage = document.querySelector("#player-stage");
@@ -22,6 +24,76 @@ let failedSourceIds = new Set();
 let voiceRecognition = null;
 const selectedCategory = "movie";
 const categoryLabel = "MOVIES";
+
+const FEATURED_MOVIE_QUERIES = [
+  "Night of the Living Dead",
+  "His Girl Friday",
+  "The General",
+  "Carnival of Souls"
+];
+
+function moviePoster(movie) {
+  if (movie.posterUrl) return movie.posterUrl;
+  const archiveSource = (movie.sources || []).find(source => source.provider === "archive.org");
+  const match = archiveSource?.id?.match(/^archive-(.+)$/);
+  return match ? "https://archive.org/services/img/" + encodeURIComponent(match[1]) : "";
+}
+
+function renderFeaturedMovies(items) {
+  if (!featuredGrid) return;
+  const available = items.filter(movie =>
+    (movie.sources || []).some(source =>
+      source.status === "ready" && (source.type === "media" || source.type === "embed")
+    )
+  );
+
+  featuredGrid.innerHTML = available.map(movie => {
+    const poster = moviePoster(movie);
+    const description = String(movie.description || "")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    return '<article class="featured-card">' +
+      '<div class="featured-poster">' +
+      (poster ? '<img src="' + escapeAttribute(poster) + '" alt="" loading="lazy">' : '<div class="featured-poster-empty">CICAN</div>') +
+      '<div class="featured-shade"></div>' +
+      '<button type="button" class="featured-watch" data-featured-id="' + escapeAttribute(movie.id) + '">WATCH</button>' +
+      '</div>' +
+      '<div class="featured-info">' +
+      '<h3>' + escapeHtml(movie.title) + '</h3>' +
+      '<div class="featured-meta">' + (movie.year ? escapeHtml(movie.year) : "CLASSIC") + ' · MOVIE</div>' +
+      (description ? '<p>' + escapeHtml(description.slice(0, 150)) + '</p>' : '') +
+      '</div></article>';
+  }).join("");
+
+  featuredGrid.querySelectorAll("[data-featured-id]").forEach(button => {
+    button.addEventListener("click", () => {
+      const movie = available.find(item => item.id === button.dataset.featuredId);
+      if (movie) openMovie(movie);
+    });
+  });
+
+  featured.hidden = !available.length;
+}
+
+async function loadFeaturedMovies() {
+  if (!featuredGrid) return;
+  try {
+    const batches = await Promise.all(
+      FEATURED_MOVIE_QUERIES.map(query => resolveMovies(query, { contentType: selectedCategory }))
+    );
+    const seen = new Set();
+    const items = batches.flat().filter(movie => {
+      if (seen.has(movie.id)) return false;
+      seen.add(movie.id);
+      return true;
+    });
+    renderFeaturedMovies(items);
+  } catch (error) {
+    featured.hidden = true;
+    console.error(error);
+  }
+}
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, c => ({
@@ -500,6 +572,7 @@ function setupVoiceSearch() {
 shareButton?.addEventListener("click", shareCurrentVideo);
 fullscreenButton?.addEventListener("click", toggleFullscreen);
 setupVoiceSearch();
+loadFeaturedMovies();
 
 function closePlayerView({ updateHistory = true } = {}) {
   if (updateHistory && new URL(window.location.href).searchParams.has("watch")) {

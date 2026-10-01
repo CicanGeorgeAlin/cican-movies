@@ -84,8 +84,16 @@ function renderResults(items, query) {
 
 function syncWatchUrl(movie) {
   if (!movie?.id || !window.history?.replaceState) return;
+
   const url = new URL(window.location.href);
+  const currentId = url.searchParams.get("watch");
   url.searchParams.set("watch", movie.id);
+
+  if (currentId === movie.id) {
+    window.history.replaceState({ watch: movie.id }, "", url);
+    return;
+  }
+
   window.history.pushState({ watch: movie.id }, "", url);
 }
 

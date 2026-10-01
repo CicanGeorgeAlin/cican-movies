@@ -160,8 +160,19 @@ const movieSeeds = [
   ["Zhukovsky",1950,["drama","biography"],["zhukovsky","1950"]],
 
   ["The Lost World",1925,["adventure","sci-fi","silent"],["the lost world","1925"]],
-  ["Man with a Movie Camera",1929,["experimental","silent"],["man with a movie camera","man with a movie camera","dziga vertov","1929"]]
+  ["Man with a Movie Camera",1929,["experimental","silent"],["man with a movie camera","dziga vertov","1929"]],
+  ["The Crowd (1928)",1928,["drama","silent"],["the crowd","king vidor","1928"]],
+  ["Moby Dick",1930,["drama"],["moby dick","john barrymore","1930"]],
+  ["Oliver Twist",1933,["drama"],["oliver twist","1933"]],
+  ["Rain",1932,["drama"],["rain","sadie thompson","1932"]],
+  ["Speak Easily",1932,["comedy"],["speak easily","1932"]],
+  ["The Royal Bed",1931,["comedy"],["the royal bed","1931"]],
+  ["The Man From Utah",1934,["western"],["the man from utah","john wayne","1934"]],
+  ["The Doorway to Hell",1930,["crime","drama"],["the doorway to hell","1930"]],
+  ["The Devil to Pay!",1930,["comedy","drama"],["the devil to pay","1930"]],
+  ["The Most Dangerous Game (1932)",1932,["adventure","thriller"],["the most dangerous game","1932"]]
 ];
+
 
 
 
@@ -244,8 +255,17 @@ const PLAYABLE_CATALOG = {
   "Whoopee!": { durationSeconds: 5551, posterUrl: commonsThumb("Whoopee! (1930).webm"), mediaUrl: commonsMedia("Whoopee! (1930).webm") },
   "Zhukovsky": { durationSeconds: 5022, posterUrl: commonsThumb("Жуковский (1950).webm"), mediaUrl: commonsMedia("Жуковский (1950).webm") },
   "The Lost World": { durationSeconds: 6412, posterUrl: commonsThumb("The Lost World (1925).webm"), mediaUrl: commonsMedia("The Lost World (1925).webm") },
-  "Man with a Movie Camera": { durationSeconds: 4020, posterUrl: commonsThumb("Man With A Movie Camera (Dziga Vertov, 1929).webm"), mediaUrl: commonsMedia("Man With A Movie Camera (Dziga Vertov, 1929).webm") }
-};
+  "Man with a Movie Camera": { durationSeconds: 4020, posterUrl: commonsThumb("Man With A Movie Camera (Dziga Vertov, 1929).webm"), mediaUrl: commonsMedia("Man With A Movie Camera (Dziga Vertov, 1929).webm") },
+  "The Crowd (1928)": { durationSeconds: 5591, posterUrl: commonsThumb("The Crowd (1928) by King Vidor.webm"), mediaUrl: commonsMedia("The Crowd (1928) by King Vidor.webm") },
+  "Moby Dick": { durationSeconds: 4657, posterUrl: commonsThumb("Moby Dick (1930 film).webm"), mediaUrl: commonsMedia("Moby Dick (1930 film).webm") },
+  "Oliver Twist": { durationSeconds: 4348, posterUrl: commonsThumb("Oliver Twist (1933).webm"), mediaUrl: commonsMedia("Oliver Twist (1933).webm") },
+  "Rain": { durationSeconds: 5618, posterUrl: commonsThumb("Rain (1932).webm"), mediaUrl: commonsMedia("Rain (1932).webm") },
+  "Speak Easily": { durationSeconds: 4859, posterUrl: commonsThumb("Speak Easily (1932).webm"), mediaUrl: commonsMedia("Speak Easily (1932).webm") },
+  "The Royal Bed": { durationSeconds: 4331, posterUrl: commonsThumb("The Royal Bed (1931) Better Quality.webm"), mediaUrl: commonsMedia("The Royal Bed (1931) Better Quality.webm") },
+  "The Man From Utah": { durationSeconds: 4476, posterUrl: commonsThumb("The Man From Utah (1934).webm"), mediaUrl: commonsMedia("The Man From Utah (1934).webm") },
+  "The Doorway to Hell": { durationSeconds: 4659, posterUrl: commonsThumb("The Doorway to Hell (1930).webm"), mediaUrl: commonsMedia("The Doorway to Hell (1930).webm") },
+  "The Devil to Pay!": { durationSeconds: 4349, posterUrl: commonsThumb("The Devil to Pay!.webm"), mediaUrl: commonsMedia("The Devil to Pay!.webm") },
+  "The Most Dangerous Game (1932)": { durationSeconds: 3743, posterUrl: commonsThumb("The Most Dangerous Game (1932) High Quality.webm"), mediaUrl: commonsMedia("The Most Dangerous Game (1932) High Quality.webm") }\n};
 
 const TEST_SOURCES = {
   "All Quiet on the Western Front": [createSource({

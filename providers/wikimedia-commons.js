@@ -43,7 +43,7 @@ function toMovie(page) {
     provider: "wikimedia-commons",
     name: "Wikimedia Commons",
     type: SOURCE_TYPES.MEDIA,
-    status: SOURCE_STATUS.REVIEW,
+    status: info.url ? SOURCE_STATUS.READY : SOURCE_STATUS.REVIEW,
     rightsStatus: RIGHTS_STATUS.REVIEW,
     mediaUrl: info.url || null,
     url: pageUrl,

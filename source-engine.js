@@ -194,10 +194,23 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
   const parsedQuery = parseQuery(query);
   const providerQuery = parsedQuery.title || parsedQuery.normalised;
   const allVideo = contentType === "other";
-  const localMatches = catalog.filter(movie =>
-    id ? movie.id === id :
-      (!allVideo && movie.contentType && movie.contentType !== contentType ? false : scoreMovie(movie, query) > 0)
-  );
+  const browseLetter = /^[a-z]$/i.test(parsedQuery.normalised)
+    ? parsedQuery.normalised.toLowerCase()
+    : "";
+
+  const localMatches = catalog.filter(movie => {
+    if (id) return movie.id === id;
+    if (!allVideo && movie.contentType && movie.contentType !== contentType) return false;
+
+    // A–Z browsing is an explicit title-prefix operation. Do not route it
+    // through general search scoring; that can discard valid local titles
+    // such as "The ..." before mergeMovies gets a chance to sort them.
+    if (browseLetter) {
+      return normaliseMovie(movie.title).startsWith(browseLetter);
+    }
+
+    return scoreMovie(movie, query) > 0;
+  });
 
   if (id && localMatches.some(movie => (movie.sources || []).some(source => source?.embedUrl || source?.mediaUrl))) {
     const playableLocal = localMatches.filter(movie => movie.posterUrl && isFeatureMovie(movie));
@@ -224,10 +237,6 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
     );
     if (directMovies.length) return directMovies;
   }
-
-  const browseLetter = /^[a-z]$/i.test(parsedQuery.normalised)
-    ? parsedQuery.normalised.toLowerCase()
-    : "";
 
   const movieQueries = contentType === CONTENT_TYPES.MOVIE
     ? browseLetter

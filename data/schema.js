@@ -78,6 +78,7 @@ export function createMovie(movie = {}) {
     title: movie.title || "Untitled",
     year: movie.year || null,
     description: movie.description || "",
+    posterUrl: movie.posterUrl || "",
     genres: Array.isArray(movie.genres) ? movie.genres : [],
     searchTerms: Array.isArray(movie.searchTerms) ? movie.searchTerms : [],
     sources: Array.isArray(movie.sources) ? movie.sources.map(createSource) : []

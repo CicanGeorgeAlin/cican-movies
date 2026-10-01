@@ -1,71 +1,161 @@
 # CICAN MOVIES
 
-**Search the movie world. Find a free source. Play.**
+**Search the movie world. Find it. Play it.**
 
-CICAN MOVIES is a player-first movie discovery platform focused on making free, legitimately accessible films easier to discover and watch through one clean, fast, mobile-first experience.
+CICAN MOVIES is a player-first movie discovery platform designed to search a large network of free and legitimately accessible movie sources and give the user the cleanest available viewing path.
 
-## Core product
+## The core idea
 
 **SEARCH → FIND → PLAY**
 
-The player is the centre of the product. CICAN should not become another movie encyclopedia. Metadata exists to resolve and play a movie, not to overwhelm the user.
+CICAN is not intended to become another movie encyclopedia. Metadata exists to identify a movie and resolve a playable source.
 
-## Product principles
+The long-term goal is a very large catalogue assembled from many independent archives, APIs, feeds, official uploads, public-domain collections, creator-authorized sources, and other providers whose playback can be used appropriately.
 
-- Search broadly for free and legitimately accessible movie sources.
-- Prefer sources that permit embedded playback.
-- Use a unified CICAN viewing experience where technically and legally permitted.
-- If embedding is unavailable, provide the legitimate source link rather than bypassing it.
-- Never download, re-host, strip provider protections, bypass access controls, or deliberately facilitate copyright infringement.
-- Build a source-adapter architecture so different providers can be integrated without rebuilding the player.
-- Validate source health and prefer working sources.
-- Keep the experience exceptionally simple: search, find, play.
-- Preserve a clean black/white CICAN visual identity and strong mobile usability.
-- Expand the catalogue through automation and structured ingestion rather than manually hard-coding thousands of movies.
+## What makes CICAN different
+
+- One search experience across many source providers.
+- One movie can have multiple independent sources.
+- Playable sources are prioritized.
+- Supported embedded players can appear inside the CICAN player experience.
+- Direct media supplied by permitted sources can play through the browser's native media player inside CICAN.
+- Sources that cannot be embedded remain available as legitimate external sources.
+- Source failures can eventually trigger another available source.
+- The catalogue is designed for automated expansion rather than manually hard-coded entries.
+- The visual experience stays extremely simple: search, find, play.
+
+## Source policy
+
+CICAN is built for broad discovery, but every provider adapter must respect the provider's technical and legal permissions.
+
+CICAN does not:
+
+- defeat DRM or access controls;
+- extract protected streams;
+- bypass provider restrictions;
+- re-host copyrighted movies without authorization;
+- strip provider protections;
+- deliberately facilitate copyright infringement.
+
+CICAN can:
+
+- index legitimate free sources;
+- use official APIs and feeds;
+- use provider-supported embeds;
+- play directly supplied media when the source permits it;
+- retain legitimate external links when embedding is unavailable;
+- maintain multiple sources for resilience.
 
 ## Architecture
 
 ```
-CICAN MOVIES
-    │
-  SEARCH
-    │
-MOVIE RESOLVER
-    │
-SOURCE ENGINE
-    │
-SOURCE VALIDATION
-    │
-PLAYER ADAPTERS
-    │
-CICAN PLAYER
-    │
-  WATCH
+                     CICAN MOVIES
+                           │
+                        SEARCH
+                           │
+                    MOVIE RESOLVER
+                           │
+                    SOURCE ENGINE
+                           │
+             ┌─────────────┼─────────────┐
+             ↓             ↓             ↓
+        LOCAL INDEX   ARCHIVE/APIs   PROVIDER ADAPTERS
+             └─────────────┼─────────────┘
+                           ↓
+                    SOURCE VALIDATOR
+                           ↓
+                  PLAYBACK RESOLVER
+                           ↓
+                     CICAN PLAYER
+                           ↓
+                         WATCH
 ```
 
-## V1
+## Current implementation
 
-The initial implementation contains:
+The repository currently contains:
 
-- CICAN landing/search interface
-- responsive mobile-first styling
-- movie result cards
-- movie/player view
-- source abstraction
-- embeddable-source adapter path
-- external-source fallback path
-- initial catalog schema
+- mobile-first CICAN landing/search interface;
+- result and movie views;
+- source abstraction;
+- asynchronous source resolution;
+- Internet Archive provider adapter;
+- embedded-player path;
+- direct-media playback path;
+- external-source fallback;
+- normalized movie/source schema;
+- source-engine documentation;
+- a preserved V1 demo branch.
 
-The demo catalog is intentionally minimal. The next development stages should replace it with a validated ingestion/indexing pipeline rather than filling the repository with arbitrary links.
+## Internet Archive foundation
+
+Internet Archive is the first real provider adapter. CICAN can search movie metadata, inspect item metadata, detect common playable formats, and present an appropriate playback route.
+
+A publicly accessible file is not automatically treated as copyright-cleared. The source record preserves that distinction so future ingestion can apply explicit rights verification before promoting material as cleared.
+
+## Production-scale roadmap
+
+### Phase 1 — Source Engine
+- provider adapters;
+- normalized source schema;
+- source capability detection;
+- source ranking;
+- multiple-source records.
+
+### Phase 2 — Archive Expansion
+- Internet Archive ingestion;
+- public-domain collections;
+- authorized archives;
+- creator-authorized sources;
+- official free movie catalogues.
+
+### Phase 3 — CICAN Player
+- provider adapters;
+- fullscreen;
+- playback memory;
+- subtitles where supplied;
+- source switching;
+- error recovery;
+- mobile controls.
+
+### Phase 4 — Massive Index
+- server-side ingestion;
+- deduplication;
+- title/year/entity matching;
+- source health checks;
+- freshness checks;
+- incremental indexing;
+- scalable search.
+
+### Phase 5 — CICAN Search Engine
+```
+Search a movie
+      ↓
+Identify the movie
+      ↓
+Search the source network
+      ↓
+Check availability
+      ↓
+Select the best permitted playback path
+      ↓
+PLAY
+```
 
 ## Autopilot development rule
 
-When continuing the project, use the existing repository state as the source of truth. Preserve working behaviour, inspect before changing, test each meaningful increment, and move the architecture toward the agreed goal without requiring the user to restate the project direction.
+When the user says **Continue**, treat the repository and this README as the source of truth.
 
-## Long-term direction
+For each continuation:
 
-CICAN MOVIES aims to become a large search-and-play system for free, legitimately accessible movies:
+1. inspect the current implementation;
+2. preserve working behaviour;
+3. identify the next highest-value technical improvement;
+4. implement it;
+5. test what can be tested;
+6. document important architecture changes;
+7. keep the project moving toward the massive search-and-play vision.
 
-**Search anything → find an available free source → play through the best possible CICAN experience.**
+The user can intervene at any time with questions or creative decisions; technical implementation remains the default responsibility of the development process.
 
 Created by **CICAN GEORGE ALIN**.

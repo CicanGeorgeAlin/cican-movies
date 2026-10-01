@@ -184,6 +184,9 @@ function loadEmbed(source) {
     '" title="' + escapeAttribute(currentMovie.title) +
     '" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" ' +
     'allowfullscreen></iframe>';
+
+  const frame = playerStage.querySelector("iframe");
+  frame?.addEventListener("error", () => showPlaybackFallback("This embedded source failed to load."));
 }
 
 function loadMedia(source) {

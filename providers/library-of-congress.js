@@ -71,29 +71,39 @@ function toMovie(item) {
   });
 }
 
-export async function searchLibraryOfCongress(query, { limit = 20 } = {}) {
+async function fetchPage(query, limit, page) {
+  const response = await fetch(buildSearchUrl(query, limit, page));
+  if (!response.ok) throw new Error("Library of Congress search failed: " + response.status);
+  return response.json();
+}
+
+export async function searchLibraryOfCongress(query, { limit = 20, browseLetter = "" } = {}) {
   const trimmed = String(query || "").trim();
   if (!trimmed) return [];
 
-  const responses = await Promise.allSettled([
-    fetch(buildSearchUrl(trimmed, limit, 1)),
-    fetch(buildSearchUrl(trimmed, limit, 2))
-  ]);
+  const letter = String(browseLetter || "").trim().toLowerCase();
+  const pages = /^[a-z]$/.test(letter)
+    ? Array.from({ length: 5 }, (_, index) => index + 1)
+    : [1, 2];
+
+  const searchQuery = /^[a-z]$/.test(letter) ? letter : trimmed;
+  const responses = await Promise.allSettled(
+    pages.map(page => fetchPage(searchQuery, /^[a-z]$/.test(letter) ? 100 : limit, page))
+  );
 
   const items = [];
   const seen = new Set();
 
   for (const result of responses) {
-    if (result.status !== "fulfilled" || !result.value.ok) continue;
-    try {
-      const payload = await result.value.json();
-      for (const item of Array.isArray(payload.results) ? payload.results : []) {
-        if (!item?.id || seen.has(item.id)) continue;
-        seen.add(item.id);
-        const movie = toMovie(item);
-        if (movie) items.push(movie);
-      }
-    } catch {}
+    if (result.status !== "fulfilled") continue;
+    for (const item of Array.isArray(result.value?.results) ? result.value.results : []) {
+      if (!item?.id || seen.has(item.id)) continue;
+      const title = clean(item.title);
+      if (letter && !title.toLowerCase().startsWith(letter)) continue;
+      seen.add(item.id);
+      const movie = toMovie(item);
+      if (movie) items.push(movie);
+    }
   }
 
   return items;

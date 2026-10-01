@@ -1,4 +1,4 @@
-import { createMovie } from "./schema.js";
+import { createMovie, createSource, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "./schema.js";
 
 const movieSeeds = [
   ["Metropolis",1927,["sci-fi","silent"],["metropolis","fritz lang","1927"]],
@@ -126,6 +126,31 @@ const movieSeeds = [
   ["Young Frankenstein",1974,["comedy"],["young frankenstein","1974"]]
 ];
 
+const TEST_SOURCES = {
+  "The General": [createSource({
+    id: "archive-TheGeneral1926-test",
+    provider: "archive.org",
+    name: "Internet Archive — test source",
+    type: SOURCE_TYPES.MEDIA,
+    status: SOURCE_STATUS.READY,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
+    mediaUrl: "https://archive.org/download/TheGeneral1926/The_General_1926_720p.mp4",
+    url: "https://archive.org/details/TheGeneral1926",
+    rightsNote: "Test source. The linked copy is identified as public domain by Wikimedia Commons; review the source rights information before reuse."
+  })],
+  "Night of the Living Dead": [createSource({
+    id: "archive-Night.Of.The.Living.Dead_1080p-test",
+    provider: "archive.org",
+    name: "Internet Archive — test source",
+    type: SOURCE_TYPES.MEDIA,
+    status: SOURCE_STATUS.READY,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
+    mediaUrl: "https://archive.org/download/Night.Of.The.Living.Dead_1080p/NightOfTheLivingDead.mp4",
+    url: "https://archive.org/details/Night.Of.The.Living.Dead_1080p",
+    rightsNote: "Test source. Review the source rights information before reuse."
+  })]
+};
+
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>
   createMovie({
     id: "seed-" + String(year) + "-" + title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
@@ -134,6 +159,6 @@ export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>
     year,
     genres,
     searchTerms,
-    sources: []
+    sources: TEST_SOURCES[title] || []
   })
 );

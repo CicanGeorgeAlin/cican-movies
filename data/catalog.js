@@ -188,6 +188,14 @@ const movieSeeds = [
   ["Street of Chance",1930,["drama"],["street of chance","1930"]],
   ["Three Faces East",1930,["drama","mystery"],["three faces east","1930"]],
   ["Let Us Be Gay",1930,["comedy","drama"],["let us be gay","1930"]]
+  ["The 13th Chair",1929,["mystery"],["the 13th chair","1929"]],
+  ["The Bat Whispers",1930,["mystery","horror"],["the bat whispers","1930"]],
+  ["The Benson Murder Case",1930,["mystery"],["the benson murder case","1930"]],
+  ["The Cat Creeps",1930,["horror","mystery"],["the cat creeps","1930"]],
+  ["The Gorilla",1930,["horror","mystery"],["the gorilla","1930"]],
+  ["The Last Alarm",1926,["mystery","drama"],["the last alarm","1926"]],
+  ["The Mystery of the Wax Museum",1933,["horror","mystery"],["the mystery of the wax museum","1933"]],
+  ["The Terror",1928,["mystery","drama"],["the terror","1928"]],
 ];
 
 
@@ -400,7 +408,15 @@ const TEST_SOURCES = {
   "Min and Bill": { durationSeconds: 5200, posterUrl: commonsThumb("Min and Bill.webm"), mediaUrl: commonsMedia("Min and Bill.webm") },
   "Street of Chance": { durationSeconds: 4700, posterUrl: commonsThumb("Street of Chance (1930 film).webm"), mediaUrl: commonsMedia("Street of Chance (1930 film).webm") },
   "Three Faces East": { durationSeconds: 4500, posterUrl: commonsThumb("Three Faces East (1930 film).webm"), mediaUrl: commonsMedia("Three Faces East (1930 film).webm") },
-  "Let Us Be Gay": { durationSeconds: 4800, posterUrl: commonsThumb("Let Us Be Gay.webm"), mediaUrl: commonsMedia("Let Us Be Gay.webm") }
+  "Let Us Be Gay": { durationSeconds: 4800, posterUrl: commonsThumb("Let Us Be Gay.webm"), mediaUrl: commonsMedia("Let Us Be Gay.webm") },
+  "The 13th Chair": { durationSeconds: 4510, posterUrl: commonsThumb("The 13th Chair (1929).webm"), mediaUrl: commonsMedia("The 13th Chair (1929).webm") },
+  "The Bat Whispers": { durationSeconds: 4500, posterUrl: commonsThumb("The Bat Whispers (1930).webm"), mediaUrl: commonsMedia("The Bat Whispers (1930).webm") },
+  "The Benson Murder Case": { durationSeconds: 4830, posterUrl: commonsThumb("The Benson Murder Case (1930).webm"), mediaUrl: commonsMedia("The Benson Murder Case (1930).webm") },
+  "The Cat Creeps": { durationSeconds: 4500, posterUrl: commonsThumb("The Cat Creeps (1930).webm"), mediaUrl: commonsMedia("The Cat Creeps (1930).webm") },
+  "The Gorilla": { durationSeconds: 4500, posterUrl: commonsThumb("The Gorilla (1930).webm"), mediaUrl: commonsMedia("The Gorilla (1930).webm") },
+  "The Last Alarm": { durationSeconds: 4800, posterUrl: commonsThumb("The Last Alarm (1926).webm"), mediaUrl: commonsMedia("The Last Alarm (1926).webm") },
+  "The Mystery of the Wax Museum": { durationSeconds: 4790, posterUrl: commonsThumb("The Mystery of the Wax Museum (1933).webm"), mediaUrl: commonsMedia("The Mystery of the Wax Museum (1933).webm") },
+  "The Terror": { durationSeconds: 4500, posterUrl: commonsThumb("The Terror (1928).webm"), mediaUrl: commonsMedia("The Terror (1928).webm") }
 };
 
 

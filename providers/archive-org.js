@@ -6,7 +6,7 @@ const METADATA_URL = "https://archive.org/metadata/";
 function buildSearchUrl(query, rows = 12, exactTitle = true, prefix = false, page = 1) {
   const cleanQuery = query.replace(/"/g, "").trim();
   const titleQuery = prefix
-    ? 'title:' + cleanQuery.toLowerCase() + '*'
+    ? 'title:(' + cleanQuery.toLowerCase() + '*)'
     : exactTitle
       ? 'title:("' + cleanQuery + '")'
       : 'title:(' + cleanQuery.split(/\s+/).filter(Boolean).join(" AND ") + ')';

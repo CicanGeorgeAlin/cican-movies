@@ -1,4 +1,4 @@
-import { createMovie } from "../data/schema.js";
+import { CONTENT_TYPES, createMovie } from "../data/schema.js";
 import { youtubeSource } from "./youtube.js";
 
 const API_URL = "https://www.googleapis.com/youtube/v3/search";
@@ -42,14 +42,29 @@ export async function getYouTubeMovieById(id) {
   };
 }
 
-export async function searchYouTube(query, { maxResults = 8, regionCode = "IE" } = {}) {
+export async function searchYouTube(query, { maxResults = 8, regionCode = "IE", contentType = CONTENT_TYPES.MOVIE } = {}) {
   const apiKey = getApiKey();
   const trimmed = String(query || "").trim();
   if (!apiKey || !trimmed) return [];
 
+  const categoryHints = {
+    movie: "movie film",
+    tv: "tv series episode",
+    documentary: "documentary",
+    podcast: "podcast",
+    music: "music",
+    education: "education lecture",
+    news: "news",
+    sports: "sports",
+    gaming: "gaming",
+    archive: "archive historical",
+    other: "video"
+  };
+  const searchQuery = [trimmed, categoryHints[contentType] || ""].filter(Boolean).join(" ");
+
   const params = new URLSearchParams({
     part: "snippet",
-    q: trimmed,
+    q: searchQuery,
     type: "video",
     maxResults: String(Math.min(Math.max(maxResults, 1), 50)),
     regionCode,
@@ -68,6 +83,7 @@ export async function searchYouTube(query, { maxResults = 8, regionCode = "IE" }
       const videoId = item.id.videoId;
       return createMovie({
         id: "youtube-" + videoId,
+        contentType,
         title: item.snippet.title,
         description: item.snippet.description || "",
         searchTerms: [

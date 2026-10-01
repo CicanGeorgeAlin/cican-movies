@@ -169,7 +169,16 @@ function mergeMovies(localMovies, remoteMovies, query) {
       },
       score: scoreMovie(group.movie, query)
     }))
-    .filter(item => item.score > 0)
+    .filter(item =>
+      item.score > 0 &&
+      Array.isArray(item.movie.sources) &&
+      item.movie.sources.some(source =>
+        source &&
+        source.status !== "blocked" &&
+        source.status !== "unavailable" &&
+        (source.url || source.embedUrl || source.mediaUrl)
+      )
+    )
     .sort((a, b) => b.score - a.score)
     .map(item => item.movie);
 }
@@ -236,7 +245,7 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
 
   if (browseLetter) {
     const letterMovies = merged
-      .filter(movie => normaliseTitle(movie.title).startsWith(browseLetter))
+      .filter(movie => normaliseMovie(movie.title).startsWith(browseLetter))
       .sort((a, b) => normaliseTitle(a.title).localeCompare(normaliseTitle(b.title)));
     return letterMovies;
   }

@@ -1,1 +1,51 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#000"><meta name="description" content="CICAN MOVIES — search, find and play free, legitimately accessible movies."><title>CICAN MOVIES</title><link rel="stylesheet" href="styles.css"></head><body><main class="app-shell"><header class="brand"><div class="brand-mark">CICAN</div><div class="brand-sub">MOVIES</div></header><section class="hero"><p class="eyebrow">SEARCH THE MOVIE WORLD</p><h1>Find it. Play it.</h1><form id="search-form" class="search-box" role="search"><input id="search-input" type="search" autocomplete="off" placeholder="Search a movie…" aria-label="Search movies"><button type="submit">SEARCH</button></form><p class="hero-note">Free sources · permitted playback · one CICAN experience</p></section><section id="results" class="results" aria-live="polite"></section><section id="player-view" class="player-view" hidden><div class="player-head"><button id="back-button" class="ghost-button">← BACK</button><div><span class="player-kicker">CICAN PLAYER</span><h2 id="player-title">Ready</h2></div></div><div id="player-stage" class="player-stage"><div class="player-empty"><div class="play-orb">▶</div><p>Select a playable source.</p></div></div><div id="source-list" class="source-list"></div></section></main><script type="module" src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000">
+<meta name="description" content="CICAN MOVIES — search, find and play free and legitimately accessible movies.">
+<title>CICAN MOVIES</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="app-shell">
+<header class="brand">
+  <div class="brand-mark">CICAN</div>
+  <div class="brand-sub">MOVIES</div>
+</header>
+
+<section class="hero">
+  <p class="eyebrow">SEARCH THE MOVIE WORLD</p>
+  <h1>Find it. Play it.</h1>
+  <form id="search-form" class="search-box" role="search">
+    <input id="search-input" type="search" autocomplete="off"
+      placeholder="Search a movie…" aria-label="Search movies">
+    <button type="submit">SEARCH</button>
+  </form>
+  <p class="hero-note">Search the CICAN index and enabled free-source providers.</p>
+  <p id="search-status" class="search-status" aria-live="polite"></p>
+</section>
+
+<section id="results" class="results" aria-live="polite"></section>
+
+<section id="player-view" class="player-view" hidden>
+  <div class="player-head">
+    <button id="back-button" class="ghost-button" type="button">← BACK</button>
+    <div>
+      <span class="player-kicker">CICAN PLAYER</span>
+      <h2 id="player-title">Ready</h2>
+    </div>
+  </div>
+  <div id="player-stage" class="player-stage">
+    <div class="player-empty">
+      <div class="play-orb">▶</div>
+      <p>Select a playable source.</p>
+    </div>
+  </div>
+  <div id="source-list" class="source-list"></div>
+</section>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>

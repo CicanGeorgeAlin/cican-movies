@@ -577,3 +577,21 @@ a{text-decoration:none}
   .alphabet::-webkit-scrollbar{display:none}
   .alphabet-button{flex:0 0 30px;}
 }
+
+
+.alphabet-wrap{
+  width:min(1080px,100%);
+  margin:18px auto 0;
+}
+.alphabet-label{
+  display:block;
+  margin-bottom:8px;
+  text-align:center;
+  color:#4f4f4f;
+  font-size:.58rem;
+  font-weight:800;
+  letter-spacing:.22em;
+}
+@media(min-width:851px){
+  .results{grid-template-columns:repeat(4,minmax(0,1fr));}
+}

@@ -122,24 +122,43 @@ export async function getArchiveMovieById(id) {
   return enrichItem({ identifier });
 }
 
-export async function searchArchive(query, { rows = 12 } = {}) {
+export async function searchArchive(query, { rows = 16 } = {}) {
   const trimmed = String(query || "").trim();
   if (!trimmed) return [];
 
-  const response = await fetch(buildSearchUrl(trimmed, rows));
-  if (!response.ok) throw new Error("Internet Archive search failed: " + response.status);
+  const normalised = trimmed.replace(/\s+/g, " ").trim();
+  const variants = [
+    normalised,
+    normalised.replace(/\b(the|a|an)\b/gi, " ").replace(/\s+/g, " ").trim()
+  ].filter(Boolean);
 
-  let payload = await response.json();
-  let docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];
-
-  if (!docs.length && /\s/.test(trimmed)) {
-    const fallbackResponse = await fetch(buildSearchUrl(trimmed, rows, false));
-    if (fallbackResponse.ok) {
-      payload = await fallbackResponse.json();
-      docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];
-    }
+  if (/\s/.test(normalised)) {
+    variants.push(normalised.split(/\s+/).filter(Boolean).join(" AND "));
   }
 
+  const uniqueVariants = [...new Set(variants)];
+  const responses = await Promise.allSettled(
+    uniqueVariants.map((variant, index) =>
+      fetch(buildSearchUrl(variant, rows, index < 2))
+    )
+  );
+
+  const docsById = new Map();
+
+  for (const result of responses) {
+    if (result.status !== "fulfilled" || !result.value.ok) continue;
+    try {
+      const payload = await result.value.json();
+      const docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];
+      for (const doc of docs) {
+        if (doc?.identifier && !docsById.has(doc.identifier)) {
+          docsById.set(doc.identifier, doc);
+        }
+      }
+    } catch {}
+  }
+
+  const docs = [...docsById.values()].slice(0, Math.max(rows, 16));
   const enriched = await Promise.all(docs.map(enrichItem));
   return enriched.filter(Boolean);
 }

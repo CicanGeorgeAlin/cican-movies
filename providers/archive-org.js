@@ -3,7 +3,7 @@ import { createMovie, createSource, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES }
 const SEARCH_URL = "https://archive.org/advancedsearch.php";
 const METADATA_URL = "https://archive.org/metadata/";
 
-function buildSearchUrl(query, rows = 12, exactTitle = true, prefix = false) {
+function buildSearchUrl(query, rows = 12, exactTitle = true, prefix = false, page = 1) {
   const cleanQuery = query.replace(/"/g, "").trim();
   const titleQuery = prefix
     ? 'title:' + cleanQuery.toLowerCase() + '*'
@@ -19,7 +19,7 @@ function buildSearchUrl(query, rows = 12, exactTitle = true, prefix = false) {
   params.append("fl[]", "description");
   params.append("fl[]", "creator");
   params.set("rows", String(rows));
-  params.set("page", "1");
+  params.set("page", String(Math.max(1, page)));
   params.set("output", "json");
   if (prefix) params.set("sort[]", "title asc");
   return SEARCH_URL + "?" + params.toString();

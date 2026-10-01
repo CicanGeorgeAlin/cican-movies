@@ -201,7 +201,7 @@ function openMovie(movie) {
       button.textContent = failedSourceIds.has(source.id) ? "RETRY" : "PLAY";
       button.onclick = () => {
         failedSourceIds.delete(source.id);
-        loadSource(source);
+        loadSource(source, { userInitiated: true, fullscreen: true, autoplay: true });
       };
       row.appendChild(button);
     } else if (source.url) {
@@ -282,7 +282,14 @@ function updateSourceSelection() {
   });
 }
 
-function loadSource(source) {
+function requestPlayerFullscreen() {
+  if (document.fullscreenElement || !playerStage?.requestFullscreen) return Promise.resolve(false);
+  return playerStage.requestFullscreen()
+    .then(() => true)
+    .catch(() => false);
+}
+
+function loadSource(source, options = {}) {
   const previousVideo = playerStage.querySelector("video");
   if (previousVideo && currentMovie && previousVideo.currentTime > 0 && !previousVideo.ended) {
     savePosition(currentMovie, previousVideo.currentTime, previousVideo.duration);
@@ -293,8 +300,8 @@ function loadSource(source) {
   currentSource = source;
   updateSourceSelection();
 
-  if (source.type === "embed") return loadEmbed(source);
-  if (source.type === "media") return loadMedia(source);
+  if (source.type === "embed") return loadEmbed(source, options);
+  if (source.type === "media") return loadMedia(source, options);
 
   showPlaybackFallback("This source is not playable in CICAN.");
 }
@@ -426,7 +433,7 @@ function attachMediaMemory(video) {
   video.addEventListener("ended", () => clearPosition(currentMovie));
 }
 
-function loadEmbed(source) {
+function loadEmbed(source, options = {}) {
   currentSource = source;
   playerStage.innerHTML =
     '<iframe src="' + escapeAttribute(source.embedUrl) +
@@ -438,9 +445,12 @@ function loadEmbed(source) {
   const frame = playerStage.querySelector("iframe");
   frame?.addEventListener("load", () => saveLastSource(currentMovie, source));
   frame?.addEventListener("error", () => showPlaybackFallback("This embedded source failed to load."));
+  if (options.userInitiated && options.fullscreen) {
+    requestPlayerFullscreen();
+  }
 }
 
-function loadMedia(source) {
+function loadMedia(source, options = {}) {
   currentSource = source;
   playerStage.innerHTML =
     '<video controls playsinline preload="metadata" src="' +
@@ -452,6 +462,18 @@ function loadMedia(source) {
   const video = playerStage.querySelector("video");
   if (video) {
     attachMediaMemory(video);
+    const centerPlay = playerStage.querySelector(".player-center-play");
+    centerPlay?.addEventListener("click", async () => {
+      try { await video.play(); } catch {}
+      await requestPlayerFullscreen();
+      centerPlay.hidden = true;
+    });
+    video.addEventListener("play", () => {
+      if (centerPlay) centerPlay.hidden = true;
+    });
+    video.addEventListener("pause", () => {
+      if (centerPlay && !video.ended) centerPlay.hidden = false;
+    });
     video.addEventListener("loadeddata", () => saveLastSource(currentMovie, source));
     video.addEventListener("error", () => {
       if (currentSource?.id === source.id) {

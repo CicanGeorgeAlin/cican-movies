@@ -43,10 +43,10 @@ export async function getYouTubeMovieById(id) {
   };
 }
 
-export async function searchYouTube(query, { maxResults = 8, regionCode = "IE", contentType = CONTENT_TYPES.MOVIE } = {}) {
+export async function searchYouTube(query, { maxResults = 8, regionCode = "IE", contentType = CONTENT_TYPES.MOVIE, browseLetter = "" } = {}) {
   const apiKey = getApiKey();
   const trimmed = String(query || "").trim();
-  if (!apiKey || !trimmed) return [];
+  if (!apiKey || !trimmed || /^[a-z]$/i.test(String(browseLetter || ""))) return [];
 
   const categoryHints = {
     movie: "feature film movie full movie",

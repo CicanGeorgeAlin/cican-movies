@@ -20,19 +20,8 @@ let currentSourceIndex = -1;
 let currentSources = [];
 let failedSourceIds = new Set();
 let voiceRecognition = null;
-let selectedCategory = "movie";
-
-const categoryLabels = {
-  movie: "MOVIES",
-  documentary: "DOCUMENTARIES",
-  podcast: "PODCASTS",
-  music: "MUSIC",
-  education: "EDUCATION",
-  news: "NEWS",
-  sports: "SPORTS",
-  gaming: "GAMING",
-  other: "ALL VIDEO"
-};
+const selectedCategory = "movie";
+const categoryLabel = "MOVIES";
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, c => ({
@@ -508,18 +497,6 @@ function setupVoiceSearch() {
   });
 }
 
-document.querySelectorAll(".category-button").forEach(button => {
-  button.addEventListener("click", () => {
-    selectedCategory = button.dataset.category || "movie";
-    document.querySelectorAll(".category-button").forEach(item => item.classList.toggle("active", item === button));
-    document.querySelector("#category-picker")?.setAttribute("data-primary", selectedCategory);
-    input.placeholder = "Search " + (categoryLabels[selectedCategory] || "VIDEO").toLowerCase() + "…";
-    input.setAttribute("aria-label", "Search " + (categoryLabels[selectedCategory] || "video").toLowerCase());
-    setSearchStatus((categoryLabels[selectedCategory] || "VIDEO") + " search selected.");
-    input.focus();
-  });
-});
-
 shareButton?.addEventListener("click", shareCurrentVideo);
 fullscreenButton?.addEventListener("click", toggleFullscreen);
 setupVoiceSearch();
@@ -569,15 +546,15 @@ form.addEventListener("submit", async event => {
     '<div class="searching">SEARCHING THE AVAILABLE MOVIE SOURCES…</div>';
   playerView.hidden = true;
   results.hidden = false;
-  setSearchStatus("Searching local index and enabled source providers…");
+  setSearchStatus("Searching movies in the CICAN index and enabled source providers…");
 
   try {
     const movies = await resolveMovies(query, { contentType: selectedCategory });
     renderResults(movies, query);
     setSearchStatus(
       movies.length
-        ? movies.length + " " + (categoryLabels[selectedCategory] || "VIDEO").toLowerCase() + " result" + (movies.length === 1 ? "" : "s") + " found."
-        : "No matching " + (categoryLabels[selectedCategory] || "video").toLowerCase() + " source found. Try another title or category."
+        ? movies.length + " " + categoryLabel.toLowerCase() + " result" + (movies.length === 1 ? "" : "s") + " found."
+        : "No matching " + categoryLabel.toLowerCase() + " source found. Try another title or category."
     );
   } catch (error) {
     results.innerHTML =

@@ -1,6 +1,6 @@
-import { catalog } from "./data/catalog.js?v=cea09fdc";
-import { CONTENT_TYPES, isFeatureMovie, normaliseMovie } from "./data/schema.js?v=cea09fdc";
-import { providers, getProviderStatus } from "./providers/registry.js?v=cea09fdc";
+import { catalog } from "./data/catalog.js?v=az-landing-fix-20261002";
+import { CONTENT_TYPES, isFeatureMovie, normaliseMovie } from "./data/schema.js?v=az-landing-fix-20261002";
+import { providers, getProviderStatus } from "./providers/registry.js?v=az-landing-fix-20261002";
 
 function parseQuery(query = "") {
   const raw = String(query).trim();

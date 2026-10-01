@@ -59,3 +59,21 @@ a{text-decoration:none}
   letter-spacing: .06em;
   opacity: .55;
 }
+
+
+.player-error {
+  max-width: 34rem;
+  margin: auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.player-error strong {
+  display: block;
+  margin-bottom: .7rem;
+}
+
+.player-error p {
+  opacity: .65;
+  margin: .4rem 0 1.2rem;
+}

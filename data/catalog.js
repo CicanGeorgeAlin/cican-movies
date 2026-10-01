@@ -125,7 +125,39 @@ const movieSeeds = [
   ["The Wolf Man",1941,["horror"],["wolf man","1941"]],
   ["The Wrong Man",1956,["crime","thriller"],["wrong man","1956"]],
   ["The Yellow Ticket",1931,["drama"],["yellow ticket","1931"]],
-  ["Young Frankenstein",1974,["comedy"],["young frankenstein","1974"]]
+  ["Young Frankenstein",1974,["comedy"],["young frankenstein","1974"]],
+
+  ["Abraham Lincoln",1930,["drama","biography"],["abraham lincoln","d w griffith","1930"]],
+  ["Clancy in Wall Street",1930,["comedy"],["clancy in wall street","1930"]],
+  ["Conspiracy",1930,["crime","drama"],["conspiracy","1930"]],
+  ["Dixiana",1930,["musical","comedy"],["dixiana","1930"]],
+  ["El presidio",1930,["crime","drama"],["el presidio","1930"]],
+  ["Fast and Loose",1930,["comedy","crime"],["fast and loose","1930"]],
+  ["Feet First",1930,["comedy"],["feet first","harold lloyd","1930"]],
+  ["Going Wild",1930,["comedy"],["going wild","1930"]],
+  ["Hell Harbor",1930,["drama"],["hell harbor","1930"]],
+  ["Holiday",1930,["comedy","romance"],["holiday","1930"]],
+  ["I Flunked, But…",1930,["comedy","silent"],["i flunked but","i flunked but","1930"]],
+  ["Just Imagine",1930,["sci-fi","comedy"],["just imagine","1930"]],
+  ["Kismet",1920,["drama","silent"],["kismet","1920"]],
+  ["La Escalinata",1950,["drama"],["la escalinata","1950"]],
+  ["Little Caesar",1931,["crime","drama"],["little caesar","1931"]],
+  ["The Big House",1930,["crime","drama"],["the big house","1930"]],
+  ["The Big Trail",1930,["western"],["the big trail","1930"]],
+  ["The Man Who Had Everything",1920,["drama","silent"],["the man who had everything","1920"]],
+  ["Outside the Law (1920)",1920,["crime","silent"],["outside the law","1920","tod browning"]],
+  ["Paid",1930,["drama"],["paid","1930"]],
+  ["Pakiusap",1940,["drama"],["pakiusap","1940"]],
+  ["Raffles",1930,["crime","mystery"],["raffles","1930"]],
+  ["Sand",1920,["western","silent"],["sand","1920"]],
+  ["Soup to Nuts",1930,["comedy"],["soup to nuts","1930"]],
+  ["Spring Is Here",1930,["musical","comedy"],["spring is here","1930"]],
+  ["Suds",1920,["comedy","silent"],["suds","1920"]],
+  ["Sunny",1930,["musical","romance"],["sunny","1930"]],
+  ["Up the River",1930,["comedy","crime"],["up the river","1930"]],
+  ["Way Out West",1930,["comedy","western"],["way out west","1930"]],
+  ["Whoopee!",1930,["musical","comedy"],["whoopee","1930"]],
+  ["Zhukovsky",1950,["drama","biography"],["zhukovsky","1950"]]
 ];
 
 
@@ -175,7 +207,39 @@ const PLAYABLE_CATALOG = {
     durationSeconds: 5455,
     posterUrl: commonsThumb("Road To Bali (1952).webm"),
     mediaUrl: commonsMedia("Road To Bali (1952).webm")
-  }
+  },
+
+  "Abraham Lincoln": { durationSeconds: 5606, posterUrl: commonsThumb("Abraham Lincoln (D. W. Griffith, 1930).webm"), mediaUrl: commonsMedia("Abraham Lincoln (D. W. Griffith, 1930).webm") },
+  "Clancy in Wall Street": { durationSeconds: 4398, posterUrl: commonsThumb("Clancy in Wall Street (1930).webm"), mediaUrl: commonsMedia("Clancy in Wall Street (1930).webm") },
+  "Conspiracy": { durationSeconds: 4138, posterUrl: commonsThumb("Conspiracy, 1930.webm"), mediaUrl: commonsMedia("Conspiracy, 1930.webm") },
+  "Dixiana": { durationSeconds: 5949, posterUrl: commonsThumb("Dixiana (1930).webm"), mediaUrl: commonsMedia("Dixiana (1930).webm") },
+  "El presidio": { durationSeconds: 5290, posterUrl: commonsThumb("El presidio (1930).webm"), mediaUrl: commonsMedia("El presidio (1930).webm") },
+  "Fast and Loose": { durationSeconds: 4255, posterUrl: commonsThumb("Fast and Loose (1930).webm"), mediaUrl: commonsMedia("Fast and Loose (1930).webm") },
+  "Feet First": { durationSeconds: 5479, posterUrl: commonsThumb("Feet First (1930).webm"), mediaUrl: commonsMedia("Feet First (1930).webm") },
+  "Going Wild": { durationSeconds: 3963, posterUrl: commonsThumb("Going Wild (1930).webm"), mediaUrl: commonsMedia("Going Wild (1930).webm") },
+  "Hell Harbor": { durationSeconds: 4999, posterUrl: commonsThumb("Hell Harbor (1930).webm"), mediaUrl: commonsMedia("Hell Harbor (1930).webm") },
+  "Holiday": { durationSeconds: 5460, posterUrl: commonsThumb("Holiday (1930).webm"), mediaUrl: commonsMedia("Holiday (1930).webm") },
+  "I Flunked, But…": { durationSeconds: 3694, posterUrl: commonsThumb("落第はしたけれど (1930).webm"), mediaUrl: commonsMedia("落第はしたけれど (1930).webm") },
+  "Just Imagine": { durationSeconds: 6491, posterUrl: commonsThumb("Just Imagine (1930).webm"), mediaUrl: commonsMedia("Just Imagine (1930).webm") },
+  "Kismet": { durationSeconds: 5338, posterUrl: commonsThumb("Kismet (1920).webm"), mediaUrl: commonsMedia("Kismet (1920).webm") },
+  "La Escalinata": { durationSeconds: 4428, posterUrl: commonsThumb("La Escalinata (1950).webm"), mediaUrl: commonsMedia("La Escalinata (1950).webm") },
+  "Little Caesar": { durationSeconds: 4706, posterUrl: commonsThumb("Little Caesar (1931).webm"), mediaUrl: commonsMedia("Little Caesar (1931).webm") },
+  "The Big House": { durationSeconds: 5219, posterUrl: commonsThumb("The Big House (1930).webm"), mediaUrl: commonsMedia("The Big House (1930).webm") },
+  "The Big Trail": { durationSeconds: 7002, posterUrl: commonsThumb("The Big Trail (1930).webm"), mediaUrl: commonsMedia("The Big Trail (1930).webm") },
+  "The Man Who Had Everything": { durationSeconds: 3959, posterUrl: commonsThumb("The Man Who Had Everything (1920).webm"), mediaUrl: commonsMedia("The Man Who Had Everything (1920).webm") },
+  "Outside the Law (1920)": { durationSeconds: 4505, posterUrl: commonsThumb("Outside the Law(1920).webm"), mediaUrl: commonsMedia("Outside the Law(1920).webm") },
+  "Paid": { durationSeconds: 5140, posterUrl: commonsThumb("Paid (1930).webm"), mediaUrl: commonsMedia("Paid (1930).webm") },
+  "Pakiusap": { durationSeconds: 5205, posterUrl: commonsThumb("Pakiusap (1940).webm"), mediaUrl: commonsMedia("Pakiusap (1940).webm") },
+  "Raffles": { durationSeconds: 4243, posterUrl: commonsThumb("Raffles (1930).webm"), mediaUrl: commonsMedia("Raffles (1930).webm") },
+  "Sand": { durationSeconds: 5238, posterUrl: commonsThumb("Sand (1920).webm"), mediaUrl: commonsMedia("Sand (1920).webm") },
+  "Soup to Nuts": { durationSeconds: 4115, posterUrl: commonsThumb("Soup to Nuts (1930).webm"), mediaUrl: commonsMedia("Soup to Nuts (1930).webm") },
+  "Spring Is Here": { durationSeconds: 4134, posterUrl: commonsThumb("Spring Is Here (1930).webm"), mediaUrl: commonsMedia("Spring Is Here (1930).webm") },
+  "Suds": { durationSeconds: 3933, posterUrl: commonsThumb("Suds (1920).webm"), mediaUrl: commonsMedia("Suds (1920).webm") },
+  "Sunny": { durationSeconds: 4686, posterUrl: commonsThumb("Sunny (1930).webm"), mediaUrl: commonsMedia("Sunny (1930).webm") },
+  "Up the River": { durationSeconds: 5079, posterUrl: commonsThumb("Up the River (1930).webm"), mediaUrl: commonsMedia("Up the River (1930).webm") },
+  "Way Out West": { durationSeconds: 4203, posterUrl: commonsThumb("Way Out West (1930).webm"), mediaUrl: commonsMedia("Way Out West (1930).webm") },
+  "Whoopee!": { durationSeconds: 5551, posterUrl: commonsThumb("Whoopee! (1930).webm"), mediaUrl: commonsMedia("Whoopee! (1930).webm") },
+  "Zhukovsky": { durationSeconds: 5022, posterUrl: commonsThumb("Жуковский (1950).webm"), mediaUrl: commonsMedia("Жуковский (1950).webm") }
 };
 
 const TEST_SOURCES = {
@@ -279,6 +343,24 @@ const TEST_SOURCES = {
     rightsNote: "Test source. Review the source rights information before reuse."
   })]
 };
+
+
+
+for (const [title, item] of Object.entries(PLAYABLE_CATALOG)) {
+  if (TEST_SOURCES[title]) continue;
+  const sourceSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  TEST_SOURCES[title] = [createSource({
+    id: "commons-" + sourceSlug,
+    provider: "wikimedia-commons",
+    name: "Wikimedia Commons",
+    type: SOURCE_TYPES.MEDIA,
+    status: SOURCE_STATUS.READY,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
+    mediaUrl: item.mediaUrl,
+    url: "https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(item.mediaUrl.split("/").pop() || title),
+    rightsNote: "Wikimedia Commons hosts this film file and identifies it as public domain; verify current source rights before reuse."
+  })];
+}
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>
   createMovie({

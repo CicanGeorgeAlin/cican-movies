@@ -18,6 +18,7 @@ let currentMovie = null;
 let currentSource = null;
 let currentSourceIndex = -1;
 let currentSources = [];
+let failedSourceIds = new Set();
 let voiceRecognition = null;
 
 function escapeHtml(value) {
@@ -92,6 +93,7 @@ function openMovie(movie) {
   sourceList.innerHTML = "";
   currentSources = playableSources(movie);
   currentSourceIndex = -1;
+  failedSourceIds = new Set();
 
   const sources = [...(movie.sources || [])].sort((a, b) => {
     const statusRank = { ready: 0, review: 1, unavailable: 2, blocked: 3 };
@@ -159,7 +161,9 @@ function playableSources(movie) {
 }
 
 function showPlaybackFallback(message = "This source could not be played.") {
-  const remaining = currentSources.slice(currentSourceIndex + 1);
+  if (currentSource?.id) failedSourceIds.add(currentSource.id);
+  const remaining = currentSources.slice(currentSourceIndex + 1)
+    .filter(source => !failedSourceIds.has(source.id));
   playerStage.innerHTML =
     '<div class="player-error"><strong>' + escapeHtml(message) + '</strong>' +
     (remaining.length
@@ -174,6 +178,11 @@ function showPlaybackFallback(message = "This source could not be played.") {
 }
 
 function loadSource(source) {
+  const previousVideo = playerStage.querySelector("video");
+  if (previousVideo && currentMovie && previousVideo.currentTime > 0 && !previousVideo.ended) {
+    savePosition(currentMovie, previousVideo.currentTime);
+  }
+
   const index = currentSources.findIndex(item => item.id === source.id);
   currentSourceIndex = index;
   currentSource = source;

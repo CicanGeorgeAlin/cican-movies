@@ -1,5 +1,5 @@
 import { catalog } from "./data/catalog.js";
-import { CONTENT_TYPES, normaliseMovie } from "./data/schema.js";
+import { CONTENT_TYPES, isFeatureMovie, normaliseMovie } from "./data/schema.js";
 import { providers, getProviderStatus } from "./providers/registry.js";
 
 function parseQuery(query = "") {
@@ -171,12 +171,14 @@ function mergeMovies(localMovies, remoteMovies, query) {
     }))
     .filter(item =>
       item.score > 0 &&
+      isFeatureMovie(item.movie) &&
+      Boolean(item.movie.posterUrl) &&
       Array.isArray(item.movie.sources) &&
       item.movie.sources.some(source =>
         source &&
         source.status !== "blocked" &&
         source.status !== "unavailable" &&
-        (source.url || source.embedUrl || source.mediaUrl)
+        (source.embedUrl || source.mediaUrl)
       )
     )
     .sort((a, b) => b.score - a.score)
@@ -192,7 +194,7 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
       (!allVideo && movie.contentType && movie.contentType !== contentType ? false : scoreMovie(movie, query) > 0)
   );
 
-  if (id && localMatches.some(movie => (movie.sources || []).some(source => source?.url || source?.embedUrl || source?.mediaUrl))) return localMatches;
+  if (id && localMatches.some(movie => (movie.sources || []).some(source => source?.embedUrl || source?.mediaUrl))) {\n    const playableLocal = localMatches.filter(movie => movie.posterUrl && isFeatureMovie(movie));\n    if (playableLocal.length) return playableLocal;\n  }
 
   if (id) {
     const directResults = await Promise.allSettled(

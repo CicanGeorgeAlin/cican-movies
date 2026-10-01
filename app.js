@@ -190,7 +190,13 @@ function playableSources(movie) {
     );
 }
 
-function showPlaybackFallback(message = "This source could not be played.") {
+function getNextPlayableSource() {
+  return currentSources
+    .slice(currentSourceIndex + 1)
+    .find(source => !failedSourceIds.has(source.id)) || null;
+}
+
+function showPlaybackFallback(message = "This source could not be played.", { autoTryNext = false } = {}) {
   const failedSource = currentSource;
   if (failedSource?.id) failedSourceIds.add(failedSource.id);
 
@@ -200,21 +206,25 @@ function showPlaybackFallback(message = "This source could not be played.") {
   }
 
   currentSource = null;
-  const remaining = currentSources.slice(currentSourceIndex + 1)
-    .filter(source => !failedSourceIds.has(source.id));
+  const next = getNextPlayableSource();
+
+  if (autoTryNext && next) {
+    loadSource(next);
+    return;
+  }
+
   playerStage.innerHTML =
     '<div class="player-error"><strong>' + escapeHtml(message) + '</strong>' +
-    (remaining.length
+    (next
       ? '<p>CICAN found another playable source.</p><button class="play-button" id="fallback-play">TRY NEXT SOURCE</button>'
       : '<p>No additional playable source is currently available.</p>') +
     '</div>';
 
   document.querySelector("#fallback-play")?.addEventListener("click", () => {
-    const next = currentSources[currentSourceIndex + 1];
-    if (next) loadSource(next);
+    const nextSource = getNextPlayableSource();
+    if (nextSource) loadSource(nextSource);
   });
 }
-
 function loadSource(source) {
   const previousVideo = playerStage.querySelector("video");
   if (previousVideo && currentMovie && previousVideo.currentTime > 0 && !previousVideo.ended) {
@@ -383,7 +393,7 @@ function loadMedia(source) {
   if (video) {
     attachMediaMemory(video);
     video.addEventListener("loadeddata", () => saveLastSource(currentMovie, source));
-    video.addEventListener("error", () => showPlaybackFallback("This media source failed to load."));
+    video.addEventListener("error", () => showPlaybackFallback("This media source failed to load.", { autoTryNext: true }));
   }
 }
 

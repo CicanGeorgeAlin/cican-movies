@@ -1,4 +1,4 @@
-import { createMovie, createSource, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
+import { createMovie, createSource, isFeatureMovie, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
 
 const API_URL = "https://commons.wikimedia.org/w/api.php";
 
@@ -13,7 +13,7 @@ function buildSearchUrl(query, limit = 12, offset = 0) {
     gsrlimit: String(Math.min(Math.max(limit, 1), 50)),
     gsrqiprofile: "classic",
     prop: "imageinfo",
-    iiprop: "url|mime|size|extmetadata",
+    iiprop: "url|mime|size|extmetadata|thumburl",\n    iiurlwidth: "400",
     gsroffset: String(Math.max(0, offset))
   });
   return API_URL + "?" + params.toString();
@@ -38,7 +38,7 @@ function toMovie(page) {
 
   const title = String(page.title || "").replace(/^File:/i, "").replace(/\.[^.]+$/, "").trim();
   const pageUrl = "https://commons.wikimedia.org/wiki/" + encodeURIComponent(String(page.title || "").replace(/ /g, "_"));
-  const source = createSource({
+  const durationSeconds = Number(String(info.extmetadata?.Duration?.value || "").match(/\\d+(?:\\.\\d+)?/)?.[0] || 0);\n  const candidate = { title, description: info.extmetadata?.ImageDescription?.value || "", searchTerms: [String(page.title || ""), "Wikimedia Commons"], durationSeconds };\n  if (!isFeatureMovie(candidate)) return null;\n  const source = createSource({
     id: "wikimedia-" + String(page.pageid),
     provider: "wikimedia-commons",
     name: "Wikimedia Commons",

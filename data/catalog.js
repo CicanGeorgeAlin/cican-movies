@@ -230,7 +230,22 @@ const movieSeeds = [
   ["The Return of Dr Fu Manchu",1930,["drama"],["the return of dr fu manchu","1930"]],
   ["Mammy",1930,["drama"],["mammy","1930"]],
   ["The Phantom Empire",1940,["drama"],["the phantom empire","1940"]],
-];
+  ["It",1927,["comedy","romance","silent"],["it","1927","clara bow"]],
+  ["Rojo no Reikon",1921,["drama","silent"],["rojo no reikon","1921","minoru murata"]],
+  ["Filibus",1915,["adventure","silent"],["filibus","1915","italian silent film"]],
+  ["Humanity & Paper Balloons",1937,["drama"],["humanity and paper balloons","1937","ninjo kami fusen"]],
+  ["Brüder",1929,["drama"],["bruder","brüder","1929","werner hochbaum"]],
+  ["Himmelskibet",1918,["sci-fi","silent"],["himmelskibet","1918","holger madsen"]],
+  ["Tepeyac",1921,["drama","silent"],["tepeyac","1921","mexican film"]],
+  ["Moros y cristianos",1926,["comedy"],["moros y cristianos","1926","spanish film"]],
+  ["20,000 Leagues Under the Sea",1916,["adventure"],["20000 leagues under the sea","1916"]],
+  ["That Night's Wife",1930,["crime","silent"],["that nights wife","1930","sono yo no tsuma"]],
+  ["Morning Ripples",1952,["drama"],["morning ripples","asa no hamon","1952","heinosuke gosho"]],
+  ["Le Lion des Mogols",1924,["adventure","silent"],["le lion des mogols","1924","jean epstein"]],
+  ["Finis Terræ",1929,["drama","silent"],["finis terrae","1929","jean epstein"]],
+  ["Mauprat",1926,["drama","silent"],["mauprat","1926","jean epstein"]],
+  ["La Revue des revues",1927,["musical","comedy","silent"],["la revue des revues","1927","parisian pleasures"]],
+  ["L'Inferno",1911,["drama","silent"],["l inferno","1911","dante","italian film"]],];
 
 
 
@@ -324,8 +339,23 @@ const PLAYABLE_CATALOG = {
   "The Man From Utah": { durationSeconds: 4476, posterUrl: commonsThumb("The Man From Utah (1934).webm"), mediaUrl: commonsMedia("The Man From Utah (1934).webm") },
   "The Doorway to Hell": { durationSeconds: 4659, posterUrl: commonsThumb("The Doorway to Hell (1930).webm"), mediaUrl: commonsMedia("The Doorway to Hell (1930).webm") },
   "The Devil to Pay!": { durationSeconds: 4349, posterUrl: commonsThumb("The Devil to Pay!.webm"), mediaUrl: commonsMedia("The Devil to Pay!.webm") },
-  "The Most Dangerous Game (1932)": { durationSeconds: 3743, posterUrl: commonsThumb("The Most Dangerous Game (1932) High Quality.webm"), mediaUrl: commonsMedia("The Most Dangerous Game (1932) High Quality.webm") }
-};
+  "The Most Dangerous Game (1932)": { durationSeconds: 3743, posterUrl: commonsThumb("The Most Dangerous Game (1932) High Quality.webm"), mediaUrl: commonsMedia("The Most Dangerous Game (1932) High Quality.webm") },
+  "It": { durationSeconds: 4528, posterUrl: commonsThumb("It (1927).webm"), mediaUrl: commonsMedia("It (1927).webm") },
+  "Rojo no Reikon": { durationSeconds: 4818, posterUrl: commonsThumb("Rojo no Reikon (1921).webm"), mediaUrl: commonsMedia("Rojo no Reikon (1921).webm") },
+  "Filibus": { durationSeconds: 4616, posterUrl: commonsThumb("Filibus (1915).webm"), mediaUrl: commonsMedia("Filibus (1915).webm") },
+  "Humanity & Paper Balloons": { durationSeconds: 4957, posterUrl: commonsThumb("Humanity & Paper Balloons (1937).webm"), mediaUrl: commonsMedia("Humanity & Paper Balloons (1937).webm") },
+  "Brüder": { durationSeconds: 4991, posterUrl: commonsThumb("Brüder (1929).webm"), mediaUrl: commonsMedia("Brüder (1929).webm") },
+  "Himmelskibet": { durationSeconds: 4836, posterUrl: commonsThumb("Himmelskibet (1918).webm"), mediaUrl: commonsMedia("Himmelskibet (1918).webm") },
+  "Tepeyac": { durationSeconds: 5952, posterUrl: commonsThumb("Tepeyac (versión restaurada).webm"), mediaUrl: commonsMedia("Tepeyac (versión restaurada).webm") },
+  "Moros y cristianos": { durationSeconds: 7141, posterUrl: commonsThumb("Moros y cristianos (1926).webm"), mediaUrl: commonsMedia("Moros y cristianos (1926).webm") },
+  "20,000 Leagues Under the Sea": { durationSeconds: 5153, posterUrl: commonsThumb("20,000 Leagues Under the Sea (1916).webm"), mediaUrl: commonsMedia("20,000 Leagues Under the Sea (1916).webm") },
+  "That Night's Wife": { durationSeconds: 3907, posterUrl: commonsThumb("その夜の妻 (1930).webm"), mediaUrl: commonsMedia("その夜の妻 (1930).webm") },
+  "Morning Ripples": { durationSeconds: 6205, posterUrl: commonsThumb("朝の波紋 - Asa no hamon (1952) by Heinosuke Gosho.webm"), mediaUrl: commonsMedia("朝の波紋 - Asa no hamon (1952) by Heinosuke Gosho.webm") },
+  "Le Lion des Mogols": { durationSeconds: 6237, posterUrl: commonsThumb("Le Lion des Mogols (1924) by Jean Epstein.webm"), mediaUrl: commonsMedia("Le Lion des Mogols (1924) by Jean Epstein.webm") },
+  "Finis Terræ": { durationSeconds: 4768, posterUrl: commonsThumb("Finis Terræ (1929).webm"), mediaUrl: commonsMedia("Finis Terræ (1929).webm") },
+  "Mauprat": { durationSeconds: 5266, posterUrl: commonsThumb("Mauprat (1926).webm"), mediaUrl: commonsMedia("Mauprat (1926).webm") },
+  "La Revue des revues": { durationSeconds: 6145, posterUrl: commonsThumb("La Revue des revues (1927).webm"), mediaUrl: commonsMedia("La Revue des revues (1927).webm") },
+  "L'Inferno": { durationSeconds: 3908, posterUrl: commonsThumb("L'Inferno (1911).webm"), mediaUrl: commonsMedia("L'Inferno (1911).webm") },};
 
 const TEST_SOURCES = {
   "All Quiet on the Western Front": [createSource({

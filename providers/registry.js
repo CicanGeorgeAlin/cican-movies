@@ -1,4 +1,5 @@
 import { getArchiveMovieById, searchArchive } from "./archive-org.js";
+import { isYouTubeSearchConfigured, searchYouTube } from "./youtube-search.js";
 
 export const providers = Object.freeze([
   {
@@ -7,6 +8,12 @@ export const providers = Object.freeze([
     enabled: true,
     search: searchArchive,
     getById: getArchiveMovieById
+  },
+  {
+    id: "youtube",
+    label: "YouTube",
+    enabled: isYouTubeSearchConfigured(),
+    search: searchYouTube
   }
 ]);
 

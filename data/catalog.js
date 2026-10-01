@@ -171,6 +171,14 @@ const movieSeeds = [
   ["The Doorway to Hell",1930,["crime","drama"],["the doorway to hell","1930"]],
   ["The Devil to Pay!",1930,["comedy","drama"],["the devil to pay","1930"]],
   ["The Most Dangerous Game (1932)",1932,["adventure","thriller"],["the most dangerous game","1932"]]
+  ["The Amazing Mr. X",1948,["mystery","thriller"],["the amazing mr x","1948"]],
+  ["Don Q, Son of Zorro",1925,["adventure","romance"],["don q son of zorro","1925"]],
+  ["Irene",1926,["comedy","romance"],["irene","1926"]],
+  ["My Best Girl",1927,["comedy","romance"],["my best girl","1927"]],
+  ["Pax æterna",1917,["drama","silent"],["pax æterna","1917"]],
+  ["Show Boat",1929,["musical","drama"],["show boat","1929"]],
+  ["Victory",1919,["drama","silent"],["victory","1919"]],
+  ["The Virgin of Stamboul",1920,["drama","romance"],["the virgin of stamboul","1920"]]
 ];
 
 
@@ -366,7 +374,15 @@ const TEST_SOURCES = {
     mediaUrl: "https://archive.org/download/Night.Of.The.Living.Dead_1080p/NightOfTheLivingDead.mp4",
     url: "https://archive.org/details/Night.Of.The.Living.Dead_1080p",
     rightsNote: "Test source. Review the source rights information before reuse."
-  })]
+  })],
+  "The Amazing Mr. X": { durationSeconds: 4675, posterUrl: commonsThumb("The Amazing Mr. X (1948) by Bernard Vorhaus.webm"), mediaUrl: commonsMedia("The Amazing Mr. X (1948) by Bernard Vorhaus.webm") },
+  "Don Q, Son of Zorro": { durationSeconds: 6581, posterUrl: commonsThumb("Don Q Son of Zorro.webm"), mediaUrl: commonsMedia("Don Q Son of Zorro.webm") },
+  "Irene": { durationSeconds: 5413, posterUrl: commonsThumb("Irene (1926 film).webm"), mediaUrl: commonsMedia("Irene (1926 film).webm") },
+  "My Best Girl": { durationSeconds: 6480, posterUrl: commonsThumb("My Best Girl (1927).webm"), mediaUrl: commonsMedia("My Best Girl (1927).webm") },
+  "Pax æterna": { durationSeconds: 5269, posterUrl: commonsThumb("Pax æterna (1917).webm"), mediaUrl: commonsMedia("Pax æterna (1917).webm") },
+  "Show Boat": { durationSeconds: 7092, posterUrl: commonsThumb("Show Boat.webm"), mediaUrl: commonsMedia("Show Boat.webm") },
+  "Victory": { durationSeconds: 3744, posterUrl: commonsThumb(""Victory" (1919) .webm"), mediaUrl: commonsMedia(""Victory" (1919) .webm") },
+  "The Virgin of Stamboul": { durationSeconds: 4189, posterUrl: commonsThumb("The virgin of Stamboul (1920).webm"), mediaUrl: commonsMedia("The virgin of Stamboul (1920).webm") }
 };
 
 

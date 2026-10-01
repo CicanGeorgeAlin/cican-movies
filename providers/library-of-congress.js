@@ -1,4 +1,4 @@
-import { createMovie, createSource, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
+import { createMovie, createSource, isFeatureMovie, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
 
 const API_URL = "https://www.loc.gov/film-and-videos/";
 
@@ -66,7 +66,7 @@ function toMovie(item) {
     contentType: "movie",
     description: clean(item.description),
     posterUrl: item.image_url || item.thumbnail_url || null,
-    searchTerms: [title, clean(item.contributor), clean(item.partof)].filter(Boolean),
+    searchTerms: candidate.searchTerms,\n    durationSeconds,
     sources: [source]
   });
 }

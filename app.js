@@ -232,7 +232,8 @@ function loadSource(source) {
 }
 
 function selectBestSource(movie) {
-  const candidates = playableSources(movie);
+  const candidates = playableSources(movie)
+    .filter(source => !failedSourceIds.has(source.id));
   if (!candidates.length) return null;
 
   const lastSourceId = getLastSourceId(movie);

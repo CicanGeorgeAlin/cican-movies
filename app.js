@@ -1,1 +1,179 @@
-import { catalog } from "./data/catalog.js";const form=document.querySelector("#search-form"),input=document.querySelector("#search-input"),results=document.querySelector("#results"),playerView=document.querySelector("#player-view"),playerTitle=document.querySelector("#player-title"),playerStage=document.querySelector("#player-stage"),sourceList=document.querySelector("#source-list"),backButton=document.querySelector("#back-button");function normalise(v){return v.toLowerCase().trim().replace(/[^a-z0-9\s]/g,"")}function searchMovies(q){const n=normalise(q);if(!n)return[];return catalog.filter(m=>normalise([m.title,m.year,m.genres?.join(" "),m.searchTerms?.join(" ")].join(" ")).includes(n))}function renderResults(items,q){results.innerHTML="";if(!items.length){results.innerHTML=q?'<div class="no-results">No indexed movie found for “'+escapeHtml(q)+'”.</div>':"";return}items.forEach(m=>{const c=document.createElement("article");c.className="result-card";c.innerHTML='<div><h3>'+escapeHtml(m.title)+'</h3><div class="result-meta">'+m.year+" · "+escapeHtml(m.genres.join(" · "))+'</div></div><button class="play-button" data-id="'+m.id+'">OPEN</button>';results.appendChild(c)});results.querySelectorAll("[data-id]").forEach(b=>b.addEventListener("click",()=>openMovie(b.dataset.id)))}function openMovie(id){const m=catalog.find(x=>x.id===id);if(!m)return;playerTitle.textContent=m.title;playerStage.innerHTML='<div class="player-empty"><div class="play-orb">▶</div><p>Choose a supported source below.</p></div>';sourceList.innerHTML="";m.sources.forEach(s=>{const row=document.createElement("div");row.className="source-row";row.innerHTML='<div><div class="source-name">'+escapeHtml(s.name)+'</div><div class="source-status">'+escapeHtml(s.status)+'</div></div>';if(s.embed){const b=document.createElement("button");b.className="play-button";b.textContent="PLAY";b.onclick=()=>loadSource(m,s);row.appendChild(b)}else if(s.url){const a=document.createElement("a");a.className="play-button";a.href=s.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="OPEN SOURCE";row.appendChild(a)}sourceList.appendChild(row)});results.hidden=true;playerView.hidden=false;playerView.scrollIntoView({behavior:"smooth",block:"start"})}function loadSource(m,s){playerTitle.textContent=m.title;playerStage.innerHTML='<iframe src="'+escapeAttribute(s.embed)+'" title="'+escapeAttribute(m.title)+'" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>'}backButton.onclick=()=>{playerView.hidden=true;results.hidden=false;playerStage.innerHTML="";window.scrollTo({top:results.offsetTop-20,behavior:"smooth"})};form.onsubmit=e=>{e.preventDefault();const q=input.value;renderResults(searchMovies(q),q);playerView.hidden=true;results.hidden=false;results.scrollIntoView({behavior:"smooth",block:"start"})};function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}function escapeAttribute(v){return String(v).replace(/&/g,"&amp;").replace(/"/g,"&quot;")}renderResults([],"");
+import { resolveMovies } from "./source-engine.js";
+
+const form = document.querySelector("#search-form");
+const input = document.querySelector("#search-input");
+const results = document.querySelector("#results");
+const playerView = document.querySelector("#player-view");
+const playerTitle = document.querySelector("#player-title");
+const playerStage = document.querySelector("#player-stage");
+const sourceList = document.querySelector("#source-list");
+const backButton = document.querySelector("#back-button");
+const searchStatus = document.querySelector("#search-status");
+
+let currentMovie = null;
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function escapeAttribute(value) {
+  return String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+}
+
+function sourcePriority(source) {
+  if (source.type === "embed") return 0;
+  if (source.type === "media") return 1;
+  if (source.type === "external") return 2;
+  return 3;
+}
+
+function renderResults(items, query) {
+  results.innerHTML = "";
+
+  if (!items.length) {
+    results.innerHTML = query
+      ? '<div class="no-results">No available indexed source found for “' + escapeHtml(query) + '”.</div>'
+      : "";
+    return;
+  }
+
+  items.forEach(movie => {
+    const card = document.createElement("article");
+    card.className = "result-card";
+    const playable = (movie.sources || []).some(s => s.status === "ready");
+
+    card.innerHTML =
+      '<div><h3>' + escapeHtml(movie.title) + '</h3>' +
+      '<div class="result-meta">' +
+      (movie.year ? escapeHtml(movie.year) + " · " : "") +
+      escapeHtml((movie.genres || []).join(" · ") || "Movie") +
+      '</div><div class="result-source">' +
+      (playable ? "SOURCE READY" : "SOURCE AVAILABLE") +
+      '</div></div>' +
+      '<button class="play-button" data-id="' + escapeAttribute(movie.id) + '">OPEN</button>';
+
+    results.appendChild(card);
+  });
+
+  results.querySelectorAll("[data-id]").forEach(button => {
+    button.addEventListener("click", () => {
+      const movie = items.find(item => item.id === button.dataset.id);
+      if (movie) openMovie(movie);
+    });
+  });
+}
+
+function openMovie(movie) {
+  currentMovie = movie;
+  playerTitle.textContent = movie.title;
+  playerStage.innerHTML =
+    '<div class="player-empty"><div class="play-orb">▶</div>' +
+    '<p>Choose a source below.</p></div>';
+
+  sourceList.innerHTML = "";
+
+  const sources = [...(movie.sources || [])].sort(
+    (a, b) => sourcePriority(a) - sourcePriority(b)
+  );
+
+  sources.forEach(source => {
+    const row = document.createElement("div");
+    row.className = "source-row";
+
+    const info = document.createElement("div");
+    info.innerHTML =
+      '<div class="source-name">' + escapeHtml(source.name) + '</div>' +
+      '<div class="source-status">' +
+      escapeHtml(String(source.status || "").toUpperCase()) +
+      '</div>';
+
+    row.appendChild(info);
+
+    if (source.type === "embed" && source.embedUrl) {
+      const button = document.createElement("button");
+      button.className = "play-button";
+      button.textContent = "PLAY";
+      button.onclick = () => loadEmbed(source);
+      row.appendChild(button);
+    } else if (source.type === "media" && source.mediaUrl) {
+      const button = document.createElement("button");
+      button.className = "play-button";
+      button.textContent = "PLAY";
+      button.onclick = () => loadMedia(source);
+      row.appendChild(button);
+    } else if (source.url) {
+      const link = document.createElement("a");
+      link.className = "play-button";
+      link.href = source.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "OPEN SOURCE";
+      row.appendChild(link);
+    }
+
+    sourceList.appendChild(row);
+  });
+
+  results.hidden = true;
+  playerView.hidden = false;
+  playerView.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function loadEmbed(source) {
+  playerStage.innerHTML =
+    '<iframe src="' + escapeAttribute(source.embedUrl) +
+    '" title="' + escapeAttribute(currentMovie.title) +
+    '" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" ' +
+    'allowfullscreen></iframe>';
+}
+
+function loadMedia(source) {
+  playerStage.innerHTML =
+    '<video controls playsinline preload="metadata" src="' +
+    escapeAttribute(source.mediaUrl) + '">' +
+    'Your browser cannot play this media source.' +
+    '</video>';
+}
+
+function setSearchStatus(message = "") {
+  searchStatus.textContent = message;
+}
+
+backButton.onclick = () => {
+  playerView.hidden = true;
+  results.hidden = false;
+  playerStage.innerHTML = "";
+  currentMovie = null;
+  window.scrollTo({ top: results.offsetTop - 20, behavior: "smooth" });
+};
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+  const query = input.value.trim();
+  if (!query) return;
+
+  results.innerHTML =
+    '<div class="searching">SEARCHING THE AVAILABLE MOVIE SOURCES…</div>';
+  playerView.hidden = true;
+  results.hidden = false;
+  setSearchStatus("Searching local index and enabled source providers…");
+
+  try {
+    const movies = await resolveMovies(query);
+    renderResults(movies, query);
+    setSearchStatus(
+      movies.length
+        ? movies.length + " movie result" + (movies.length === 1 ? "" : "s") + " found."
+        : "No matching source found."
+    );
+  } catch (error) {
+    results.innerHTML =
+      '<div class="no-results">The source search is temporarily unavailable. Please try again.</div>';
+    setSearchStatus("Source search error.");
+    console.error(error);
+  }
+
+  results.scrollIntoView({ behavior: "smooth", block: "start" });
+});

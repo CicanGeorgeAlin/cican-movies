@@ -195,12 +195,18 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
     if (directMovies.length) return directMovies;
   }
 
+  const browseLetter = /^[a-z]$/i.test(parsedQuery.normalised)
+    ? parsedQuery.normalised.toLowerCase()
+    : "";
+
   const movieQueries = contentType === CONTENT_TYPES.MOVIE
-    ? [...new Set([
-        providerQuery,
-        parsedQuery.raw,
-        parsedQuery.title.replace(/\s+/g, " ").trim()
-      ].filter(Boolean))]
+    ? browseLetter
+      ? [browseLetter]
+      : [...new Set([
+          providerQuery,
+          parsedQuery.raw,
+          parsedQuery.title.replace(/\s+/g, " ").trim()
+        ].filter(Boolean))]
     : [providerQuery];
 
   const remoteResults = await Promise.allSettled(
@@ -208,7 +214,7 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
       .filter(provider => provider.enabled)
       .flatMap(provider =>
         movieQueries.map(searchQuery =>
-          provider.search(searchQuery, { contentType })
+          provider.search(searchQuery, { contentType, browseLetter })
         )
       )
   );
@@ -227,6 +233,14 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
     }));
 
   const merged = mergeMovies(seedMatches, remoteMovies, query);
+
+  if (browseLetter) {
+    const letterMovies = merged
+      .filter(movie => normaliseTitle(movie.title).startsWith(browseLetter))
+      .sort((a, b) => normaliseTitle(a.title).localeCompare(normaliseTitle(b.title)));
+    return letterMovies;
+  }
+
   return id
     ? merged.filter(movie => movie.id === id)
     : merged;

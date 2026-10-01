@@ -92,7 +92,7 @@ export async function searchLibraryOfCongress(query, { limit = 20, browseLetter 
 
   const letter = String(browseLetter || "").trim().toLowerCase();
   const pages = /^[a-z]$/.test(letter)
-    ? Array.from({ length: 5 }, (_, index) => index + 1)
+    ? [1, 2]
     : [1, 2];
 
   const searchQuery = /^[a-z]$/.test(letter) ? letter : trimmed;

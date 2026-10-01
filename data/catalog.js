@@ -179,6 +179,15 @@ const movieSeeds = [
   ["Show Boat",1929,["musical","drama"],["show boat","1929"]],
   ["Victory",1919,["drama","silent"],["victory","1919"]],
   ["The Virgin of Stamboul",1920,["drama","romance"],["the virgin of stamboul","1920"]]
+  ["The Divorcee",1930,["drama"],["the divorcee","1930"]],
+  ["Free and Easy",1930,["comedy"],["free and easy","buster keaton","1930"]],
+  ["Tom Sawyer",1930,["drama","adventure"],["tom sawyer","1930"]],
+  ["Danger Lights",1930,["drama"],["danger lights","1930"]],
+  ["Honey",1930,["musical","comedy"],["honey","1930"]],
+  ["Min and Bill",1930,["drama","comedy"],["min and bill","1930"]],
+  ["Street of Chance",1930,["drama"],["street of chance","1930"]],
+  ["Three Faces East",1930,["drama","mystery"],["three faces east","1930"]],
+  ["Let Us Be Gay",1930,["comedy","drama"],["let us be gay","1930"]]
 ];
 
 
@@ -382,7 +391,16 @@ const TEST_SOURCES = {
   "Pax æterna": { durationSeconds: 5269, posterUrl: commonsThumb("Pax æterna (1917).webm"), mediaUrl: commonsMedia("Pax æterna (1917).webm") },
   "Show Boat": { durationSeconds: 7092, posterUrl: commonsThumb("Show Boat.webm"), mediaUrl: commonsMedia("Show Boat.webm") },
   "Victory": { durationSeconds: 3744, posterUrl: commonsThumb(""Victory" (1919) .webm"), mediaUrl: commonsMedia(""Victory" (1919) .webm") },
-  "The Virgin of Stamboul": { durationSeconds: 4189, posterUrl: commonsThumb("The virgin of Stamboul (1920).webm"), mediaUrl: commonsMedia("The virgin of Stamboul (1920).webm") }
+  "The Virgin of Stamboul": { durationSeconds: 4189, posterUrl: commonsThumb("The virgin of Stamboul (1920).webm"), mediaUrl: commonsMedia("The virgin of Stamboul (1920).webm") },
+  "The Divorcee": { durationSeconds: 4918, posterUrl: commonsThumb("The Divorcee (1930).webm"), mediaUrl: commonsMedia("The Divorcee (1930).webm") },
+  "Free and Easy": { durationSeconds: 5559, posterUrl: commonsThumb("Free and Easy (1930 film).webm"), mediaUrl: commonsMedia("Free and Easy (1930 film).webm") },
+  "Tom Sawyer": { durationSeconds: 4700, posterUrl: commonsThumb("Tom Sawyer (1930 film).webm"), mediaUrl: commonsMedia("Tom Sawyer (1930 film).webm") },
+  "Danger Lights": { durationSeconds: 4583, posterUrl: commonsThumb("Danger Lights, 1930, original version.webm"), mediaUrl: commonsMedia("Danger Lights, 1930, original version.webm") },
+  "Honey": { durationSeconds: 4469, posterUrl: commonsThumb("Honey (1930).webm"), mediaUrl: commonsMedia("Honey (1930).webm") },
+  "Min and Bill": { durationSeconds: 5200, posterUrl: commonsThumb("Min and Bill.webm"), mediaUrl: commonsMedia("Min and Bill.webm") },
+  "Street of Chance": { durationSeconds: 4700, posterUrl: commonsThumb("Street of Chance (1930 film).webm"), mediaUrl: commonsMedia("Street of Chance (1930 film).webm") },
+  "Three Faces East": { durationSeconds: 4500, posterUrl: commonsThumb("Three Faces East (1930 film).webm"), mediaUrl: commonsMedia("Three Faces East (1930 film).webm") },
+  "Let Us Be Gay": { durationSeconds: 4800, posterUrl: commonsThumb("Let Us Be Gay.webm"), mediaUrl: commonsMedia("Let Us Be Gay.webm") }
 };
 
 

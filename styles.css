@@ -31,6 +31,34 @@ a{text-decoration:none}
 .player-stage{aspect-ratio:16/9;background:#050505;border:1px solid #202020;display:grid;place-items:center;overflow:hidden}
 .player-stage iframe,.player-stage video{width:100%;height:100%;border:0;display:block;background:#000}
 .player-stage video{object-fit:contain}
+.player-stage{position:relative}
+.player-center-play{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:72px;
+  height:72px;
+  border:1px solid rgba(255,255,255,.72);
+  border-radius:50%;
+  background:rgba(0,0,0,.72);
+  color:#fff;
+  display:grid;
+  place-items:center;
+  padding:0 0 0 4px;
+  font-size:1.35rem;
+  cursor:pointer;
+  z-index:5;
+  backdrop-filter:blur(6px);
+  transition:transform .16s ease,background .16s ease,border-color .16s ease;
+}
+.player-center-play:hover{transform:translate(-50%,-50%) scale(1.06);background:rgba(255,255,255,.14);border-color:#fff}
+.player-center-play:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.player-center-play[hidden]{display:none}
+.player-stage:fullscreen .player-center-play{width:84px;height:84px}
+@media(max-width:600px){
+  .player-center-play{width:64px;height:64px;font-size:1.15rem}
+}
 .player-empty{text-align:center;color:#666}
 .play-orb{font-size:2rem;color:#fff;margin-bottom:10px}
 .source-list{display:grid;gap:8px;margin-top:12px}

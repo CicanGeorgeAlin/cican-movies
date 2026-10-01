@@ -921,3 +921,34 @@ a{text-decoration:none}
   .hero-stats{gap:6px}
   .hero-stats span{font-size:.53rem;padding:8px 9px}
 }
+
+
+/* Support link */
+.support-wrap{
+  display:flex;
+  justify-content:center;
+  margin-top:18px;
+}
+.support-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #333;
+  background:#080808;
+  color:#fff;
+  padding:10px 15px;
+  font-size:.6rem;
+  font-weight:800;
+  letter-spacing:.14em;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+.support-button:hover{
+  border-color:#777;
+  background:#111;
+  transform:translateY(-1px);
+  box-shadow:0 0 28px rgba(255,255,255,.08);
+}
+.support-button:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:3px;
+}

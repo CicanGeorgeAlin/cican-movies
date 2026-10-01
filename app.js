@@ -137,7 +137,7 @@ function renderResults(items, query) {
 
   if (!items.length) {
     results.innerHTML = query
-      ? '<div class="no-results">No available indexed source found for “' + escapeHtml(query) + '”.</div>'
+      ? '<div class="no-results">No movie source found for “' + escapeHtml(query) + '”.</div>'
       : "";
     return;
   }
@@ -148,22 +148,28 @@ function renderResults(items, query) {
     const sources = Array.isArray(movie.sources) ? movie.sources : [];
     const playable = sources.some(s => s.status === "ready");
     const sourceCount = sources.length;
-    const providerCount = new Set(sources.map(s => s.provider).filter(Boolean)).size;
-    const rightsReview = sources.some(s => s.rightsStatus === "review" || s.rightsStatus === "unknown");
+    const poster = moviePoster(movie);
+    const description = String(movie.description || "")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
 
     card.innerHTML =
-      '<div><h3>' + escapeHtml(movie.title) + '</h3>' +
-      '<div class="result-meta">' +
-      (movie.year ? escapeHtml(movie.year) + " · " : "") +
-      escapeHtml((movie.genres || []).join(" · ") || "Movie") +
-      '</div><div class="result-source">' +
+      '<div class="result-poster">' +
+      (poster
+        ? '<img src="' + escapeAttribute(poster) + '" alt="" loading="lazy">'
+        : '<div class="result-poster-empty">CICAN</div>') +
+      '</div>' +
+      '<div class="result-card-body">' +
+      '<h3>' + escapeHtml(movie.title) + '</h3>' +
+      '<div class="result-meta">' + (movie.year ? escapeHtml(movie.year) + " · " : "") + 'MOVIE</div>' +
+      '<div class="result-source">' +
       (playable ? "SOURCE READY" : "SOURCE AVAILABLE") +
       ' · ' + sourceCount + ' SOURCE' + (sourceCount === 1 ? "" : "S") +
-      (providerCount > 1 ? ' · ' + providerCount + ' PROVIDERS' : '') +
       '</div>' +
-      (rightsReview ? '<div class="result-note">SOURCE RIGHTS REQUIRE REVIEW</div>' : '') +
+      (description ? '<div class="result-note">' + escapeHtml(description.slice(0, 140)) + '</div>' : '') +
       '</div>' +
-      '<button class="play-button" data-id="' + escapeAttribute(movie.id) + '">OPEN</button>';
+      '<button class="play-button" data-id="' + escapeAttribute(movie.id) + '">WATCH</button>';
 
     results.appendChild(card);
   });

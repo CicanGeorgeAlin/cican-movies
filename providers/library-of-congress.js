@@ -12,36 +12,62 @@ function buildSearchUrl(query, limit = 20, page = 1) {
   return API_URL + "?" + params.toString();
 }
 
+function clean(value = "") {
+  return String(value || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function findMediaUrl(item) {
+  const candidates = [
+    ...(Array.isArray(item.resources) ? item.resources : []),
+    ...(Array.isArray(item.media) ? item.media : [])
+  ];
+
+  for (const resource of candidates) {
+    const url = String(resource?.url || resource?.file || "").trim();
+    const format = String(resource?.format || resource?.mimetype || "").toLowerCase();
+    if (url && (/\.(mp4|mov|webm|m4v|ogv)(\?|$)/i.test(url) || /video\/|mp4|quicktime|webm|ogg/.test(format))) {
+      return url;
+    }
+  }
+
+  return null;
+}
+
+function movieId(pageUrl) {
+  return "loc-" + pageUrl.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "");
+}
+
 function toMovie(item) {
   if (!item?.id || !item?.title) return null;
 
-  const title = String(item.title).replace(/\s+/g, " ").trim();
+  const title = clean(item.title);
   const pageUrl = String(item.id);
   const date = String(item.date || item.created_published || "");
   const yearMatch = date.match(/\b(18|19|20)\d{2}\b/);
+  const mediaUrl = findMediaUrl(item);
+  const id = movieId(pageUrl);
+
+  const source = createSource({
+    id: "loc-source-" + id,
+    provider: "loc.gov",
+    name: "Library of Congress",
+    type: mediaUrl ? SOURCE_TYPES.MEDIA : SOURCE_TYPES.EXTERNAL,
+    status: mediaUrl ? SOURCE_STATUS.READY : SOURCE_STATUS.REVIEW,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
+    mediaUrl,
+    url: pageUrl,
+    rightsNote: "Library of Congress source. Check the item's individual Rights & Access information before reuse or redistribution."
+  });
 
   return createMovie({
-    id: "loc-" + pageUrl.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, ""),
+    id,
     title,
     year: yearMatch ? Number(yearMatch[0]) : null,
     contentType: "movie",
-    description: String(item.description || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim(),
+    description: clean(item.description),
     posterUrl: item.image_url || item.thumbnail_url || null,
-    searchTerms: [
-      title,
-      String(item.contributor || ""),
-      String(item.partof || "")
-    ].filter(Boolean),
-    sources: [createSource({
-      id: "loc-source-" + pageUrl.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, ""),
-      provider: "loc.gov",
-      name: "Library of Congress",
-      type: SOURCE_TYPES.EXTERNAL,
-      status: SOURCE_STATUS.REVIEW,
-      rightsStatus: RIGHTS_STATUS.REVIEW,
-      url: pageUrl,
-      rightsNote: "Library of Congress source. Check the item's individual Rights & Access information before reuse or redistribution."
-    })]
+    searchTerms: [title, clean(item.contributor), clean(item.partof)].filter(Boolean),
+    sources: [source]
   });
 }
 

@@ -21,6 +21,7 @@ function buildSearchUrl(query, rows = 12, exactTitle = true, prefix = false) {
   params.set("rows", String(rows));
   params.set("page", "1");
   params.set("output", "json");
+  if (prefix) params.set("sort[]", "title asc");
   return SEARCH_URL + "?" + params.toString();
 }
 
@@ -124,6 +125,24 @@ export async function getArchiveMovieById(id) {
   return enrichItem({ identifier });
 }
 
+async function enrichItems(items = [], concurrency = 8) {
+  const results = new Array(items.length);
+  let cursor = 0;
+
+  async function worker() {
+    while (cursor < items.length) {
+      const index = cursor++;
+      results[index] = await enrichItem(items[index]);
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, items.length) }, () => worker())
+  );
+
+  return results.filter(Boolean);
+}
+
 export async function searchArchive(query, { rows = 16, browseLetter = "" } = {}) {
   const trimmed = String(query || "").trim();
   if (!trimmed) return [];
@@ -131,12 +150,11 @@ export async function searchArchive(query, { rows = 16, browseLetter = "" } = {}
   const normalised = trimmed.replace(/\s+/g, " ").trim();
   const letter = String(browseLetter || "").trim().toLowerCase();
   if (/^[a-z]$/.test(letter)) {
-    const response = await fetch(buildSearchUrl(letter, Math.max(rows, 80), true, true));
+    const response = await fetch(buildSearchUrl(letter, Math.max(rows, 100), true, true));
     if (!response.ok) throw new Error("Internet Archive movie browse failed: " + response.status);
     const payload = await response.json();
     const docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];
-    const enriched = await Promise.all(docs.map(enrichItem));
-    return enriched.filter(Boolean);
+    return enrichItems(docs, 8);
   }
 
   const variants = [
@@ -171,6 +189,5 @@ export async function searchArchive(query, { rows = 16, browseLetter = "" } = {}
   }
 
   const docs = [...docsById.values()].slice(0, Math.max(rows, 16));
-  const enriched = await Promise.all(docs.map(enrichItem));
-  return enriched.filter(Boolean);
+  return enrichItems(docs, 8);
 }

@@ -192,7 +192,7 @@ export async function searchArchive(query, { rows = 16, browseLetter = "" } = {}
           { sensitivity: "base" }
         )
       )
-      .slice(0, 500);
+      .slice(0, 100);
 
     return enrichItems(docs, 10);
   }

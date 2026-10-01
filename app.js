@@ -239,8 +239,31 @@ function restoreMediaPosition(video) {
   video.addEventListener("loadedmetadata", restore);
 }
 
+function formatPlaybackTime(seconds) {
+  const total = Math.max(0, Math.floor(Number(seconds) || 0));
+  const minutes = Math.floor(total / 60);
+  const secs = total % 60;
+  return minutes + ":" + String(secs).padStart(2, "0");
+}
+
 function attachMediaMemory(video) {
+  const savedPosition = getSavedPosition(currentMovie);
   restoreMediaPosition(video);
+
+  if (savedPosition > 5) {
+    const notice = document.createElement("div");
+    notice.className = "resume-notice";
+    notice.innerHTML =
+      '<strong>RESUME FROM ' + escapeHtml(formatPlaybackTime(savedPosition)) + '</strong>' +
+      '<button type="button" class="resume-start">START FROM BEGINNING</button>';
+    playerStage.appendChild(notice);
+
+    notice.querySelector(".resume-start")?.addEventListener("click", () => {
+      clearPosition(currentMovie);
+      try { video.currentTime = 0; } catch {}
+      notice.remove();
+    });
+  }
 
   video.addEventListener("timeupdate", () => {
     if (video.currentTime > 0 && !video.ended) {

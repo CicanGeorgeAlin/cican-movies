@@ -83,11 +83,15 @@ async function loadFeaturedMovies() {
       FEATURED_MOVIE_QUERIES.map(query => resolveMovies(query, { contentType: selectedCategory }))
     );
     const seen = new Set();
-    const items = batches.flat().filter(movie => {
-      if (seen.has(movie.id)) return false;
-      seen.add(movie.id);
-      return true;
-    });
+    const items = batches
+      .map(batch => batch.find(movie =>
+        !seen.has(movie.id) &&
+        (movie.sources || []).some(source =>
+          source.status === "ready" && (source.type === "media" || source.type === "embed")
+        )
+      ))
+      .filter(Boolean);
+    items.forEach(movie => seen.add(movie.id));
     renderFeaturedMovies(items);
   } catch (error) {
     featured.hidden = true;

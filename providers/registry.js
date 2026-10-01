@@ -1,5 +1,6 @@
 import { getArchiveMovieById, searchArchive } from "./archive-org.js";
 import { isYouTubeSearchConfigured, searchYouTube } from "./youtube-search.js";
+import { getWikimediaCommonsMovieById, searchWikimediaCommons } from "./wikimedia-commons.js";
 
 export const providers = Object.freeze([
   {
@@ -14,6 +15,13 @@ export const providers = Object.freeze([
     label: "YouTube",
     enabled: isYouTubeSearchConfigured(),
     search: searchYouTube
+  },
+  {
+    id: "wikimedia-commons",
+    label: "Wikimedia Commons",
+    enabled: true,
+    search: searchWikimediaCommons,
+    getById: getWikimediaCommonsMovieById
   }
 ]);
 

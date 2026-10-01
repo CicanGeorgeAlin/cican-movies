@@ -11,6 +11,36 @@ export function isYouTubeSearchConfigured() {
   return Boolean(getApiKey());
 }
 
+export async function getYouTubeMovieById(id) {
+  if (!isYouTubeSearchConfigured()) return null;
+
+  const videoId = String(id || "").replace(/^youtube-/, "");
+  if (!videoId) return null;
+
+  const params = new URLSearchParams({
+    part: "snippet,contentDetails",
+    id: videoId,
+    key: globalThis.CICAN_CONFIG.youtubeApiKey
+  });
+
+  const response = await fetch(API_URL + "videos?" + params.toString());
+  if (!response.ok) throw new Error("YouTube video lookup failed");
+
+  const data = await response.json();
+  const item = data.items?.[0];
+  if (!item) return null;
+
+  return {
+    id: "youtube-" + item.id,
+    title: item.snippet?.title || "YouTube video",
+    year: Number(String(item.snippet?.publishedAt || "").slice(0, 4)) || null,
+    description: item.snippet?.description || "",
+    genres: ["Movie"],
+    searchTerms: [item.snippet?.title || ""],
+    sources: [youtubeSource(item.id, "YouTube")]
+  };
+}
+
 export async function searchYouTube(query, { maxResults = 8, regionCode = "IE" } = {}) {
   const apiKey = getApiKey();
   const trimmed = String(query || "").trim();

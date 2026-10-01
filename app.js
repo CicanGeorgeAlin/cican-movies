@@ -122,7 +122,6 @@ function openMovie(movie) {
       button.textContent = failedSourceIds.has(source.id) ? "RETRY" : "PLAY";
       button.onclick = () => {
         failedSourceIds.delete(source.id);
-        renderSourceList(currentMovie);
         loadSource(source);
       };
       row.appendChild(button);

@@ -531,3 +531,49 @@ a{text-decoration:none}
     padding:9px 8px;
   }
 }
+
+
+.alphabet{
+  width:min(1080px,100%);
+  margin:18px auto 0;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:5px;
+}
+.alphabet-button{
+  width:30px;
+  height:30px;
+  padding:0;
+  border:1px solid #222;
+  background:#050505;
+  color:#666;
+  font-size:.62rem;
+  font-weight:800;
+  letter-spacing:.03em;
+  transition:transform .08s ease,background .12s ease,color .12s ease,border-color .12s ease;
+}
+.alphabet-button:hover{
+  color:#fff;
+  border-color:#555;
+}
+.alphabet-button:active{
+  transform:translateY(2px);
+}
+.alphabet-button.active{
+  background:#fff;
+  border-color:#fff;
+  color:#000;
+  box-shadow:inset 0 2px 0 rgba(0,0,0,.2);
+}
+@media(max-width:600px){
+  .alphabet{
+    justify-content:flex-start;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    padding:2px 2px 5px;
+    scrollbar-width:none;
+  }
+  .alphabet::-webkit-scrollbar{display:none}
+  .alphabet-button{flex:0 0 30px;}
+}

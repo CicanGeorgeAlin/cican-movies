@@ -1,4 +1,4 @@
-import { catalog } from "./data/catalog.js?v=az-landing-fix-20261002";
+import { catalog } from "./data/catalog.js?v=az-final-20261002";
 import { CONTENT_TYPES, isFeatureMovie, normaliseMovie } from "./data/schema.js?v=az-landing-fix-20261002";
 import { providers, getProviderStatus } from "./providers/registry.js?v=az-landing-fix-20261002";
 

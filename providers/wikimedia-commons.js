@@ -86,7 +86,7 @@ export async function searchWikimediaCommons(query, { limit = 12, browseLetter =
   if (!trimmed) return [];
 
   const letter = String(browseLetter || "").trim().toLowerCase();
-  const pages = /^[a-z]$/.test(letter) ? [0, 50, 100, 150, 200] : [0, 50];
+  const pages = /^[a-z]$/.test(letter) ? [0, 50] : [0, 50];
   const searchQuery = /^[a-z]$/.test(letter) ? letter + " filetype:video" : trimmed;
 
   const responses = await Promise.allSettled(

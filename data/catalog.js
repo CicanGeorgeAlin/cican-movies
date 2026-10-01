@@ -20,7 +20,7 @@ const movieSeeds = [
   ["The Little Shop of Horrors",1960,["horror","comedy"],["little shop of horrors","the little shop of horrors","1960"]],
   ["Plan 9 from Outer Space",1959,["sci-fi","horror"],["plan 9 from outer space","ed wood","1959"]],
   ["The Last Man on Earth",1964,["horror","sci-fi"],["the last man on earth","vincent price","1964"]],
-  ["The Most Dangerous Game",1932,["adventure","thriller"],["the most dangerous game","1932"]],
+
   ["Scarlet Street",1945,["crime","film noir"],["scarlet street","1945"]],
   ["The Big Sleep",1946,["crime","film noir"],["the big sleep","1946"]],
   ["The Public Enemy",1931,["crime","drama"],["the public enemy","1931"]],

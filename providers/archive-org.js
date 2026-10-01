@@ -3,11 +3,13 @@ import { createMovie, createSource, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES }
 const SEARCH_URL = "https://archive.org/advancedsearch.php";
 const METADATA_URL = "https://archive.org/metadata/";
 
-function buildSearchUrl(query, rows = 12, exactTitle = true) {
+function buildSearchUrl(query, rows = 12, exactTitle = true, prefix = false) {
   const cleanQuery = query.replace(/"/g, "").trim();
-  const titleQuery = exactTitle
-    ? 'title:("' + cleanQuery + '")'
-    : 'title:(' + cleanQuery.split(/\s+/).filter(Boolean).join(" AND ") + ')';
+  const titleQuery = prefix
+    ? 'title:' + cleanQuery.toLowerCase() + '*'
+    : exactTitle
+      ? 'title:("' + cleanQuery + '")'
+      : 'title:(' + cleanQuery.split(/\s+/).filter(Boolean).join(" AND ") + ')';
   const q = titleQuery + ' AND mediatype:movies';
   const params = new URLSearchParams();
   params.set("q", q);
@@ -122,11 +124,21 @@ export async function getArchiveMovieById(id) {
   return enrichItem({ identifier });
 }
 
-export async function searchArchive(query, { rows = 16 } = {}) {
+export async function searchArchive(query, { rows = 16, browseLetter = "" } = {}) {
   const trimmed = String(query || "").trim();
   if (!trimmed) return [];
 
   const normalised = trimmed.replace(/\s+/g, " ").trim();
+  const letter = String(browseLetter || "").trim().toLowerCase();
+  if (/^[a-z]$/.test(letter)) {
+    const response = await fetch(buildSearchUrl(letter, Math.max(rows, 40), true, true));
+    if (!response.ok) throw new Error("Internet Archive movie browse failed: " + response.status);
+    const payload = await response.json();
+    const docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];
+    const enriched = await Promise.all(docs.map(enrichItem));
+    return enriched.filter(Boolean);
+  }
+
   const variants = [
     normalised,
     normalised.replace(/\b(the|a|an)\b/gi, " ").replace(/\s+/g, " ").trim()

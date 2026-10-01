@@ -219,7 +219,14 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
       : []
   );
 
-  const merged = mergeMovies(localMatches, remoteMovies, query);
+  const seedMatches = localMatches
+    .filter(movie => !remoteMovies.some(remote => identitySimilarity(movie, remote) > 0))
+    .map(movie => ({
+      ...movie,
+      sources: movie.sources || []
+    }));
+
+  const merged = mergeMovies(seedMatches, remoteMovies, query);
   return id
     ? merged.filter(movie => movie.id === id)
     : merged;

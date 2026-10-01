@@ -282,11 +282,24 @@ function updateSourceSelection() {
   });
 }
 
-function requestPlayerFullscreen() {
-  if (document.fullscreenElement || !playerStage?.requestFullscreen) return Promise.resolve(false);
-  return playerStage.requestFullscreen()
-    .then(() => true)
-    .catch(() => false);
+async function requestPlayerFullscreen(target = playerStage) {
+  if (document.fullscreenElement) return true;
+
+  try {
+    if (target?.requestFullscreen) {
+      await target.requestFullscreen({ navigationUI: "hide" });
+      return true;
+    }
+  } catch {}
+
+  try {
+    if (target?.webkitRequestFullscreen) {
+      target.webkitRequestFullscreen();
+      return true;
+    }
+  } catch {}
+
+  return false;
 }
 
 function loadSource(source, options = {}) {
@@ -465,8 +478,8 @@ function loadMedia(source, options = {}) {
     attachMediaMemory(video);
     const centerPlay = playerStage.querySelector(".player-center-play");
     centerPlay?.addEventListener("click", async () => {
+      await requestPlayerFullscreen(video);
       try { await video.play(); } catch {}
-      await requestPlayerFullscreen();
       centerPlay.hidden = true;
     });
     video.addEventListener("play", () => {
@@ -482,8 +495,8 @@ function loadMedia(source, options = {}) {
       }
     });
     if (options.userInitiated && options.autoplay) {
-      try { video.play(); } catch {}
-      if (options.fullscreen) requestPlayerFullscreen();
+      if (options.fullscreen) await requestPlayerFullscreen(video);
+      try { await video.play(); } catch {}
     }
   }
 }

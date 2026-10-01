@@ -159,3 +159,38 @@ For each continuation:
 The user can intervene at any time with questions or creative decisions; technical implementation remains the default responsibility of the development process.
 
 Created by **CICAN GEORGE ALIN**.
+
+
+## Product direction — CICAN beyond Movies
+
+Movies remain the first vertical and the current benchmark. The underlying architecture is being expanded toward a video-first search and playback engine.
+
+Long-term content types include movies, TV, documentaries, education, music, news, sports, gaming, short videos, live video, lectures and archives.
+
+The product principle is:
+
+**SEARCH → FIND → PLAY**
+
+The interface stays simple while the underlying system handles identification, source resolution, permitted playback, source fallback, sharing and future video intelligence.
+
+### Player direction
+
+The CICAN Player is designed around:
+- cinematic fullscreen playback
+- voice search
+- sharing and deep links
+- playback resume
+- source switching and recovery
+- subtitles/captions where supplied
+- chapters/key moments where available
+- Picture-in-Picture where supported
+- mobile and keyboard controls
+- legitimate download options only when a source explicitly permits downloading
+
+### Voice search
+
+CICAN now has a progressive-enhancement voice-search foundation using the browser speech-recognition capability when available. The microphone button turns spoken requests into normal CICAN searches; unsupported browsers keep the normal text search.
+
+### Core principle
+
+**Power underneath. Simplicity on top.**

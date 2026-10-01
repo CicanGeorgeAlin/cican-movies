@@ -192,7 +192,7 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
       (!allVideo && movie.contentType && movie.contentType !== contentType ? false : scoreMovie(movie, query) > 0)
   );
 
-  if (id && localMatches.length) return localMatches;
+  if (id && localMatches.some(movie => (movie.sources || []).some(source => source?.url || source?.embedUrl || source?.mediaUrl))) return localMatches;
 
   if (id) {
     const directResults = await Promise.allSettled(

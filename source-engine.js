@@ -28,14 +28,19 @@ function scoreMovie(movie, query) {
 }
 
 function sourceScore(source) {
-  if (!source) return 0;
+  if (!source) return -1000;
   const status = source.status;
+  const rightsStatus = source.rightsStatus || "unknown";
   const type = source.type;
   let score = 0;
 
   if (status === "ready") score += 100;
   else if (status === "review") score += 20;
-  else return -100;
+  else return -1000;
+
+  if (rightsStatus === "verified") score += 30;
+  else if (rightsStatus === "review") score += 10;
+  else if (rightsStatus === "restricted") score -= 80;
 
   if (type === "embed") score += 30;
   if (type === "media") score += 20;

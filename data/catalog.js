@@ -212,6 +212,14 @@ const movieSeeds = [
   ["The Gold Rush",1925,["comedy","silent"],["the gold rush","charlie chaplin","1925"]],
   ["The Cameraman",1928,["comedy","silent"],["the cameraman","buster keaton","1928"]],
   ["The General",1926,["comedy","silent"],["the general","buster keaton","1926"]]
+  ["Aurat",1940,["drama"],["aurat","1940"]],
+  ["Diamond Queen",1940,["adventure","drama"],["diamond queen","1940"]],
+  ["Santa Fe Trail",1940,["western","drama"],["santa fe trail","1940"]],
+  ["The Devil Bat",1940,["horror"],["the devil bat","1940"]],
+  ["Woman on the Run",1950,["crime","film noir"],["woman on the run","1950"]],
+  ["The Big Lift",1950,["drama","war"],["the big lift","1950"]],
+  ["La Escalinata",1950,["drama"],["la escalinata","1950"]],
+  ["Timur and His Commandos",1940,["drama"],["timur and his commandos","1940"]]
 ];
 
 
@@ -448,7 +456,15 @@ const TEST_SOURCES = {
   "The Kid": { durationSeconds: 4196, posterUrl: commonsThumb("The Kid (1921).webm"), mediaUrl: commonsMedia("The Kid (1921).webm") },
   "The Gold Rush": { durationSeconds: 5241, posterUrl: commonsThumb("The Gold Rush.webm"), mediaUrl: commonsMedia("The Gold Rush.webm") },
   "The Cameraman": { durationSeconds: 4170, posterUrl: commonsThumb("The Cameraman (1928).webm"), mediaUrl: commonsMedia("The Cameraman (1928).webm") },
-  "The General": { durationSeconds: 4552, posterUrl: commonsThumb("The General (1926).webm"), mediaUrl: commonsMedia("The General (1926).webm") }
+  "The General": { durationSeconds: 4552, posterUrl: commonsThumb("The General (1926).webm"), mediaUrl: commonsMedia("The General (1926).webm") },
+  "Aurat": { durationSeconds: 8769, posterUrl: commonsThumb("Aurat, 1940.webm"), mediaUrl: commonsMedia("Aurat, 1940.webm") },
+  "Diamond Queen": { durationSeconds: 7719, posterUrl: commonsThumb("Diamond Queen, 1940.webm"), mediaUrl: commonsMedia("Diamond Queen, 1940.webm") },
+  "Santa Fe Trail": { durationSeconds: 6576, posterUrl: commonsThumb("Santa Fe Trail (1940).webm"), mediaUrl: commonsMedia("Santa Fe Trail (1940).webm") },
+  "The Devil Bat": { durationSeconds: 4093, posterUrl: commonsThumb("The Devil Bat (1940) (720p).webm"), mediaUrl: commonsMedia("The Devil Bat (1940) (720p).webm") },
+  "Woman on the Run": { durationSeconds: 4713, posterUrl: commonsThumb("Woman On The Run 1950.webm"), mediaUrl: commonsMedia("Woman On The Run 1950.webm") },
+  "The Big Lift": { durationSeconds: 5660, posterUrl: commonsThumb("The Big Lift (1950).webm"), mediaUrl: commonsMedia("The Big Lift (1950).webm") },
+  "La Escalinata": { durationSeconds: 4428, posterUrl: commonsThumb("La Escalinata (1950).webm"), mediaUrl: commonsMedia("La Escalinata (1950).webm") },
+  "Timur and His Commandos": { durationSeconds: 5400, posterUrl: commonsThumb("1940 Тимур и его команда.webm"), mediaUrl: commonsMedia("1940 Тимур и его команда.webm") }
 };
 
 

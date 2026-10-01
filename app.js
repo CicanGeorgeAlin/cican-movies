@@ -529,11 +529,28 @@ document.querySelectorAll(".alphabet-button").forEach(button => {
   });
 });
 
+let searchDebounceTimer = null;
+let searchRequestId = 0;
+
 input.addEventListener("input", () => {
   const value = input.value.trim();
+
   document.querySelectorAll(".alphabet-button").forEach(button => {
     button.classList.toggle("active", value.length === 1 && value.toUpperCase() === button.dataset.letter);
   });
+
+  clearTimeout(searchDebounceTimer);
+
+  if (!value) {
+    results.innerHTML = "";
+    results.hidden = true;
+    setSearchStatus("");
+    return;
+  }
+
+  searchDebounceTimer = setTimeout(() => {
+    form.requestSubmit();
+  }, 450);
 });
 
 
@@ -585,6 +602,8 @@ form.addEventListener("submit", async event => {
   const query = input.value.trim();
   if (!query) return;
 
+  const requestId = ++searchRequestId;
+
   results.innerHTML =
     '<div class="searching">SEARCHING THE AVAILABLE MOVIE SOURCES…</div>';
   playerView.hidden = true;
@@ -593,6 +612,7 @@ form.addEventListener("submit", async event => {
 
   try {
     const movies = await resolveMovies(query, { contentType: MOVIE_CONTENT_TYPE });
+    if (requestId !== searchRequestId) return;
     renderResults(movies, query);
     const isLetterBrowse = query.length === 1 && /^[a-z]$/i.test(query);
     setSearchStatus(

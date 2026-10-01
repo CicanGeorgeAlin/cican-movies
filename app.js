@@ -76,9 +76,9 @@ function languageLabel(code) {
 }
 
 function subtitleTracksForSource(source) {
-  return Array.isArray(source?.subtitles) ? source.subtitles.filter(track =>
-    track?.src && track?.srclang
-  ) : [];
+  return Array.isArray(source?.subtitles)
+    ? source.subtitles.filter(track => track?.src && track?.srclang)
+    : [];
 }
 
 function getWikimediaFileName(source) {
@@ -131,7 +131,6 @@ async function addSubtitleTracks(video, source) {
   const supplied = subtitleTracksForSource(source);
   const discovered = await discoverWikimediaSubtitles(source);
   const tracks = [...supplied, ...discovered].filter((track, index, all) =>
-    track?.src && track?.srclang &&
     all.findIndex(item => item.src === track.src || item.srclang === track.srclang) === index
   );
 
@@ -231,3 +230,549 @@ function syncWatchUrl(movie) {
   const url = new URL(window.location.href);
   const currentId = url.searchParams.get("watch");
   url.searchParams.set("watch", movie.id);
+
+  if (currentId === movie.id) {
+    window.history.replaceState({ watch: movie.id }, "", url);
+    return;
+  }
+
+  window.history.pushState({ watch: movie.id }, "", url);
+}
+
+function clearWatchUrl() {
+  if (!window.history?.replaceState) return;
+  const url = new URL(window.location.href);
+  url.searchParams.delete("watch");
+  window.history.replaceState({}, "", url);
+}
+
+function openMovie(movie) {
+  resultsScrollY = window.scrollY;
+  currentMovie = movie;
+  syncWatchUrl(movie);
+  currentSource = null;
+  playerTitle.textContent = movie.title;
+  playerStage.innerHTML =
+    '<div class="player-empty"><div class="play-orb">▶</div>' +
+    '<p>Choose a source below.</p></div>';
+
+  sourceList.innerHTML = "";
+  currentSources = playableSources(movie);
+  currentSourceIndex = -1;
+  failedSourceIds = new Set();
+
+  const sources = [...(movie.sources || [])].sort((a, b) => {
+    const statusRank = { ready: 0, review: 1, unavailable: 2, blocked: 3 };
+    const statusDifference = (statusRank[a.status] ?? 9) - (statusRank[b.status] ?? 9);
+    if (statusDifference) return statusDifference;
+    return sourcePriority(a) - sourcePriority(b);
+  });
+
+  sources.forEach(source => {
+    const row = document.createElement("div");
+    row.className = "source-row";
+    row.dataset.sourceId = source.id;
+
+    const info = document.createElement("div");
+    info.innerHTML =
+      '<div class="source-name">' + escapeHtml(source.name) + '</div>' +
+      '<div class="source-status">' +
+      (failedSourceIds.has(source.id) ? "FAILED THIS SESSION" : escapeHtml(String(source.status || "").toUpperCase())) +
+      (source.rightsStatus ? " · RIGHTS " + escapeHtml(String(source.rightsStatus).toUpperCase()) : "") +
+      '</div>';
+
+    row.appendChild(info);
+
+    const canPlay = source.status !== "blocked" && source.status !== "unavailable" &&
+      ((source.type === "embed" && source.embedUrl) ||
+       (source.type === "media" && source.mediaUrl));
+
+    if (canPlay) {
+      const button = document.createElement("button");
+      button.className = "play-button";
+      button.dataset.sourceId = source.id;
+      button.textContent = failedSourceIds.has(source.id) ? "RETRY" : "PLAY";
+      button.onclick = () => {
+        failedSourceIds.delete(source.id);
+        loadSource(source, { userInitiated: true, fullscreen: true, autoplay: true });
+      };
+      row.appendChild(button);
+    } else if (source.url) {
+      const link = document.createElement("a");
+      link.className = "play-button";
+      link.href = source.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = source.status === "ready" ? "OPEN SOURCE" : "REVIEW SOURCE";
+      row.appendChild(link);
+    } else {
+      const label = document.createElement("span");
+      label.className = "source-status";
+      label.textContent = "NOT PLAYABLE";
+      row.appendChild(label);
+    }
+
+    sourceList.appendChild(row);
+  });
+
+  const bestSource = selectBestSource(movie);
+  if (bestSource) {
+    loadSource(bestSource);
+  }
+
+  results.hidden = true;
+  playerView.hidden = false;
+  playerView.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function playableSources(movie) {
+  return [...(movie.sources || [])]
+    .filter(source =>
+      source.status !== "blocked" && source.status !== "unavailable" &&
+      ((source.type === "embed" && source.embedUrl) ||
+       (source.type === "media" && source.mediaUrl))
+    );
+}
+
+function getNextPlayableSource() {
+  return currentSources
+    .slice(currentSourceIndex + 1)
+    .find(source => !failedSourceIds.has(source.id)) || null;
+}
+
+function showPlaybackFallback(message = "This source could not be played.", { autoTryNext = false } = {}) {
+  const failedSource = currentSource;
+  if (failedSource?.id) failedSourceIds.add(failedSource.id);
+
+  const video = playerStage.querySelector("video");
+  if (video && currentMovie && video.currentTime > 0 && !video.ended) {
+    savePosition(currentMovie, video.currentTime, video.duration);
+  }
+
+  currentSource = null;
+  const next = getNextPlayableSource();
+
+  if (autoTryNext && next) {
+    loadSource(next);
+    return;
+  }
+
+  playerStage.innerHTML =
+    '<div class="player-error"><strong>' + escapeHtml(message) + '</strong>' +
+    (next
+      ? '<p>CICAN found another playable source.</p><button class="play-button" id="fallback-play">TRY NEXT SOURCE</button>'
+      : '<p>No additional playable source is currently available.</p>') +
+    '</div>';
+
+  document.querySelector("#fallback-play")?.addEventListener("click", () => {
+    const nextSource = getNextPlayableSource();
+    if (nextSource) loadSource(nextSource);
+  });
+}
+function updateSourceSelection() {
+  sourceList.querySelectorAll(".source-row").forEach(row => {
+    row.classList.toggle("active", row.dataset.sourceId === currentSource?.id);
+  });
+}
+
+async function requestPlayerFullscreen(target = playerStage) {
+  if (document.fullscreenElement) return true;
+
+  try {
+    if (target?.requestFullscreen) {
+      await target.requestFullscreen({ navigationUI: "hide" });
+      return true;
+    }
+  } catch {}
+
+  try {
+    if (target?.webkitRequestFullscreen) {
+      target.webkitRequestFullscreen();
+      return true;
+    }
+  } catch {}
+
+  return false;
+}
+
+function loadSource(source, options = {}) {
+  const previousVideo = playerStage.querySelector("video");
+  if (previousVideo && currentMovie && previousVideo.currentTime > 0 && !previousVideo.ended) {
+    savePosition(currentMovie, previousVideo.currentTime, previousVideo.duration);
+  }
+
+  const index = currentSources.findIndex(item => item.id === source.id);
+  currentSourceIndex = index;
+  currentSource = source;
+  updateSourceSelection();
+
+  if (source.type === "embed") return loadEmbed(source, options);
+  if (source.type === "media") return loadMedia(source, options);
+
+  showPlaybackFallback("This source is not playable in CICAN.");
+}
+
+function selectBestSource(movie) {
+  const candidates = playableSources(movie)
+    .filter(source => !failedSourceIds.has(source.id));
+  if (!candidates.length) return null;
+
+  const lastSourceId = getLastSourceId(movie);
+  const remembered = candidates.find(source => source.id === lastSourceId);
+  if (remembered) return remembered;
+
+  return candidates[0];
+}
+
+const PLAYBACK_KEY = "cican-movies-playback-v1";
+const SOURCE_MEMORY_KEY = "cican-movies-source-v1";
+
+function getLastSourceId(movie) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(SOURCE_MEMORY_KEY) || "{}");
+    return saved[playbackId(movie)] || "";
+  } catch {
+    return "";
+  }
+}
+
+function saveLastSource(movie, source) {
+  const id = playbackId(movie);
+  if (!id || !source?.id) return;
+  try {
+    const saved = JSON.parse(localStorage.getItem(SOURCE_MEMORY_KEY) || "{}");
+    saved[id] = source.id;
+    localStorage.setItem(SOURCE_MEMORY_KEY, JSON.stringify(saved));
+  } catch {}
+}
+
+function playbackId(movie) {
+  return movie?.id ? String(movie.id) : "";
+}
+
+function getSavedPosition(movie) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(PLAYBACK_KEY) || "{}");
+    const value = Number(saved[playbackId(movie)]);
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function savePosition(movie, position, duration = 0) {
+  const id = playbackId(movie);
+  if (!id || !Number.isFinite(position) || position < 5) return;
+
+  if (Number.isFinite(duration) && duration > 0 && position >= duration - 5) {
+    clearPosition(movie);
+    return;
+  }
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(PLAYBACK_KEY) || "{}");
+    saved[id] = position;
+    localStorage.setItem(PLAYBACK_KEY, JSON.stringify(saved));
+  } catch {}
+}
+
+function clearPosition(movie) {
+  const id = playbackId(movie);
+  if (!id) return;
+  try {
+    const saved = JSON.parse(localStorage.getItem(PLAYBACK_KEY) || "{}");
+    delete saved[id];
+    localStorage.setItem(PLAYBACK_KEY, JSON.stringify(saved));
+  } catch {}
+}
+
+function restoreMediaPosition(video) {
+  const position = getSavedPosition(currentMovie);
+  if (!position) return;
+
+  const restore = () => {
+    if (Number.isFinite(video.duration) && position < video.duration - 2) {
+      try { video.currentTime = position; } catch {}
+    }
+    video.removeEventListener("loadedmetadata", restore);
+  };
+
+  video.addEventListener("loadedmetadata", restore);
+}
+
+function formatPlaybackTime(seconds) {
+  const total = Math.max(0, Math.floor(Number(seconds) || 0));
+  const minutes = Math.floor(total / 60);
+  const secs = total % 60;
+  return minutes + ":" + String(secs).padStart(2, "0");
+}
+
+function attachMediaMemory(video) {
+  const savedPosition = getSavedPosition(currentMovie);
+  restoreMediaPosition(video);
+
+  if (savedPosition > 5 && (!Number.isFinite(video.duration) || savedPosition < video.duration - 2)) {
+    const notice = document.createElement("div");
+    notice.className = "resume-notice";
+    notice.innerHTML =
+      '<strong>RESUME FROM ' + escapeHtml(formatPlaybackTime(savedPosition)) + '</strong>' +
+      '<button type="button" class="resume-start">START FROM BEGINNING</button>';
+    playerStage.appendChild(notice);
+
+    notice.querySelector(".resume-start")?.addEventListener("click", () => {
+      clearPosition(currentMovie);
+      try { video.currentTime = 0; } catch {}
+      notice.remove();
+    });
+  }
+
+  video.addEventListener("timeupdate", () => {
+    if (video.currentTime > 0 && !video.ended) {
+      savePosition(currentMovie, video.currentTime, video.duration);
+    }
+  });
+
+  video.addEventListener("pause", () => {
+    if (!video.ended) savePosition(currentMovie, video.currentTime, video.duration);
+  });
+
+  video.addEventListener("ended", () => clearPosition(currentMovie));
+}
+
+function loadEmbed(source, options = {}) {
+  currentSource = source;
+  playerStage.innerHTML =
+    '<iframe src="' + escapeAttribute(source.embedUrl) +
+    '" title="' + escapeAttribute(currentMovie.title) +
+    '" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" ' +
+    'allowfullscreen></iframe>';
+  addFullscreenExitButton();
+
+  const frame = playerStage.querySelector("iframe");
+  frame?.addEventListener("load", () => saveLastSource(currentMovie, source));
+  frame?.addEventListener("error", () => showPlaybackFallback("This embedded source failed to load."));
+  if (options.userInitiated && options.fullscreen) {
+    requestPlayerFullscreen();
+  }
+}
+
+async function loadMedia(source, options = {}) {
+  currentSource = source;
+  playerStage.innerHTML =
+    '<video controls playsinline webkit-playsinline preload="metadata" crossorigin="anonymous" src="' +
+    escapeAttribute(source.mediaUrl) + '">' +
+    'Your browser cannot play this media source.' +
+    '</video>' +
+    '<button class="player-center-play" type="button" aria-label="Play movie">▶</button>';
+  addFullscreenExitButton();
+
+  const video = playerStage.querySelector("video");
+  if (video) {
+    attachMediaMemory(video);
+    const centerPlay = playerStage.querySelector(".player-center-play");
+    centerPlay?.addEventListener("click", async () => {
+      await requestPlayerFullscreen(video);
+      try { await video.play(); } catch {}
+      centerPlay.hidden = true;
+    });
+    video.addEventListener("play", () => {
+      if (centerPlay) centerPlay.hidden = true;
+    });
+    video.addEventListener("pause", () => {
+      if (centerPlay && !video.ended) centerPlay.hidden = false;
+    });
+    video.addEventListener("loadeddata", () => saveLastSource(currentMovie, source));
+    video.addEventListener("error", () => {
+      if (currentSource?.id === source.id) {
+        showPlaybackFallback("This media source failed to load.", { autoTryNext: true });
+      }
+    });
+
+    await addSubtitleTracks(video, source);
+
+    if (options.userInitiated && options.autoplay) {
+      if (options.fullscreen) await requestPlayerFullscreen(video);
+      try { await video.play(); } catch {}
+    }
+  }
+}
+
+function setSearchStatus(message = "") {
+  searchStatus.textContent = message;
+}
+
+async function shareCurrentVideo() {
+  if (!currentMovie) return;
+
+  const url = new URL(window.location.href);
+  url.searchParams.set("watch", currentMovie.id);
+
+  const shareData = {
+    title: currentMovie.title,
+    text: "Watch " + currentMovie.title + " on CICAN",
+    url: url.toString()
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url.toString());
+      setSearchStatus("CICAN video link copied.");
+    }
+  } catch (error) {
+    if (error?.name !== "AbortError") console.error(error);
+  }
+}
+
+async function toggleFullscreen() {
+  try {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen();
+      return;
+    }
+    const video = playerStage.querySelector("video");
+    await requestPlayerFullscreen(video || playerStage);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+shareButton?.addEventListener("click", shareCurrentVideo);
+
+searchToggle?.addEventListener("click", () => {
+  const open = searchToggle.getAttribute("aria-expanded") === "true";
+  searchToggle.setAttribute("aria-expanded", String(!open));
+  searchToggle.textContent = open ? "⌕ SEARCH MOVIES" : "× CLOSE SEARCH";
+  form.hidden = open;
+  if (!open) {
+    input.focus();
+  } else {
+    input.value = "";
+    setSearchStatus("");
+  }
+});
+fullscreenButton?.addEventListener("click", toggleFullscreen);
+document.querySelectorAll(".alphabet-button").forEach(button => {
+  button.addEventListener("click", () => {
+    const letter = button.dataset.letter || "";
+    input.value = letter;
+    document.querySelectorAll(".alphabet-button").forEach(item =>
+      item.classList.toggle("active", item === button)
+    );
+    results.innerHTML = '<div class="searching">LOADING MOVIES STARTING WITH ' + escapeHtml(letter) + '…</div>';
+    results.hidden = false;
+    form.requestSubmit();
+  });
+});
+
+let searchDebounceTimer = null;
+let searchRequestId = 0;
+
+input.addEventListener("input", () => {
+  const value = input.value.trim();
+
+  document.querySelectorAll(".alphabet-button").forEach(button => {
+    button.classList.toggle("active", value.length === 1 && value.toUpperCase() === button.dataset.letter);
+  });
+
+  clearTimeout(searchDebounceTimer);
+
+  if (!value) {
+    results.innerHTML = "";
+    results.hidden = true;
+    setSearchStatus("");
+    return;
+  }
+
+  searchDebounceTimer = setTimeout(() => {
+    form.requestSubmit();
+  }, 450);
+});
+
+
+function closePlayerView() {
+  try {
+    if (document.fullscreenElement) document.exitFullscreen?.();
+  } catch {}
+
+  const video = playerStage.querySelector("video");
+  if (video) {
+    try { video.pause(); } catch {}
+    try { video.removeAttribute("src"); video.load(); } catch {}
+  }
+
+  clearWatchUrl();
+  playerView.hidden = true;
+  results.hidden = false;
+  playerStage.innerHTML = "";
+  currentMovie = null;
+  currentSource = null;
+  currentSourceIndex = -1;
+  currentSources = [];
+  failedSourceIds = new Set();
+  window.requestAnimationFrame(() => {
+    window.scrollTo({ top: Math.max(0, resultsScrollY), behavior: "smooth" });
+  });
+}
+
+backButton.onclick = () => closePlayerView();
+
+window.addEventListener("popstate", event => {
+  const watchId = new URLSearchParams(window.location.search).get("watch");
+
+  if (watchId) {
+    resolveMovies(watchId, { id: watchId })
+      .then(items => {
+        const movie = items.find(item => item.id === watchId);
+        if (movie) openMovie(movie);
+      })
+      .catch(() => {});
+    return;
+  }
+
+  if (!playerView.hidden) closePlayerView();
+});
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+  const query = input.value.trim();
+  if (!query) return;
+
+  const requestId = ++searchRequestId;
+
+  results.innerHTML =
+    '<div class="searching">SEARCHING THE AVAILABLE MOVIE SOURCES…</div>';
+  playerView.hidden = true;
+  results.hidden = false;
+  setSearchStatus(query.length === 1 && /^[a-z]$/i.test(query) ? "Browsing movies starting with " + query.toUpperCase() + "…" : "Searching movies in the CICAN index and enabled source providers…");
+
+  try {
+    const movies = await resolveMovies(query, { contentType: MOVIE_CONTENT_TYPE });
+    if (requestId !== searchRequestId) return;
+    renderResults(movies, query);
+    const isLetterBrowse = query.length === 1 && /^[a-z]$/i.test(query);
+    setSearchStatus(
+      movies.length
+        ? (isLetterBrowse ? movies.length + " movies starting with " + query.toUpperCase() + "." : movies.length + " movie" + (movies.length === 1 ? "" : "s") + " found.")
+        : (isLetterBrowse ? "No movies starting with " + query.toUpperCase() + " are currently available." : "No matching movie source found. Try another title.")
+    );
+  } catch (error) {
+    results.innerHTML =
+      '<div class="no-results">The source search is temporarily unavailable. Please try again.</div>';
+    setSearchStatus("Source search error.");
+    console.error(error);
+  }
+
+  results.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+const initialWatchId = new URLSearchParams(window.location.search).get("watch");
+if (initialWatchId) {
+  resolveMovies(initialWatchId, { id: initialWatchId })
+    .then(items => {
+      const movie = items.find(item => item.id === initialWatchId);
+      if (movie) openMovie(movie);
+    })
+    .catch(() => {});
+}

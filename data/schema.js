@@ -117,6 +117,7 @@ export function createMovie(movie = {}) {
     year: movie.year || null,
     description: movie.description || "",
     posterUrl: movie.posterUrl || "",
+    durationSeconds: Number(movie.durationSeconds) || 0,
     genres: Array.isArray(movie.genres) ? movie.genres : [],
     searchTerms: Array.isArray(movie.searchTerms) ? movie.searchTerms : [],
     sources: Array.isArray(movie.sources) ? movie.sources.map(createSource) : []

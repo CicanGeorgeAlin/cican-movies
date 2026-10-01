@@ -833,3 +833,91 @@ a{text-decoration:none}
     font-size:.78rem;
   }
 }
+
+
+/* CICAN MOVIES landing polish */
+.brand-mark{
+  position:relative;
+  display:inline-block;
+  color:#fff;
+  text-shadow:0 0 10px rgba(255,255,255,.65),0 0 34px rgba(255,255,255,.22);
+  animation:cicanLogoPulse 3.8s ease-in-out infinite;
+}
+.brand-mark::before{
+  content:"";
+  position:absolute;
+  inset:-18px -28px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:50%;
+  opacity:.7;
+  animation:cicanAura 3.8s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes cicanLogoPulse{
+  0%,100%{transform:scale(1);text-shadow:0 0 10px rgba(255,255,255,.55),0 0 34px rgba(255,255,255,.18)}
+  50%{transform:scale(1.025);text-shadow:0 0 18px rgba(255,255,255,.95),0 0 58px rgba(255,255,255,.35)}
+}
+@keyframes cicanAura{
+  0%,100%{transform:scale(.92);opacity:.25}
+  50%{transform:scale(1.08);opacity:.75}
+}
+.hero h1{
+  font-weight:700;
+  letter-spacing:-.065em;
+}
+.hero-note.hero-intro{
+  font-size:.86rem;
+  letter-spacing:.04em;
+}
+.hero-stats{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  margin:24px auto 0;
+}
+.hero-stats span{
+  border:1px solid #252525;
+  background:rgba(255,255,255,.025);
+  color:#999;
+  padding:9px 12px;
+  font-size:.58rem;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+.library-hint{
+  color:#777;
+  letter-spacing:.1em;
+}
+.alphabet-wrap{
+  border-top:1px solid #151515;
+  margin-top:36px;
+  padding-top:24px;
+}
+.alphabet-button{
+  min-width:38px;
+  min-height:38px;
+  border:1px solid #242424;
+  background:#030303;
+  color:#777;
+  transition:transform .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease;
+}
+.alphabet-button:hover{
+  color:#fff;
+  border-color:#666;
+  transform:translateY(-1px);
+}
+.alphabet-button.active{
+  color:#000;
+  background:#fff;
+  border-color:#fff;
+  box-shadow:0 0 24px rgba(255,255,255,.16);
+}
+@media (prefers-reduced-motion:reduce){
+  .brand-mark,.brand-mark::before{animation:none}
+}
+@media(max-width:600px){
+  .brand-mark::before{inset:-10px -18px}
+  .hero-stats{gap:6px}
+  .hero-stats span{font-size:.53rem;padding:8px 9px}
+}

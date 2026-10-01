@@ -2,7 +2,7 @@ import { createMovie, createSource, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES }
 
 const API_URL = "https://commons.wikimedia.org/w/api.php";
 
-function buildSearchUrl(query, limit = 12) {
+function buildSearchUrl(query, limit = 12, offset = 0) {
   const params = new URLSearchParams({
     action: "query",
     format: "json",
@@ -11,8 +11,10 @@ function buildSearchUrl(query, limit = 12) {
     gsrsearch: String(query || "").trim(),
     gsrnamespace: "6",
     gsrlimit: String(Math.min(Math.max(limit, 1), 50)),
+    gsrqiprofile: "classic",
     prop: "imageinfo",
-    iiprop: "url|mime|size|extmetadata"
+    iiprop: "url|mime|size|extmetadata",
+    gsroffset: String(Math.max(0, offset))
   });
   return API_URL + "?" + params.toString();
 }
@@ -59,16 +61,40 @@ function toMovie(page) {
   });
 }
 
-export async function searchWikimediaCommons(query, { limit = 12 } = {}) {
+async function searchPage(query, limit, offset) {
+  const response = await fetch(buildSearchUrl(query, limit, offset));
+  if (!response.ok) throw new Error("Wikimedia Commons search failed: " + response.status);
+  return response.json();
+}
+
+export async function searchWikimediaCommons(query, { limit = 12, browseLetter = "" } = {}) {
   const trimmed = String(query || "").trim();
   if (!trimmed) return [];
 
-  const response = await fetch(buildSearchUrl(trimmed, limit));
-  if (!response.ok) throw new Error("Wikimedia Commons search failed: " + response.status);
+  const letter = String(browseLetter || "").trim().toLowerCase();
+  const pages = /^[a-z]$/.test(letter) ? [0, 50, 100, 150, 200] : [0, 50];
+  const searchQuery = /^[a-z]$/.test(letter) ? letter + " filetype:video" : trimmed;
 
-  const payload = await response.json();
-  const pages = Object.values(payload.query?.pages || {});
-  return pages.map(toMovie).filter(Boolean);
+  const responses = await Promise.allSettled(
+    pages.map(offset => searchPage(searchQuery, /^[a-z]$/.test(letter) ? 50 : limit, offset))
+  );
+
+  const movies = [];
+  const seen = new Set();
+
+  for (const result of responses) {
+    if (result.status !== "fulfilled") continue;
+    for (const page of Object.values(result.value?.query?.pages || {})) {
+      if (!page?.pageid || seen.has(page.pageid)) continue;
+      const movie = toMovie(page);
+      if (!movie) continue;
+      if (letter && !movie.title.toLowerCase().startsWith(letter)) continue;
+      seen.add(page.pageid);
+      movies.push(movie);
+    }
+  }
+
+  return movies;
 }
 
 export async function getWikimediaCommonsMovieById(id) {

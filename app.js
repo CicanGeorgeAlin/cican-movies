@@ -189,6 +189,72 @@ function selectBestSource(movie) {
   return candidates[0] || null;
 }
 
+const PLAYBACK_KEY = "cican-movies-playback-v1";
+
+function playbackId(movie) {
+  return movie?.id ? String(movie.id) : "";
+}
+
+function getSavedPosition(movie) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(PLAYBACK_KEY) || "{}");
+    const value = Number(saved[playbackId(movie)]);
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function savePosition(movie, position) {
+  const id = playbackId(movie);
+  if (!id || !Number.isFinite(position) || position <= 0) return;
+  try {
+    const saved = JSON.parse(localStorage.getItem(PLAYBACK_KEY) || "{}");
+    saved[id] = position;
+    localStorage.setItem(PLAYBACK_KEY, JSON.stringify(saved));
+  } catch {}
+}
+
+function clearPosition(movie) {
+  const id = playbackId(movie);
+  if (!id) return;
+  try {
+    const saved = JSON.parse(localStorage.getItem(PLAYBACK_KEY) || "{}");
+    delete saved[id];
+    localStorage.setItem(PLAYBACK_KEY, JSON.stringify(saved));
+  } catch {}
+}
+
+function restoreMediaPosition(video) {
+  const position = getSavedPosition(currentMovie);
+  if (!position) return;
+
+  const restore = () => {
+    if (Number.isFinite(video.duration) && position < video.duration - 2) {
+      try { video.currentTime = position; } catch {}
+    }
+    video.removeEventListener("loadedmetadata", restore);
+  };
+
+  video.addEventListener("loadedmetadata", restore);
+}
+
+function attachMediaMemory(video) {
+  restoreMediaPosition(video);
+
+  video.addEventListener("timeupdate", () => {
+    if (video.currentTime > 0 && !video.ended) {
+      savePosition(currentMovie, video.currentTime);
+    }
+  });
+
+  video.addEventListener("pause", () => {
+    if (!video.ended) savePosition(currentMovie, video.currentTime);
+  });
+
+  video.addEventListener("ended", () => clearPosition(currentMovie));
+}
+
 function loadEmbed(source) {
   currentSource = source;
   playerStage.innerHTML =
@@ -210,7 +276,10 @@ function loadMedia(source) {
     '</video>';
 
   const video = playerStage.querySelector("video");
-  video?.addEventListener("error", () => showPlaybackFallback("This media source failed to load."));
+  if (video) {
+    attachMediaMemory(video);
+    video.addEventListener("error", () => showPlaybackFallback("This media source failed to load."));
+  }
 }
 
 function setSearchStatus(message = "") {

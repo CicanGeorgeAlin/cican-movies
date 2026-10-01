@@ -18,13 +18,24 @@
 <section class="hero">
   <p class="eyebrow">SEARCH THE MOVIE WORLD</p>
   <h1>Find it. Play it.</h1>
+  <div class="category-picker" id="category-picker" aria-label="Choose what to search">
+    <button type="button" class="category-button active" data-category="movie">MOVIES</button>
+    <button type="button" class="category-button" data-category="documentary">DOCUMENTARIES</button>
+    <button type="button" class="category-button" data-category="podcast">PODCASTS</button>
+    <button type="button" class="category-button" data-category="music">MUSIC</button>
+    <button type="button" class="category-button" data-category="education">EDUCATION</button>
+    <button type="button" class="category-button" data-category="news">NEWS</button>
+    <button type="button" class="category-button" data-category="sports">SPORTS</button>
+    <button type="button" class="category-button" data-category="gaming">GAMING</button>
+    <button type="button" class="category-button" data-category="other">ALL VIDEO</button>
+  </div>
   <form id="search-form" class="search-box" role="search">
     <input id="search-input" type="search" autocomplete="off"
-      placeholder="Search a movie…" aria-label="Search movies">
+      placeholder="Choose a category, then search…" aria-label="Search videos">
     <button type="button" id="voice-button" class="voice-button" aria-label="Search by voice" title="Search by voice">🎙</button>
     <button type="submit">SEARCH</button>
   </form>
-  <p class="hero-note">Search the CICAN index and enabled free-source providers — by typing or talking.</p>
+  <p class="hero-note">Choose a category first. CICAN searches its index and enabled legitimate source providers.</p>
   <p id="search-status" class="search-status" aria-live="polite"></p>
 </section>
 

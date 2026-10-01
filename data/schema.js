@@ -8,6 +8,7 @@ export const SOURCE_STATUS = Object.freeze({
 export const CONTENT_TYPES = Object.freeze({
   MOVIE: "movie",
   TV: "tv",
+  PODCAST: "podcast",
   DOCUMENTARY: "documentary",
   EDUCATION: "education",
   MUSIC: "music",

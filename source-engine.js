@@ -207,6 +207,16 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
     );
     const directMovies = directResults.flatMap(result =>
       result.status === "fulfilled" && result.value ? [result.value] : []
+    ).filter(movie =>
+      isFeatureMovie(movie) &&
+      Boolean(movie.posterUrl) &&
+      Array.isArray(movie.sources) &&
+      movie.sources.some(source =>
+        source &&
+        source.status !== "blocked" &&
+        source.status !== "unavailable" &&
+        (source.embedUrl || source.mediaUrl)
+      )
     );
     if (directMovies.length) return directMovies;
   }

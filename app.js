@@ -1,4 +1,4 @@
-import { resolveMovies } from "./source-engine.js?v=az-final-20261002";
+import { resolveMovies } from "./source-engine.js?v=az-final2-20261002";
 
 const form = document.querySelector("#search-form");
 const input = document.querySelector("#search-input");

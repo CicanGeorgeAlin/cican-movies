@@ -54,7 +54,7 @@ const locResources = Array.isArray(locItem.resources) ? locItem.resources : [];
 const locMedia = locResources.find(resource => {
   const url = String(resource?.url || resource?.file || "");
   const format = String(resource?.format || resource?.mimetype || "").toLowerCase();
-  return /\\.(mp4|mov|webm|m4v|ogv)(\\?|$)/i.test(url) || /video\\/|mp4|quicktime|webm|ogg/.test(format);
+  return /\.(mp4|mov|webm|m4v|ogv)(\?|$)/i.test(url) || /video\/|mp4|quicktime|webm|ogg/.test(format);
 });
 if (!locMedia?.url && !locMedia?.file) throw new Error("LOC movie test has no direct playable media resource");
 const locMediaUrl = String(locMedia.url || locMedia.file);

@@ -157,7 +157,10 @@ const movieSeeds = [
   ["Up the River",1930,["comedy","crime"],["up the river","1930"]],
   ["Way Out West",1930,["comedy","western"],["way out west","1930"]],
   ["Whoopee!",1930,["musical","comedy"],["whoopee","1930"]],
-  ["Zhukovsky",1950,["drama","biography"],["zhukovsky","1950"]]
+  ["Zhukovsky",1950,["drama","biography"],["zhukovsky","1950"]],
+
+  ["The Lost World",1925,["adventure","sci-fi","silent"],["the lost world","1925"]],
+  ["Man with a Movie Camera",1929,["experimental","silent"],["man with a movie camera","man with a movie camera","dziga vertov","1929"]]
 ];
 
 
@@ -239,7 +242,9 @@ const PLAYABLE_CATALOG = {
   "Up the River": { durationSeconds: 5079, posterUrl: commonsThumb("Up the River (1930).webm"), mediaUrl: commonsMedia("Up the River (1930).webm") },
   "Way Out West": { durationSeconds: 4203, posterUrl: commonsThumb("Way Out West (1930).webm"), mediaUrl: commonsMedia("Way Out West (1930).webm") },
   "Whoopee!": { durationSeconds: 5551, posterUrl: commonsThumb("Whoopee! (1930).webm"), mediaUrl: commonsMedia("Whoopee! (1930).webm") },
-  "Zhukovsky": { durationSeconds: 5022, posterUrl: commonsThumb("Жуковский (1950).webm"), mediaUrl: commonsMedia("Жуковский (1950).webm") }
+  "Zhukovsky": { durationSeconds: 5022, posterUrl: commonsThumb("Жуковский (1950).webm"), mediaUrl: commonsMedia("Жуковский (1950).webm") },
+  "The Lost World": { durationSeconds: 6412, posterUrl: commonsThumb("The Lost World (1925).webm"), mediaUrl: commonsMedia("The Lost World (1925).webm") },
+  "Man with a Movie Camera": { durationSeconds: 4020, posterUrl: commonsThumb("Man With A Movie Camera (Dziga Vertov, 1929).webm"), mediaUrl: commonsMedia("Man With A Movie Camera (Dziga Vertov, 1929).webm") }
 };
 
 const TEST_SOURCES = {

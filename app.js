@@ -81,9 +81,12 @@ function openMovie(movie) {
 
   sourceList.innerHTML = "";
 
-  const sources = [...(movie.sources || [])].sort(
-    (a, b) => sourcePriority(a) - sourcePriority(b)
-  );
+  const sources = [...(movie.sources || [])].sort((a, b) => {
+    const statusRank = { ready: 0, review: 1, unavailable: 2, blocked: 3 };
+    const statusDifference = (statusRank[a.status] ?? 9) - (statusRank[b.status] ?? 9);
+    if (statusDifference) return statusDifference;
+    return sourcePriority(a) - sourcePriority(b);
+  });
 
   sources.forEach(source => {
     const row = document.createElement("div");

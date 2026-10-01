@@ -718,3 +718,34 @@ a{text-decoration:none}
   .alphabet::-webkit-scrollbar{display:none}
   .alphabet-button{flex:0 0 auto}
 }
+
+.library-hint{
+  margin-top:20px;
+  color:#4f4f4f;
+  font-size:.62rem;
+  letter-spacing:.08em;
+}
+.searching{
+  grid-column:1/-1;
+  min-height:120px;
+  display:grid;
+  place-items:center;
+  border:1px solid #171717;
+  background:#030303;
+  color:#666;
+  font-size:.62rem;
+  font-weight:800;
+  letter-spacing:.2em;
+}
+.no-results{
+  grid-column:1/-1;
+  border:1px solid #171717;
+  background:#030303;
+}
+.search-status{
+  min-height:1.2em;
+  transition:opacity .2s ease;
+}
+@media(max-width:600px){
+  .library-hint{font-size:.58rem;line-height:1.5;padding-inline:10px}
+}

@@ -1,27 +1,23 @@
 import { resolveMovies } from "./source-engine.js";
-import { createVoiceSearch, isVoiceSearchSupported } from "./voice-search.js";
 
 const form = document.querySelector("#search-form");
 const input = document.querySelector("#search-input");
 const results = document.querySelector("#results");
-const featured = document.querySelector("#featured");
-const featuredGrid = document.querySelector("#featured-grid");
 const playerView = document.querySelector("#player-view");
 const playerTitle = document.querySelector("#player-title");
 const playerStage = document.querySelector("#player-stage");
 const sourceList = document.querySelector("#source-list");
 const backButton = document.querySelector("#back-button");
 const searchStatus = document.querySelector("#search-status");
-const voiceButton = document.querySelector("#voice-button");
 const shareButton = document.querySelector("#share-button");
 const fullscreenButton = document.querySelector("#fullscreen-button");
+const searchToggle = document.querySelector("#search-toggle");
 
 let currentMovie = null;
 let currentSource = null;
 let currentSourceIndex = -1;
 let currentSources = [];
 let failedSourceIds = new Set();
-let voiceRecognition = null;
 const MOVIE_CONTENT_TYPE = "movie";
 
 const FEATURED_MOVIE_QUERIES = [
@@ -48,66 +44,6 @@ function moviePoster(movie) {
   const archiveSource = (movie.sources || []).find(source => source.provider === "archive.org");
   const match = archiveSource?.id?.match(/^archive-(.+)$/);
   return match ? "https://archive.org/services/img/" + encodeURIComponent(match[1]) : "";
-}
-
-function renderFeaturedMovies(items) {
-  if (!featuredGrid) return;
-  const available = items.filter(movie =>
-    (movie.sources || []).some(source =>
-      source.status === "ready" && (source.type === "media" || source.type === "embed")
-    )
-  );
-
-  featuredGrid.innerHTML = available.map(movie => {
-    const poster = moviePoster(movie);
-    const description = String(movie.description || "")
-      .replace(/<[^>]*>/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-    return '<article class="featured-card">' +
-      '<div class="featured-poster">' +
-      (poster ? '<img src="' + escapeAttribute(poster) + '" alt="" loading="lazy">' : '<div class="featured-poster-empty">CICAN</div>') +
-      '<div class="featured-shade"></div>' +
-      '<button type="button" class="featured-watch" data-featured-id="' + escapeAttribute(movie.id) + '">WATCH</button>' +
-      '</div>' +
-      '<div class="featured-info">' +
-      '<h3>' + escapeHtml(movie.title) + '</h3>' +
-      '<div class="featured-meta">' + (movie.year ? escapeHtml(movie.year) : "CLASSIC") + ' · MOVIE</div>' +
-      (description ? '<p>' + escapeHtml(description.slice(0, 150)) + '</p>' : '') +
-      '</div></article>';
-  }).join("");
-
-  featuredGrid.querySelectorAll("[data-featured-id]").forEach(button => {
-    button.addEventListener("click", () => {
-      const movie = available.find(item => item.id === button.dataset.featuredId);
-      if (movie) openMovie(movie);
-    });
-  });
-
-  featured.hidden = !available.length;
-}
-
-async function loadFeaturedMovies() {
-  if (!featuredGrid) return;
-  try {
-    const batches = await Promise.all(
-      FEATURED_MOVIE_QUERIES.map(query => resolveMovies(query, { contentType: MOVIE_CONTENT_TYPE }))
-    );
-    const seen = new Set();
-    const items = batches
-      .map(batch => batch.find(movie =>
-        !seen.has(movie.id) &&
-        (movie.sources || []).some(source =>
-          source.status === "ready" && (source.type === "media" || source.type === "embed")
-        )
-      ))
-      .filter(Boolean);
-    items.forEach(movie => seen.add(movie.id));
-    renderFeaturedMovies(items);
-  } catch (error) {
-    featured.hidden = true;
-    console.error(error);
-  }
 }
 
 function escapeHtml(value) {
@@ -550,50 +486,21 @@ async function toggleFullscreen() {
   }
 }
 
-function setupVoiceSearch() {
-  if (!voiceButton) return;
-
-  if (!isVoiceSearchSupported()) {
-    voiceButton.hidden = true;
-    return;
-  }
-
-  voiceRecognition = createVoiceSearch({
-    onStart: () => {
-      voiceButton.classList.add("listening");
-      voiceButton.textContent = "●";
-      setSearchStatus("Listening… speak your video search.");
-    },
-    onEnd: () => {
-      voiceButton.classList.remove("listening");
-      voiceButton.textContent = "🎙";
-    },
-    onError: error => {
-      setSearchStatus(
-        error === "not-allowed"
-          ? "Microphone permission is required for voice search."
-          : "Voice search is unavailable. Try typing instead."
-      );
-    },
-    onResult: transcript => {
-      input.value = transcript;
-      form.requestSubmit();
-    }
-  });
-
-  voiceButton.addEventListener("click", () => {
-    try {
-      voiceRecognition?.start();
-    } catch (error) {
-      if (error.name !== "InvalidStateError") console.error(error);
-    }
-  });
-}
-
 shareButton?.addEventListener("click", shareCurrentVideo);
-fullscreenButton?.addEventListener("click", toggleFullscreen);
-setupVoiceSearch();
 
+searchToggle?.addEventListener("click", () => {
+  const open = searchToggle.getAttribute("aria-expanded") === "true";
+  searchToggle.setAttribute("aria-expanded", String(!open));
+  searchToggle.textContent = open ? "⌕ SEARCH MOVIES" : "× CLOSE SEARCH";
+  form.hidden = open;
+  if (!open) {
+    input.focus();
+  } else {
+    input.value = "";
+    setSearchStatus("");
+  }
+});
+fullscreenButton?.addEventListener("click", toggleFullscreen);
 document.querySelectorAll(".alphabet-button").forEach(button => {
   button.addEventListener("click", () => {
     const letter = button.dataset.letter || "";
@@ -612,7 +519,6 @@ input.addEventListener("input", () => {
   });
 });
 
-loadFeaturedMovies();
 
 function closePlayerView({ updateHistory = true } = {}) {
   if (updateHistory && new URL(window.location.href).searchParams.has("watch")) {
@@ -662,12 +568,13 @@ form.addEventListener("submit", async event => {
   setSearchStatus(query.length === 1 && /^[a-z]$/i.test(query) ? "Browsing movies starting with " + query.toUpperCase() + "…" : "Searching movies in the CICAN index and enabled source providers…");
 
   try {
-    const movies = await resolveMovies(query, { contentType: selectedCategory });
+    const movies = await resolveMovies(query, { contentType: MOVIE_CONTENT_TYPE });
     renderResults(movies, query);
+    const isLetterBrowse = query.length === 1 && /^[a-z]$/i.test(query);
     setSearchStatus(
       movies.length
-        ? movies.length + " " + "movies" + " result" + (movies.length === 1 ? "" : "s") + " found."
-        : "No matching " + "MOVIES".toLowerCase() + " source found. Try another title or category."
+        ? (isLetterBrowse ? movies.length + " movies starting with " + query.toUpperCase() + "." : movies.length + " movie" + (movies.length === 1 ? "" : "s") + " found.")
+        : (isLetterBrowse ? "No movies starting with " + query.toUpperCase() + " are currently available." : "No matching movie source found. Try another title.")
     );
   } catch (error) {
     results.innerHTML =

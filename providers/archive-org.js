@@ -3,8 +3,12 @@ import { createMovie, createSource, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES }
 const SEARCH_URL = "https://archive.org/advancedsearch.php";
 const METADATA_URL = "https://archive.org/metadata/";
 
-function buildSearchUrl(query, rows = 12) {
-  const q = 'title:("' + query.replace(/"/g, "") + '") AND mediatype:movies';
+function buildSearchUrl(query, rows = 12, exactTitle = true) {
+  const cleanQuery = query.replace(/"/g, "").trim();
+  const titleQuery = exactTitle
+    ? 'title:("' + cleanQuery + '")'
+    : 'title:(' + cleanQuery.split(/\s+/).filter(Boolean).join(" AND ") + ')';
+  const q = titleQuery + ' AND mediatype:movies';
   const params = new URLSearchParams();
   params.set("q", q);
   params.append("fl[]", "identifier");
@@ -124,8 +128,17 @@ export async function searchArchive(query, { rows = 12 } = {}) {
   const response = await fetch(buildSearchUrl(trimmed, rows));
   if (!response.ok) throw new Error("Internet Archive search failed: " + response.status);
 
-  const payload = await response.json();
-  const docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];
+  let payload = await response.json();
+  let docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];
+
+  if (!docs.length && /\s/.test(trimmed)) {
+    const fallbackResponse = await fetch(buildSearchUrl(trimmed, rows, false));
+    if (fallbackResponse.ok) {
+      payload = await fallbackResponse.json();
+      docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];
+    }
+  }
+
   const enriched = await Promise.all(docs.map(enrichItem));
   return enriched.filter(Boolean);
 }

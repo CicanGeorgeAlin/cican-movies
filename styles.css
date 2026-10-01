@@ -77,3 +77,48 @@ a{text-decoration:none}
   opacity: .65;
   margin: .4rem 0 1.2rem;
 }
+
+
+.resume-notice {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: .7rem .85rem;
+  background: rgba(0,0,0,.86);
+  border: 1px solid rgba(255,255,255,.22);
+  font-size: .72rem;
+  letter-spacing: .06em;
+}
+
+.resume-notice strong {
+  white-space: nowrap;
+}
+
+.resume-start {
+  border: 0;
+  background: #fff;
+  color: #000;
+  padding: .55rem .7rem;
+  font: inherit;
+  font-size: .65rem;
+  letter-spacing: .05em;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .resume-notice {
+    left: .6rem;
+    right: .6rem;
+    bottom: .6rem;
+    justify-content: space-between;
+    gap: .5rem;
+  }
+
+  .resume-start {
+    flex-shrink: 0;
+  }
+}

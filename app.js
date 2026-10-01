@@ -482,8 +482,8 @@ function loadMedia(source, options = {}) {
       }
     });
     if (options.userInitiated && options.autoplay) {
-      try { await video.play(); } catch {}
-      if (options.fullscreen) await requestPlayerFullscreen();
+      try { video.play(); } catch {}
+      if (options.fullscreen) requestPlayerFullscreen();
     }
   }
 }

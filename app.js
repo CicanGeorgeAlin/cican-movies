@@ -508,6 +508,8 @@ document.querySelectorAll(".alphabet-button").forEach(button => {
     document.querySelectorAll(".alphabet-button").forEach(item =>
       item.classList.toggle("active", item === button)
     );
+    results.innerHTML = '<div class="searching">LOADING MOVIES STARTING WITH ' + escapeHtml(letter) + '…</div>';
+    results.hidden = false;
     form.requestSubmit();
   });
 });

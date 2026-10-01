@@ -1,4 +1,4 @@
-import { createMovie, createSource, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
+import { createMovie, createSource, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
 
 const API_URL = "https://commons.wikimedia.org/w/api.php";
 
@@ -42,6 +42,7 @@ function toMovie(page) {
     name: "Wikimedia Commons",
     type: SOURCE_TYPES.MEDIA,
     status: SOURCE_STATUS.REVIEW,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
     mediaUrl: info.url || null,
     url: pageUrl,
     rightsNote: licenseNote(info.extmetadata || {}),

@@ -55,29 +55,87 @@ function rankSources(sources = []) {
   return [...sources].sort((a, b) => sourceScore(b) - sourceScore(a));
 }
 
+function normaliseTitle(title = "") {
+  return normaliseMovie(title)
+    .replace(/\b(the|a|an)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function movieIdentity(movie) {
+  const title = normaliseTitle(movie.title);
+  const year = movie.year ? String(movie.year).slice(0, 4) : "";
+  return title + "|" + year;
+}
+
+function identitySimilarity(a, b) {
+  const at = normaliseTitle(a.title);
+  const bt = normaliseTitle(b.title);
+  if (!at || !bt) return 0;
+  if (at === bt && a.year && b.year && String(a.year) !== String(b.year)) return 0;
+  if (at === bt) return 1;
+
+  const aTokens = new Set(at.split(" ").filter(Boolean));
+  const bTokens = new Set(bt.split(" ").filter(Boolean));
+  const intersection = [...aTokens].filter(token => bTokens.has(token)).length;
+  const union = new Set([...aTokens, ...bTokens]).size;
+  const jaccard = union ? intersection / union : 0;
+
+  if (jaccard < 0.75) return 0;
+  if (a.year && b.year && String(a.year) !== String(b.year)) return 0;
+  return jaccard;
+}
+
+function mergeMovieInto(existing, movie) {
+  const sources = [...(existing.sources || [])];
+  for (const source of movie.sources || []) {
+    if (!sources.some(item => item.id === source.id)) sources.push(source);
+  }
+
+  return {
+    ...existing,
+    year: existing.year || movie.year || null,
+    description: existing.description || movie.description || "",
+    genres: existing.genres?.length ? existing.genres : (movie.genres || []),
+    searchTerms: [...new Set([
+      ...(existing.searchTerms || []),
+      ...(movie.searchTerms || [])
+    ])],
+    sources: rankSources(sources)
+  };
+}
+
 function mergeMovies(localMovies, remoteMovies, query) {
-  const byKey = new Map();
+  const groups = [];
 
   [...localMovies, ...remoteMovies].forEach(movie => {
-    const key = normaliseMovie(movie.title) + "|" + String(movie.year || "");
-    const existing = byKey.get(key);
+    const exactKey = movieIdentity(movie);
+    const exact = groups.find(group => movieIdentity(group.movie) === exactKey);
 
-    if (!existing) {
-      byKey.set(key, movie);
+    if (exact) {
+      exact.movie = mergeMovieInto(exact.movie, movie);
       return;
     }
 
-    const sources = [...(existing.sources || [])];
-    for (const source of movie.sources || []) {
-      if (!sources.some(item => item.id === source.id)) sources.push(source);
+    const similar = groups
+      .map(group => ({ group, similarity: identitySimilarity(group.movie, movie) }))
+      .filter(item => item.similarity > 0)
+      .sort((a, b) => b.similarity - a.similarity)[0];
+
+    if (similar) {
+      similar.group.movie = mergeMovieInto(similar.group.movie, movie);
+    } else {
+      groups.push({ movie });
     }
-    existing.sources = rankSources(sources);
   });
 
-  return [...byKey.values()]
-    .map(movie => ({
-      movie: { ...movie, sources: rankSources(movie.sources || []) },
-      score: scoreMovie(movie, query)
+  return groups
+    .map(group => ({
+      movie: {
+        ...group.movie,
+        sources: rankSources(group.movie.sources || [])
+      },
+      score: scoreMovie(group.movie, query)
     }))
     .filter(item => item.score > 0)
     .sort((a, b) => b.score - a.score)

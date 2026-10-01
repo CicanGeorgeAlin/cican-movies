@@ -1,4 +1,4 @@
-import { createMovie, createSource, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
+import { createMovie, createSource, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
 
 const SEARCH_URL = "https://archive.org/advancedsearch.php";
 const METADATA_URL = "https://archive.org/metadata/";
@@ -63,6 +63,7 @@ async function enrichItem(item) {
           name: "Internet Archive",
           type: SOURCE_TYPES.MEDIA,
           status: SOURCE_STATUS.READY,
+          rightsStatus: RIGHTS_STATUS.REVIEW,
           mediaUrl: mediaUrl(identifier, file.name),
           url: sourcePage,
           rightsNote: "Playback is supplied by Internet Archive. Review the item's rights information before treating it as public-domain or otherwise cleared."
@@ -73,6 +74,7 @@ async function enrichItem(item) {
           name: "Internet Archive",
           type: SOURCE_TYPES.EXTERNAL,
           status: SOURCE_STATUS.REVIEW,
+          rightsStatus: RIGHTS_STATUS.REVIEW,
           url: sourcePage,
           rightsNote: "No directly playable media file was detected by the CICAN adapter."
         });
@@ -99,6 +101,7 @@ async function enrichItem(item) {
         name: "Internet Archive",
         type: SOURCE_TYPES.EXTERNAL,
         status: SOURCE_STATUS.REVIEW,
+        rightsStatus: RIGHTS_STATUS.UNKNOWN,
         url: "https://archive.org/details/" + encodeURIComponent(identifier),
         rightsNote: "Metadata lookup failed. Review the source directly."
       })]

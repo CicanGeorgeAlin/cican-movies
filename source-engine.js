@@ -195,10 +195,22 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
     if (directMovies.length) return directMovies;
   }
 
+  const movieQueries = contentType === CONTENT_TYPES.MOVIE
+    ? [...new Set([
+        providerQuery,
+        parsedQuery.raw,
+        parsedQuery.title.replace(/\s+/g, " ").trim()
+      ].filter(Boolean))]
+    : [providerQuery];
+
   const remoteResults = await Promise.allSettled(
     providers
       .filter(provider => provider.enabled)
-      .map(provider => provider.search(providerQuery, { contentType }))
+      .flatMap(provider =>
+        movieQueries.map(searchQuery =>
+          provider.search(searchQuery, { contentType })
+        )
+      )
   );
 
   const remoteMovies = remoteResults.flatMap(result =>

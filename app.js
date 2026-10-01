@@ -1,4 +1,4 @@
-import { resolveMovies } from "./source-engine.js";
+import { resolveMovies } from "./source-engine.js?v=cea09fdc";
 
 const form = document.querySelector("#search-form");
 const input = document.querySelector("#search-input");

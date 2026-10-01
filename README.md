@@ -80,6 +80,7 @@ The repository currently contains:
 - source abstraction;
 - asynchronous source resolution;
 - Internet Archive provider adapter;
+- centralized provider registry for controlled source expansion;
 - embedded-player path;
 - direct-media playback path;
 - external-source fallback;

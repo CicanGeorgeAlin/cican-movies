@@ -82,8 +82,23 @@ function renderResults(items, query) {
   });
 }
 
+function syncWatchUrl(movie) {
+  if (!movie?.id || !window.history?.replaceState) return;
+  const url = new URL(window.location.href);
+  url.searchParams.set("watch", movie.id);
+  window.history.replaceState({ watch: movie.id }, "", url);
+}
+
+function clearWatchUrl() {
+  if (!window.history?.replaceState) return;
+  const url = new URL(window.location.href);
+  url.searchParams.delete("watch");
+  window.history.replaceState({}, "", url);
+}
+
 function openMovie(movie) {
   currentMovie = movie;
+  syncWatchUrl(movie);
   currentSource = null;
   playerTitle.textContent = movie.title;
   playerStage.innerHTML =
@@ -448,6 +463,7 @@ fullscreenButton?.addEventListener("click", toggleFullscreen);
 setupVoiceSearch();
 
 backButton.onclick = () => {
+  clearWatchUrl();
   playerView.hidden = true;
   results.hidden = false;
   playerStage.innerHTML = "";

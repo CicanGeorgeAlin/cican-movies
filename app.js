@@ -187,7 +187,7 @@ function showPlaybackFallback(message = "This source could not be played.") {
 function loadSource(source) {
   const previousVideo = playerStage.querySelector("video");
   if (previousVideo && currentMovie && previousVideo.currentTime > 0 && !previousVideo.ended) {
-    savePosition(currentMovie, previousVideo.currentTime);
+    savePosition(currentMovie, previousVideo.currentTime, previousVideo.duration);
   }
 
   const index = currentSources.findIndex(item => item.id === source.id);
@@ -247,9 +247,15 @@ function getSavedPosition(movie) {
   }
 }
 
-function savePosition(movie, position) {
+function savePosition(movie, position, duration = 0) {
   const id = playbackId(movie);
-  if (!id || !Number.isFinite(position) || position <= 0) return;
+  if (!id || !Number.isFinite(position) || position < 5) return;
+
+  if (Number.isFinite(duration) && duration > 0 && position >= duration - 5) {
+    clearPosition(movie);
+    return;
+  }
+
   try {
     const saved = JSON.parse(localStorage.getItem(PLAYBACK_KEY) || "{}");
     saved[id] = position;
@@ -309,7 +315,7 @@ function attachMediaMemory(video) {
 
   video.addEventListener("timeupdate", () => {
     if (video.currentTime > 0 && !video.ended) {
-      savePosition(currentMovie, video.currentTime);
+      savePosition(currentMovie, video.currentTime, video.duration);
     }
   });
 

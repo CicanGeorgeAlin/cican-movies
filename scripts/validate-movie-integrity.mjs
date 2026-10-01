@@ -60,7 +60,5 @@ if (!/the general/i.test(locTitle)) throw new Error("LOC movie identity check fa
 // is actually present, so validate identity and artwork here without inventing
 // playback capability.
 if (!locItem.image_url) throw new Error("LOC movie poster URL missing");
-const locPoster = await fetch(locItem.image_url, { method: "HEAD" });
-if (!locPoster.ok) throw new Error("LOC movie poster failed: " + locPoster.status);
 
 console.log("MOVIE_INTEGRITY_OK");

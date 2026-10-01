@@ -1,6 +1,6 @@
-import { catalog } from "./data/catalog.js";
-import { CONTENT_TYPES, isFeatureMovie, normaliseMovie } from "./data/schema.js";
-import { providers, getProviderStatus } from "./providers/registry.js";
+import { catalog } from "./data/catalog.js?v=cea09fdc";
+import { CONTENT_TYPES, isFeatureMovie, normaliseMovie } from "./data/schema.js?v=cea09fdc";
+import { providers, getProviderStatus } from "./providers/registry.js?v=cea09fdc";
 
 function parseQuery(query = "") {
   const raw = String(query).trim();

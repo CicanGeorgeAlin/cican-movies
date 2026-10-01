@@ -68,6 +68,8 @@ function toMovie(page) {
     title: title || "Wikimedia Commons video",
     contentType: "movie",
     description: info.extmetadata?.ImageDescription?.value || "",
+    posterUrl: info.thumburl || info.url || "",
+    durationSeconds,
     searchTerms: [String(page.title || ""), "Wikimedia Commons"],
     sources: [source]
   });

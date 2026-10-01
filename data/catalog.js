@@ -430,7 +430,7 @@ const TEST_SOURCES = {
   "My Best Girl": { durationSeconds: 6480, posterUrl: commonsThumb("My Best Girl (1927).webm"), mediaUrl: commonsMedia("My Best Girl (1927).webm") },
   "Pax æterna": { durationSeconds: 5269, posterUrl: commonsThumb("Pax æterna (1917).webm"), mediaUrl: commonsMedia("Pax æterna (1917).webm") },
   "Show Boat": { durationSeconds: 7092, posterUrl: commonsThumb("Show Boat.webm"), mediaUrl: commonsMedia("Show Boat.webm") },
-  "Victory": { durationSeconds: 3744, posterUrl: commonsThumb(""Victory" (1919) .webm"), mediaUrl: commonsMedia(""Victory" (1919) .webm") },
+  "Victory": { durationSeconds: 3744, posterUrl: commonsThumb("\"Victory\" (1919) .webm"), mediaUrl: commonsMedia("\"Victory\" (1919) .webm") },
   "The Virgin of Stamboul": { durationSeconds: 4189, posterUrl: commonsThumb("The virgin of Stamboul (1920).webm"), mediaUrl: commonsMedia("The virgin of Stamboul (1920).webm") },
   "The Divorcee": { durationSeconds: 4918, posterUrl: commonsThumb("The Divorcee (1930).webm"), mediaUrl: commonsMedia("The Divorcee (1930).webm") },
   "Free and Easy": { durationSeconds: 5559, posterUrl: commonsThumb("Free and Easy (1930 film).webm"), mediaUrl: commonsMedia("Free and Easy (1930 film).webm") },

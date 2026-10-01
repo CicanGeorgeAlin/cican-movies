@@ -110,7 +110,7 @@ function openMovie(movie) {
     info.innerHTML =
       '<div class="source-name">' + escapeHtml(source.name) + '</div>' +
       '<div class="source-status">' +
-      escapeHtml(String(source.status || "").toUpperCase()) +
+      (failedSourceIds.has(source.id) ? "FAILED THIS SESSION" : escapeHtml(String(source.status || "").toUpperCase())) +
       (source.rightsStatus ? " · RIGHTS " + escapeHtml(String(source.rightsStatus).toUpperCase()) : "") +
       '</div>';
 
@@ -119,14 +119,22 @@ function openMovie(movie) {
     if (source.type === "embed" && source.embedUrl) {
       const button = document.createElement("button");
       button.className = "play-button";
-      button.textContent = "PLAY";
-      button.onclick = () => loadSource(source);
+      button.textContent = failedSourceIds.has(source.id) ? "RETRY" : "PLAY";
+      button.onclick = () => {
+        failedSourceIds.delete(source.id);
+        renderSourceList(currentMovie);
+        loadSource(source);
+      };
       row.appendChild(button);
     } else if (source.type === "media" && source.mediaUrl) {
       const button = document.createElement("button");
       button.className = "play-button";
-      button.textContent = "PLAY";
-      button.onclick = () => loadSource(source);
+      button.textContent = failedSourceIds.has(source.id) ? "RETRY" : "PLAY";
+      button.onclick = () => {
+        failedSourceIds.delete(source.id);
+        renderSourceList(currentMovie);
+        loadSource(source);
+      };
       row.appendChild(button);
     } else if (source.url) {
       const link = document.createElement("a");

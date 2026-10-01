@@ -200,6 +200,14 @@ const movieSeeds = [
   ["Pollyanna",1920,["drama","comedy","silent"],["pollyanna","mary pickford","1920"]],
   ["The Cradle of Courage",1920,["western","drama","silent"],["the cradle of courage","1920"]],
   ["Way Down East",1920,["drama","romance","silent"],["way down east","d w griffith","1920"]]
+  ["Back Pay",1922,["drama","romance"],["back pay","1922"]],
+  ["Dream Street",1921,["drama","silent"],["dream street","d w griffith","1921"]],
+  ["Dr. Jekyll and Mr. Hyde",1920,["horror","silent"],["dr jekyll and mr hyde","1920"]],
+  ["Manslaughter",1922,["drama","silent"],["manslaughter","1922"]],
+  ["Miss Lulu Bett",1921,["drama","comedy","silent"],["miss lulu bett","1921"]],
+  ["One Exciting Night",1922,["mystery","horror","silent"],["one exciting night","1922"]],
+  ["Sherlock Holmes",1922,["mystery","drama","silent"],["sherlock holmes","1922"]],
+  ["The Sea Lion",1921,["adventure","drama","silent"],["the sea lion","1921"]]
 ];
 
 
@@ -424,7 +432,15 @@ const TEST_SOURCES = {
   "Down Home": { durationSeconds: 3600, posterUrl: commonsThumb("Down Home (1920).webm"), mediaUrl: commonsMedia("Down Home (1920).webm") },
   "Pollyanna": { durationSeconds: 3452, posterUrl: commonsThumb("Pollyanna (1920).webm"), mediaUrl: commonsMedia("Pollyanna (1920).webm") },
   "The Cradle of Courage": { durationSeconds: 3885, posterUrl: commonsThumb("The Cradle of Courage (1920).webm"), mediaUrl: commonsMedia("The Cradle of Courage (1920).webm") },
-  "Way Down East": { durationSeconds: 8878, posterUrl: commonsThumb("Way Down East (film, 1920).webm"), mediaUrl: commonsMedia("Way Down East (film, 1920).webm") }
+  "Way Down East": { durationSeconds: 8878, posterUrl: commonsThumb("Way Down East (film, 1920).webm"), mediaUrl: commonsMedia("Way Down East (film, 1920).webm") },
+  "Back Pay": { durationSeconds: 5407, posterUrl: commonsThumb("Back Pay (1922).webm"), mediaUrl: commonsMedia("Back Pay (1922).webm") },
+  "Dream Street": { durationSeconds: 6044, posterUrl: commonsThumb("Dream Street (film, 1921).webm"), mediaUrl: commonsMedia("Dream Street (film, 1921).webm") },
+  "Dr. Jekyll and Mr. Hyde": { durationSeconds: 4762, posterUrl: commonsThumb("Dr. Jekyll and Mr. Hyde (1920).webm"), mediaUrl: commonsMedia("Dr. Jekyll and Mr. Hyde (1920).webm") },
+  "Manslaughter": { durationSeconds: 5996, posterUrl: commonsThumb("Manslaughter (1922).webm"), mediaUrl: commonsMedia("Manslaughter (1922).webm") },
+  "Miss Lulu Bett": { durationSeconds: 4260, posterUrl: commonsThumb("Miss Lulu Bett (1921).webm"), mediaUrl: commonsMedia("Miss Lulu Bett (1921).webm") },
+  "One Exciting Night": { durationSeconds: 8620, posterUrl: commonsThumb("One Exciting Night (1922).webm"), mediaUrl: commonsMedia("One Exciting Night (1922).webm") },
+  "Sherlock Holmes": { durationSeconds: 5128, posterUrl: commonsThumb("Sherlock Holmes (1922).webm"), mediaUrl: commonsMedia("Sherlock Holmes (1922).webm") },
+  "The Sea Lion": { durationSeconds: 5514, posterUrl: commonsThumb("The Sea Lion (1921).webm"), mediaUrl: commonsMedia("The Sea Lion (1921).webm") }
 };
 
 

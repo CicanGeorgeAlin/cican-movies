@@ -193,6 +193,7 @@ function loadSource(source) {
   const index = currentSources.findIndex(item => item.id === source.id);
   currentSourceIndex = index;
   currentSource = source;
+  saveLastSource(currentMovie, source);
 
   if (source.type === "embed") return loadEmbed(source);
   if (source.type === "media") return loadMedia(source);
@@ -202,10 +203,36 @@ function loadSource(source) {
 
 function selectBestSource(movie) {
   const candidates = playableSources(movie);
-  return candidates[0] || null;
+  if (!candidates.length) return null;
+
+  const lastSourceId = getLastSourceId(movie);
+  const remembered = candidates.find(source => source.id === lastSourceId);
+  if (remembered) return remembered;
+
+  return candidates[0];
 }
 
 const PLAYBACK_KEY = "cican-movies-playback-v1";
+const SOURCE_MEMORY_KEY = "cican-movies-source-v1";
+
+function getLastSourceId(movie) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(SOURCE_MEMORY_KEY) || "{}");
+    return saved[playbackId(movie)] || "";
+  } catch {
+    return "";
+  }
+}
+
+function saveLastSource(movie, source) {
+  const id = playbackId(movie);
+  if (!id || !source?.id) return;
+  try {
+    const saved = JSON.parse(localStorage.getItem(SOURCE_MEMORY_KEY) || "{}");
+    saved[id] = source.id;
+    localStorage.setItem(SOURCE_MEMORY_KEY, JSON.stringify(saved));
+  } catch {}
+}
 
 function playbackId(movie) {
   return movie?.id ? String(movie.id) : "";

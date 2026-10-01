@@ -175,6 +175,7 @@ function mergeMovies(localMovies, remoteMovies, query) {
       item.score > 0 &&
       isFeatureMovie(item.movie) &&
       Boolean(item.movie.posterUrl) &&
+      Number(item.movie.durationSeconds) >= 40 * 60 &&
       Array.isArray(item.movie.sources) &&
       item.movie.sources.some(source =>
         source &&
@@ -209,6 +210,7 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
       result.status === "fulfilled" && result.value ? [result.value] : []
     ).filter(movie =>
       isFeatureMovie(movie) &&
+      Number(movie.durationSeconds) >= 40 * 60 &&
       Boolean(movie.posterUrl) &&
       Array.isArray(movie.sources) &&
       movie.sources.some(source =>

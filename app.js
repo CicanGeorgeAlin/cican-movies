@@ -1,4 +1,4 @@
-import { resolveMovies } from "./source-engine.js?v=cea09fdc";
+import { resolveMovies } from "./source-engine.js?v=az-landing-fix-20261002";
 
 const form = document.querySelector("#search-form");
 const input = document.querySelector("#search-input");

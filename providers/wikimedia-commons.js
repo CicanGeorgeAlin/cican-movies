@@ -13,7 +13,8 @@ function buildSearchUrl(query, limit = 12, offset = 0) {
     gsrlimit: String(Math.min(Math.max(limit, 1), 50)),
     gsrqiprofile: "classic",
     prop: "imageinfo",
-    iiprop: "url|mime|size|extmetadata|thumburl",\n    iiurlwidth: "400",
+    iiprop: "url|mime|size|extmetadata|thumburl",
+    iiurlwidth: "400",
     gsroffset: String(Math.max(0, offset))
   });
   return API_URL + "?" + params.toString();
@@ -38,7 +39,18 @@ function toMovie(page) {
 
   const title = String(page.title || "").replace(/^File:/i, "").replace(/\.[^.]+$/, "").trim();
   const pageUrl = "https://commons.wikimedia.org/wiki/" + encodeURIComponent(String(page.title || "").replace(/ /g, "_"));
-  const durationSeconds = Number(String(info.extmetadata?.Duration?.value || "").match(/\\d+(?:\\.\\d+)?/)?.[0] || 0);\n  const candidate = { title, description: info.extmetadata?.ImageDescription?.value || "", searchTerms: [String(page.title || ""), "Wikimedia Commons"], durationSeconds };\n  if (!isFeatureMovie(candidate)) return null;\n  const source = createSource({
+  const durationSeconds = Number(String(info.extmetadata?.Duration?.value || "").match(/\d+(?:\.\d+)?/)?.[0] || 0);
+  const candidate = {
+    title,
+    description: info.extmetadata?.ImageDescription?.value || "",
+    posterUrl: info.thumburl || info.url || "",
+    durationSeconds,
+    searchTerms: [String(page.title || ""), "Wikimedia Commons"],
+    durationSeconds
+  };
+  if (!isFeatureMovie(candidate)) return null;
+
+  const source = createSource({
     id: "wikimedia-" + String(page.pageid),
     provider: "wikimedia-commons",
     name: "Wikimedia Commons",
@@ -109,7 +121,8 @@ export async function getWikimediaCommonsMovieById(id) {
     origin: "*",
     pageids: pageid,
     prop: "imageinfo",
-    iiprop: "url|mime|size|extmetadata"
+    iiprop: "url|mime|size|extmetadata|thumburl",
+    iiurlwidth: "400"
   });
 
   const response = await fetch(API_URL + "?" + params.toString());

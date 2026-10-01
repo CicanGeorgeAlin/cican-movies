@@ -86,7 +86,7 @@ function syncWatchUrl(movie) {
   if (!movie?.id || !window.history?.replaceState) return;
   const url = new URL(window.location.href);
   url.searchParams.set("watch", movie.id);
-  window.history.replaceState({ watch: movie.id }, "", url);
+  window.history.pushState({ watch: movie.id }, "", url);
 }
 
 function clearWatchUrl() {
@@ -462,7 +462,12 @@ shareButton?.addEventListener("click", shareCurrentVideo);
 fullscreenButton?.addEventListener("click", toggleFullscreen);
 setupVoiceSearch();
 
-backButton.onclick = () => {
+function closePlayerView({ updateHistory = true } = {}) {
+  if (updateHistory && new URL(window.location.href).searchParams.has("watch")) {
+    window.history.back();
+    return;
+  }
+
   clearWatchUrl();
   playerView.hidden = true;
   results.hidden = false;
@@ -471,8 +476,16 @@ backButton.onclick = () => {
   currentSource = null;
   currentSourceIndex = -1;
   currentSources = [];
+  failedSourceIds = new Set();
   window.scrollTo({ top: results.offsetTop - 20, behavior: "smooth" });
-};
+}
+
+backButton.onclick = () => closePlayerView();
+
+window.addEventListener("popstate", event => {
+  if (event.state?.watch) return;
+  if (!playerView.hidden) closePlayerView({ updateHistory: false });
+});
 
 form.addEventListener("submit", async event => {
   event.preventDefault();

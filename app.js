@@ -187,7 +187,7 @@ function openMovie(movie) {
 
     row.appendChild(info);
 
-    const canPlay = source.status === "ready" &&
+    const canPlay = source.status !== "blocked" && source.status !== "unavailable" &&
       ((source.type === "embed" && source.embedUrl) ||
        (source.type === "media" && source.mediaUrl));
 
@@ -231,7 +231,7 @@ function openMovie(movie) {
 function playableSources(movie) {
   return [...(movie.sources || [])]
     .filter(source =>
-      source.status === "ready" &&
+      source.status !== "blocked" && source.status !== "unavailable" &&
       ((source.type === "embed" && source.embedUrl) ||
        (source.type === "media" && source.mediaUrl))
     );

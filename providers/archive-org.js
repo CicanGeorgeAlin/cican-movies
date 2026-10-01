@@ -150,8 +150,11 @@ export async function searchArchive(query, { rows = 16, browseLetter = "" } = {}
   const normalised = trimmed.replace(/\s+/g, " ").trim();
   const letter = String(browseLetter || "").trim().toLowerCase();
   if (/^[a-z]$/.test(letter)) {
+    // Deep A–Z discovery: scan ten Archive.org result pages (up to 1,000
+    // candidates per letter), then expose the first 500 alphabetically.
+    // Metadata enrichment is limited to the returned set to keep browsing responsive.
     const browseRows = 100;
-    const pages = [1, 2, 3];
+    const pages = Array.from({ length: 10 }, (_, index) => index + 1);
     const responses = await Promise.allSettled(
       pages.map(page => fetch(buildSearchUrl(letter, browseRows, true, true, page)))
     );
@@ -179,9 +182,9 @@ export async function searchArchive(query, { rows = 16, browseLetter = "" } = {}
           { sensitivity: "base" }
         )
       )
-      .slice(0, 240);
+      .slice(0, 500);
 
-    return enrichItems(docs, 8);
+    return enrichItems(docs, 10);
   }
 
   const variants = [

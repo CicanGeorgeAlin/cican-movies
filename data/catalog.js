@@ -170,7 +170,7 @@ const movieSeeds = [
   ["The Man From Utah",1934,["western"],["the man from utah","john wayne","1934"]],
   ["The Doorway to Hell",1930,["crime","drama"],["the doorway to hell","1930"]],
   ["The Devil to Pay!",1930,["comedy","drama"],["the devil to pay","1930"]],
-  ["The Most Dangerous Game (1932)",1932,["adventure","thriller"],["the most dangerous game","1932"]]
+  ["The Most Dangerous Game (1932)",1932,["adventure","thriller"],["the most dangerous game","1932"]],
   ["The Amazing Mr. X",1948,["mystery","thriller"],["the amazing mr x","1948"]],
   ["Don Q, Son of Zorro",1925,["adventure","romance"],["don q son of zorro","1925"]],
   ["Irene",1926,["comedy","romance"],["irene","1926"]],
@@ -178,7 +178,7 @@ const movieSeeds = [
   ["Pax æterna",1917,["drama","silent"],["pax æterna","1917"]],
   ["Show Boat",1929,["musical","drama"],["show boat","1929"]],
   ["Victory",1919,["drama","silent"],["victory","1919"]],
-  ["The Virgin of Stamboul",1920,["drama","romance"],["the virgin of stamboul","1920"]]
+  ["The Virgin of Stamboul",1920,["drama","romance"],["the virgin of stamboul","1920"]],
   ["The Divorcee",1930,["drama"],["the divorcee","1930"]],
   ["Free and Easy",1930,["comedy"],["free and easy","buster keaton","1930"]],
   ["Tom Sawyer",1930,["drama","adventure"],["tom sawyer","1930"]],
@@ -187,7 +187,7 @@ const movieSeeds = [
   ["Min and Bill",1930,["drama","comedy"],["min and bill","1930"]],
   ["Street of Chance",1930,["drama"],["street of chance","1930"]],
   ["Three Faces East",1930,["drama","mystery"],["three faces east","1930"]],
-  ["Let Us Be Gay",1930,["comedy","drama"],["let us be gay","1930"]]
+  ["Let Us Be Gay",1930,["comedy","drama"],["let us be gay","1930"]],
   ["The 13th Chair",1929,["mystery"],["the 13th chair","1929"]],
   ["The Bat Whispers",1930,["mystery","horror"],["the bat whispers","1930"]],
   ["The Benson Murder Case",1930,["mystery"],["the benson murder case","1930"]],
@@ -199,7 +199,7 @@ const movieSeeds = [
   ["Down Home",1920,["drama","silent"],["down home","1920"]],
   ["Pollyanna",1920,["drama","comedy","silent"],["pollyanna","mary pickford","1920"]],
   ["The Cradle of Courage",1920,["western","drama","silent"],["the cradle of courage","1920"]],
-  ["Way Down East",1920,["drama","romance","silent"],["way down east","d w griffith","1920"]]
+  ["Way Down East",1920,["drama","romance","silent"],["way down east","d w griffith","1920"]],
   ["Back Pay",1922,["drama","romance"],["back pay","1922"]],
   ["Dream Street",1921,["drama","silent"],["dream street","d w griffith","1921"]],
   ["Dr. Jekyll and Mr. Hyde",1920,["horror","silent"],["dr jekyll and mr hyde","1920"]],
@@ -207,11 +207,11 @@ const movieSeeds = [
   ["Miss Lulu Bett",1921,["drama","comedy","silent"],["miss lulu bett","1921"]],
   ["One Exciting Night",1922,["mystery","horror","silent"],["one exciting night","1922"]],
   ["Sherlock Holmes",1922,["mystery","drama","silent"],["sherlock holmes","1922"]],
-  ["The Sea Lion",1921,["adventure","drama","silent"],["the sea lion","1921"]]
+  ["The Sea Lion",1921,["adventure","drama","silent"],["the sea lion","1921"]],
   ["The Kid",1921,["comedy","drama","silent"],["the kid","charlie chaplin","1921"]],
   ["The Gold Rush",1925,["comedy","silent"],["the gold rush","charlie chaplin","1925"]],
   ["The Cameraman",1928,["comedy","silent"],["the cameraman","buster keaton","1928"]],
-  ["The General",1926,["comedy","silent"],["the general","buster keaton","1926"]]
+  ["The General",1926,["comedy","silent"],["the general","buster keaton","1926"]],
   ["Aurat",1940,["drama"],["aurat","1940"]],
   ["Diamond Queen",1940,["adventure","drama"],["diamond queen","1940"]],
   ["Santa Fe Trail",1940,["western","drama"],["santa fe trail","1940"]],
@@ -219,7 +219,7 @@ const movieSeeds = [
   ["Woman on the Run",1950,["crime","film noir"],["woman on the run","1950"]],
   ["The Big Lift",1950,["drama","war"],["the big lift","1950"]],
   ["La Escalinata",1950,["drama"],["la escalinata","1950"]],
-  ["Timur and His Commandos",1940,["drama"],["timur and his commandos","1940"]]
+  ["Timur and His Commandos",1940,["drama"],["timur and his commandos","1940"]],
   ["Argila",1940,["drama"],["argila","1940"]],
   ["The Pay-Off",1930,["drama"],["the pay-off","1930"]],
   ["The Ghost That Never Returns",1930,["drama"],["the ghost that never returns","1930"]],

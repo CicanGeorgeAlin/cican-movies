@@ -106,6 +106,14 @@ async function enrichItem(item) {
   }
 }
 
+export async function getArchiveMovieById(id) {
+  const prefix = "archive-";
+  if (!String(id).startsWith(prefix)) return null;
+  const identifier = String(id).slice(prefix.length);
+  if (!identifier) return null;
+  return enrichItem({ identifier });
+}
+
 export async function searchArchive(query, { rows = 12 } = {}) {
   const trimmed = String(query || "").trim();
   if (!trimmed) return [];

@@ -21,7 +21,7 @@ const archiveMeta = await fetch("https://archive.org/metadata/TheGeneral1926");
 if (!archiveMeta.ok) throw new Error("Archive metadata endpoint failed: " + archiveMeta.status);
 const archive = await archiveMeta.json();
 const archiveFiles = Array.isArray(archive.files) ? archive.files : [];
-const archiveVideo = archiveFiles.find(file => /\\.(mp4|m4v|webm|ogv)$/i.test(String(file.name || "")));
+const archiveVideo = archiveFiles.find(file => /\.(mp4|m4v|webm|ogv)$/i.test(String(file.name || "")));
 if (!archiveVideo) throw new Error("Archive test movie has no playable video file");
 const archiveUrl = "https://archive.org/download/TheGeneral1926/" + String(archiveVideo.name).split("/").map(encodeURIComponent).join("/");
 const archiveHead = await fetch(archiveUrl, { method: "HEAD" });

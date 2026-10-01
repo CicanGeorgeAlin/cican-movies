@@ -234,12 +234,13 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
       : []
   );
 
-  const seedMatches = localMatches
-    .filter(movie => !remoteMovies.some(remote => identitySimilarity(movie, remote) > 0))
-    .map(movie => ({
-      ...movie,
-      sources: movie.sources || []
-    }));
+  // Always retain local catalog matches. Remote providers are merged into them
+  // so additional sources enrich a known movie instead of replacing its
+  // working/playable source.
+  const seedMatches = localMatches.map(movie => ({
+    ...movie,
+    sources: movie.sources || []
+  }));
 
   const merged = mergeMovies(seedMatches, remoteMovies, query);
 

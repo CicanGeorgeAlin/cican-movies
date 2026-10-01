@@ -150,11 +150,28 @@ export async function searchArchive(query, { rows = 16, browseLetter = "" } = {}
   const normalised = trimmed.replace(/\s+/g, " ").trim();
   const letter = String(browseLetter || "").trim().toLowerCase();
   if (/^[a-z]$/.test(letter)) {
-    const response = await fetch(buildSearchUrl(letter, Math.max(rows, 100), true, true));
-    if (!response.ok) throw new Error("Internet Archive movie browse failed: " + response.status);
-    const payload = await response.json();
-    const docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];
-    return enrichItems(docs, 8);
+    const browseRows = Math.min(Math.max(rows, 100), 100);
+    const pages = [1, 2].map(page => {
+      const url = buildSearchUrl(letter, browseRows, true, true);
+      return url.replace("page=1", "page=" + page);
+    });
+    const responses = await Promise.allSettled(pages.map(url => fetch(url)));
+    const docsById = new Map();
+
+    for (const result of responses) {
+      if (result.status !== "fulfilled" || !result.value.ok) continue;
+      try {
+        const payload = await result.value.json();
+        const docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];
+        for (const doc of docs) {
+          if (doc?.identifier && !docsById.has(doc.identifier)) {
+            docsById.set(doc.identifier, doc);
+          }
+        }
+      } catch {}
+    }
+
+    return enrichItems([...docsById.values()], 8);
   }
 
   const variants = [

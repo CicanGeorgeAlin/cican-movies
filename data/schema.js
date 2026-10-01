@@ -78,7 +78,6 @@ export function createSource(source = {}) {
             kind: String(track.kind || "subtitles")
           }))
       : []
-    }
   };
 }
 

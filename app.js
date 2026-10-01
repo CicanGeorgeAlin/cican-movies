@@ -139,6 +139,11 @@ function openMovie(movie) {
     sourceList.appendChild(row);
   });
 
+  const bestSource = selectBestSource(movie);
+  if (bestSource) {
+    loadSource(bestSource);
+  }
+
   results.hidden = true;
   playerView.hidden = false;
   playerView.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -175,6 +180,13 @@ function loadSource(source) {
 
   if (source.type === "embed") return loadEmbed(source);
   if (source.type === "media") return loadMedia(source);
+
+  showPlaybackFallback("This source is not playable in CICAN.");
+}
+
+function selectBestSource(movie) {
+  const candidates = playableSources(movie);
+  return candidates[0] || null;
 }
 
 function loadEmbed(source) {

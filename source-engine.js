@@ -194,7 +194,10 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
       (!allVideo && movie.contentType && movie.contentType !== contentType ? false : scoreMovie(movie, query) > 0)
   );
 
-  if (id && localMatches.some(movie => (movie.sources || []).some(source => source?.embedUrl || source?.mediaUrl))) {\n    const playableLocal = localMatches.filter(movie => movie.posterUrl && isFeatureMovie(movie));\n    if (playableLocal.length) return playableLocal;\n  }
+  if (id && localMatches.some(movie => (movie.sources || []).some(source => source?.embedUrl || source?.mediaUrl))) {
+    const playableLocal = localMatches.filter(movie => movie.posterUrl && isFeatureMovie(movie));
+    if (playableLocal.length) return playableLocal;
+  }
 
   if (id) {
     const directResults = await Promise.allSettled(

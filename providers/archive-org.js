@@ -88,6 +88,7 @@ async function enrichItem(item) {
       title: String(metadata.metadata?.title || item.title || identifier).replace(/\s+/g, " ").trim(),
       year: metadata.metadata?.year || item.year || null,
       description: metadata.metadata?.description || item.description || "",
+      posterUrl: "https://archive.org/services/img/" + encodeURIComponent(identifier),
       genres: [],
       searchTerms: [metadata.metadata?.creator || item.creator || "", identifier].filter(Boolean),
       sources: [source]

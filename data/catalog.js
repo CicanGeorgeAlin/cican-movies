@@ -196,6 +196,10 @@ const movieSeeds = [
   ["The Last Alarm",1926,["mystery","drama"],["the last alarm","1926"]],
   ["The Mystery of the Wax Museum",1933,["horror","mystery"],["the mystery of the wax museum","1933"]],
   ["The Terror",1928,["mystery","drama"],["the terror","1928"]],
+  ["Down Home",1920,["drama","silent"],["down home","1920"]],
+  ["Pollyanna",1920,["drama","comedy","silent"],["pollyanna","mary pickford","1920"]],
+  ["The Cradle of Courage",1920,["western","drama","silent"],["the cradle of courage","1920"]],
+  ["Way Down East",1920,["drama","romance","silent"],["way down east","d w griffith","1920"]]
 ];
 
 
@@ -416,7 +420,11 @@ const TEST_SOURCES = {
   "The Gorilla": { durationSeconds: 4500, posterUrl: commonsThumb("The Gorilla (1930).webm"), mediaUrl: commonsMedia("The Gorilla (1930).webm") },
   "The Last Alarm": { durationSeconds: 4800, posterUrl: commonsThumb("The Last Alarm (1926).webm"), mediaUrl: commonsMedia("The Last Alarm (1926).webm") },
   "The Mystery of the Wax Museum": { durationSeconds: 4790, posterUrl: commonsThumb("The Mystery of the Wax Museum (1933).webm"), mediaUrl: commonsMedia("The Mystery of the Wax Museum (1933).webm") },
-  "The Terror": { durationSeconds: 4500, posterUrl: commonsThumb("The Terror (1928).webm"), mediaUrl: commonsMedia("The Terror (1928).webm") }
+  "The Terror": { durationSeconds: 4500, posterUrl: commonsThumb("The Terror (1928).webm"), mediaUrl: commonsMedia("The Terror (1928).webm") },
+  "Down Home": { durationSeconds: 3600, posterUrl: commonsThumb("Down Home (1920).webm"), mediaUrl: commonsMedia("Down Home (1920).webm") },
+  "Pollyanna": { durationSeconds: 3452, posterUrl: commonsThumb("Pollyanna (1920).webm"), mediaUrl: commonsMedia("Pollyanna (1920).webm") },
+  "The Cradle of Courage": { durationSeconds: 3885, posterUrl: commonsThumb("The Cradle of Courage (1920).webm"), mediaUrl: commonsMedia("The Cradle of Courage (1920).webm") },
+  "Way Down East": { durationSeconds: 8878, posterUrl: commonsThumb("Way Down East (film, 1920).webm"), mediaUrl: commonsMedia("Way Down East (film, 1920).webm") }
 };
 
 

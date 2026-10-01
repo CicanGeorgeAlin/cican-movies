@@ -154,7 +154,6 @@ function openMovie(movie) {
       button.textContent = failedSourceIds.has(source.id) ? "RETRY" : "PLAY";
       button.onclick = () => {
         failedSourceIds.delete(source.id);
-        renderSourceList(currentMovie);
         loadSource(source);
       };
       row.appendChild(button);
@@ -502,7 +501,18 @@ function closePlayerView({ updateHistory = true } = {}) {
 backButton.onclick = () => closePlayerView();
 
 window.addEventListener("popstate", event => {
-  if (event.state?.watch) return;
+  const watchId = new URLSearchParams(window.location.search).get("watch");
+
+  if (watchId) {
+    resolveMovies(watchId, { id: watchId })
+      .then(items => {
+        const movie = items.find(item => item.id === watchId);
+        if (movie) openMovie(movie);
+      })
+      .catch(() => {});
+    return;
+  }
+
   if (!playerView.hidden) closePlayerView({ updateHistory: false });
 });
 

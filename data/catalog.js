@@ -1,0 +1,1 @@
+export const catalog=[{id:"cican-demo",title:"CICAN MOVIES — Player Test",year:2026,genres:["Demo","Player"],searchTerms:["cican","player","test"],sources:[{name:"CICAN Player Test",status:"READY FOR SOURCE INTEGRATION",embed:null,url:null}]}];

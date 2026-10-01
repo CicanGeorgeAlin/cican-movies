@@ -164,7 +164,7 @@ export async function searchArchive(query, { rows = 16, browseLetter = "" } = {}
     // candidates per letter), then expose the first 500 alphabetically.
     // Metadata enrichment is limited to the returned set to keep browsing responsive.
     const browseRows = 100;
-    const pages = Array.from({ length: 10 }, (_, index) => index + 1);
+    const pages = Array.from({ length: 3 }, (_, index) => index + 1);
     const responses = await Promise.allSettled(
       pages.map(page => fetch(buildSearchUrl(letter, browseRows, true, true, page)))
     );

@@ -28,7 +28,19 @@ const FEATURED_MOVIE_QUERIES = [
   "Night of the Living Dead",
   "His Girl Friday",
   "The General",
-  "Carnival of Souls"
+  "Carnival of Souls",
+  "Nosferatu",
+  "Metropolis",
+  "The Cabinet of Dr. Caligari",
+  "Sherlock Jr.",
+  "Safety Last",
+  "The Kid",
+  "The Gold Rush",
+  "A Trip to the Moon",
+  "Detour",
+  "D.O.A.",
+  "The Stranger",
+  "House on Haunted Hill"
 ];
 
 function moviePoster(movie) {

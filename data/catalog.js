@@ -208,6 +208,10 @@ const movieSeeds = [
   ["One Exciting Night",1922,["mystery","horror","silent"],["one exciting night","1922"]],
   ["Sherlock Holmes",1922,["mystery","drama","silent"],["sherlock holmes","1922"]],
   ["The Sea Lion",1921,["adventure","drama","silent"],["the sea lion","1921"]]
+  ["The Kid",1921,["comedy","drama","silent"],["the kid","charlie chaplin","1921"]],
+  ["The Gold Rush",1925,["comedy","silent"],["the gold rush","charlie chaplin","1925"]],
+  ["The Cameraman",1928,["comedy","silent"],["the cameraman","buster keaton","1928"]],
+  ["The General",1926,["comedy","silent"],["the general","buster keaton","1926"]]
 ];
 
 
@@ -440,7 +444,11 @@ const TEST_SOURCES = {
   "Miss Lulu Bett": { durationSeconds: 4260, posterUrl: commonsThumb("Miss Lulu Bett (1921).webm"), mediaUrl: commonsMedia("Miss Lulu Bett (1921).webm") },
   "One Exciting Night": { durationSeconds: 8620, posterUrl: commonsThumb("One Exciting Night (1922).webm"), mediaUrl: commonsMedia("One Exciting Night (1922).webm") },
   "Sherlock Holmes": { durationSeconds: 5128, posterUrl: commonsThumb("Sherlock Holmes (1922).webm"), mediaUrl: commonsMedia("Sherlock Holmes (1922).webm") },
-  "The Sea Lion": { durationSeconds: 5514, posterUrl: commonsThumb("The Sea Lion (1921).webm"), mediaUrl: commonsMedia("The Sea Lion (1921).webm") }
+  "The Sea Lion": { durationSeconds: 5514, posterUrl: commonsThumb("The Sea Lion (1921).webm"), mediaUrl: commonsMedia("The Sea Lion (1921).webm") },
+  "The Kid": { durationSeconds: 4196, posterUrl: commonsThumb("The Kid (1921).webm"), mediaUrl: commonsMedia("The Kid (1921).webm") },
+  "The Gold Rush": { durationSeconds: 5241, posterUrl: commonsThumb("The Gold Rush.webm"), mediaUrl: commonsMedia("The Gold Rush.webm") },
+  "The Cameraman": { durationSeconds: 4170, posterUrl: commonsThumb("The Cameraman (1928).webm"), mediaUrl: commonsMedia("The Cameraman (1928).webm") },
+  "The General": { durationSeconds: 4552, posterUrl: commonsThumb("The General (1926).webm"), mediaUrl: commonsMedia("The General (1926).webm") }
 };
 
 

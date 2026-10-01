@@ -320,7 +320,7 @@ function attachMediaMemory(video) {
   });
 
   video.addEventListener("pause", () => {
-    if (!video.ended) savePosition(currentMovie, video.currentTime);
+    if (!video.ended) savePosition(currentMovie, video.currentTime, video.duration);
   });
 
   video.addEventListener("ended", () => clearPosition(currentMovie));

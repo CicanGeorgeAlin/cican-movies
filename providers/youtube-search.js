@@ -48,7 +48,7 @@ export async function searchYouTube(query, { maxResults = 8, regionCode = "IE", 
   if (!apiKey || !trimmed) return [];
 
   const categoryHints = {
-    movie: "movie film",
+    movie: "feature film movie full movie",
     tv: "tv series episode",
     documentary: "documentary",
     podcast: "podcast",
@@ -66,6 +66,7 @@ export async function searchYouTube(query, { maxResults = 8, regionCode = "IE", 
     part: "snippet",
     q: searchQuery,
     type: "video",
+    videoDuration: contentType === CONTENT_TYPES.MOVIE ? "long" : "any",
     maxResults: String(Math.min(Math.max(maxResults, 1), 50)),
     regionCode,
     key: apiKey

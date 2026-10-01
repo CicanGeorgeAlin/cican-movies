@@ -47,3 +47,15 @@ a{text-decoration:none}
   .play-button{white-space:nowrap}
   .player-head{gap:12px}
 }
+
+
+.result-source {
+  letter-spacing: .08em;
+}
+
+.result-note {
+  margin-top: .35rem;
+  font-size: .68rem;
+  letter-spacing: .06em;
+  opacity: .55;
+}

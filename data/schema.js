@@ -5,7 +5,7 @@ export const SOURCE_STATUS = Object.freeze({
   UNAVAILABLE: "unavailable"
 });
 
-export const SOURCE_TYPES = Object.freeze({
+export const CONTENT_TYPES = Object.freeze({\n  MOVIE: "movie",\n  TV: "tv",\n  DOCUMENTARY: "documentary",\n  EDUCATION: "education",\n  MUSIC: "music",\n  NEWS: "news",\n  SPORTS: "sports",\n  GAMING: "gaming",\n  SHORT: "short",\n  LIVE: "live",\n  LECTURE: "lecture",\n  ARCHIVE: "archive",\n  OTHER: "other"\n});\n\nexport const SOURCE_TYPES = Object.freeze({
   EMBED: "embed",
   MEDIA: "media",
   EXTERNAL: "external"
@@ -23,7 +23,7 @@ export function normaliseMovie(value = "") {
 
 export function createSource(source = {}) {
   return {
-    id: source.id || "",
+    id: source.id || "",\n    capabilities: {\n      subtitles: Boolean(source.capabilities?.subtitles),\n      chapters: Boolean(source.capabilities?.chapters),\n      pip: Boolean(source.capabilities?.pip),\n      download: Boolean(source.capabilities?.download)\n    },
     provider: source.provider || "unknown",
     name: source.name || source.provider || "Source",
     type: source.type || SOURCE_TYPES.EXTERNAL,

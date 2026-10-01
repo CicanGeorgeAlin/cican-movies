@@ -1,9 +1,9 @@
 import { catalog } from "./data/catalog.js";
 import { normaliseMovie } from "./data/schema.js";
-import { searchArchive } from "./providers/archive-org.js";
+import { getArchiveMovieById, searchArchive } from "./providers/archive-org.js";
 
 const providers = [
-  { id: "archive.org", search: searchArchive }
+  { id: "archive.org", search: searchArchive, getById: getArchiveMovieById }
 ];
 
 function scoreMovie(movie, query) {
@@ -56,6 +56,16 @@ export async function resolveMovies(query, { id = null } = {}) {
   );
 
   if (id && localMatches.length) return localMatches;
+
+  if (id) {
+    const directResults = await Promise.allSettled(
+      providers.map(provider => provider.getById?.(id))
+    );
+    const directMovies = directResults.flatMap(result =>
+      result.status === "fulfilled" && result.value ? [result.value] : []
+    );
+    if (directMovies.length) return directMovies;
+  }
 
   const remoteResults = await Promise.allSettled(
     providers.map(provider => provider.search(query))

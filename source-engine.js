@@ -50,8 +50,12 @@ function mergeMovies(localMovies, remoteMovies, query) {
     .map(item => item.movie);
 }
 
-export async function resolveMovies(query) {
-  const localMatches = catalog.filter(movie => scoreMovie(movie, query) > 0);
+export async function resolveMovies(query, { id = null } = {}) {
+  const localMatches = catalog.filter(movie =>
+    id ? movie.id === id : scoreMovie(movie, query) > 0
+  );
+
+  if (id && localMatches.length) return localMatches;
 
   const remoteResults = await Promise.allSettled(
     providers.map(provider => provider.search(query))
@@ -61,7 +65,10 @@ export async function resolveMovies(query) {
     result.status === "fulfilled" ? result.value : []
   );
 
-  return mergeMovies(localMatches, remoteMovies, query);
+  const merged = mergeMovies(localMatches, remoteMovies, query);
+  return id
+    ? merged.filter(movie => movie.id === id)
+    : merged;
 }
 
 export function getProviderStatus() {

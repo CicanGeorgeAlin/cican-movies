@@ -593,6 +593,25 @@ function setupVoiceSearch() {
 shareButton?.addEventListener("click", shareCurrentVideo);
 fullscreenButton?.addEventListener("click", toggleFullscreen);
 setupVoiceSearch();
+
+document.querySelectorAll(".alphabet-button").forEach(button => {
+  button.addEventListener("click", () => {
+    const letter = button.dataset.letter || "";
+    input.value = letter;
+    document.querySelectorAll(".alphabet-button").forEach(item =>
+      item.classList.toggle("active", item === button)
+    );
+    form.requestSubmit();
+  });
+});
+
+input.addEventListener("input", () => {
+  const value = input.value.trim();
+  document.querySelectorAll(".alphabet-button").forEach(button => {
+    button.classList.toggle("active", value.length === 1 && value.toUpperCase() === button.dataset.letter);
+  });
+});
+
 loadFeaturedMovies();
 
 function closePlayerView({ updateHistory = true } = {}) {
@@ -640,7 +659,7 @@ form.addEventListener("submit", async event => {
     '<div class="searching">SEARCHING THE AVAILABLE MOVIE SOURCES…</div>';
   playerView.hidden = true;
   results.hidden = false;
-  setSearchStatus("Searching movies in the CICAN index and enabled source providers…");
+  setSearchStatus(query.length === 1 && /^[a-z]$/i.test(query) ? "Browsing movies starting with " + query.toUpperCase() + "…" : "Searching movies in the CICAN index and enabled source providers…");
 
   try {
     const movies = await resolveMovies(query, { contentType: selectedCategory });

@@ -131,7 +131,7 @@ export async function searchArchive(query, { rows = 16, browseLetter = "" } = {}
   const normalised = trimmed.replace(/\s+/g, " ").trim();
   const letter = String(browseLetter || "").trim().toLowerCase();
   if (/^[a-z]$/.test(letter)) {
-    const response = await fetch(buildSearchUrl(letter, Math.max(rows, 40), true, true));
+    const response = await fetch(buildSearchUrl(letter, Math.max(rows, 80), true, true));
     if (!response.ok) throw new Error("Internet Archive movie browse failed: " + response.status);
     const payload = await response.json();
     const docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];

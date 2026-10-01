@@ -88,7 +88,7 @@ export async function resolveMovies(query, { id = null } = {}) {
 
   if (id) {
     const directResults = await Promise.allSettled(
-      providers.map(provider => provider.getById?.(id))
+      providers.filter(provider => provider.enabled).map(provider => provider.getById?.(id))
     );
     const directMovies = directResults.flatMap(result =>
       result.status === "fulfilled" && result.value ? [result.value] : []
@@ -97,7 +97,9 @@ export async function resolveMovies(query, { id = null } = {}) {
   }
 
   const remoteResults = await Promise.allSettled(
-    providers.map(provider => provider.search(query))
+    providers
+      .filter(provider => provider.enabled)
+      .map(provider => provider.search(query))
   );
 
   const remoteMovies = remoteResults.flatMap(result =>

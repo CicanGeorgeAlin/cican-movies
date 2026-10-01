@@ -456,7 +456,8 @@ function loadMedia(source, options = {}) {
     '<video controls playsinline preload="metadata" src="' +
     escapeAttribute(source.mediaUrl) + '">' +
     'Your browser cannot play this media source.' +
-    '</video>';
+    '</video>' +
+    '<button class="player-center-play" type="button" aria-label="Play movie">▶</button>';
   addFullscreenExitButton();
 
   const video = playerStage.querySelector("video");
@@ -480,6 +481,10 @@ function loadMedia(source, options = {}) {
         showPlaybackFallback("This media source failed to load.", { autoTryNext: true });
       }
     });
+    if (options.userInitiated && options.autoplay) {
+      try { await video.play(); } catch {}
+      if (options.fullscreen) await requestPlayerFullscreen();
+    }
   }
 }
 

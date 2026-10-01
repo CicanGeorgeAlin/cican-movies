@@ -512,6 +512,7 @@ document.querySelectorAll(".category-button").forEach(button => {
   button.addEventListener("click", () => {
     selectedCategory = button.dataset.category || "movie";
     document.querySelectorAll(".category-button").forEach(item => item.classList.toggle("active", item === button));
+    document.querySelector("#category-picker")?.setAttribute("data-primary", selectedCategory);
     input.placeholder = "Search " + (categoryLabels[selectedCategory] || "VIDEO").toLowerCase() + "…";
     input.setAttribute("aria-label", "Search " + (categoryLabels[selectedCategory] || "video").toLowerCase());
     setSearchStatus((categoryLabels[selectedCategory] || "VIDEO") + " search selected.");

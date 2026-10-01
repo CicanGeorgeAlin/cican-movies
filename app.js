@@ -22,8 +22,7 @@ let currentSourceIndex = -1;
 let currentSources = [];
 let failedSourceIds = new Set();
 let voiceRecognition = null;
-const selectedCategory = "movie";
-const categoryLabel = "MOVIES";
+const MOVIE_CONTENT_TYPE = "movie";
 
 const FEATURED_MOVIE_QUERIES = [
   "Night of the Living Dead",
@@ -80,7 +79,7 @@ async function loadFeaturedMovies() {
   if (!featuredGrid) return;
   try {
     const batches = await Promise.all(
-      FEATURED_MOVIE_QUERIES.map(query => resolveMovies(query, { contentType: selectedCategory }))
+      FEATURED_MOVIE_QUERIES.map(query => resolveMovies(query, { contentType: MOVIE_CONTENT_TYPE }))
     );
     const seen = new Set();
     const items = batches
@@ -630,8 +629,8 @@ form.addEventListener("submit", async event => {
     renderResults(movies, query);
     setSearchStatus(
       movies.length
-        ? movies.length + " " + categoryLabel.toLowerCase() + " result" + (movies.length === 1 ? "" : "s") + " found."
-        : "No matching " + categoryLabel.toLowerCase() + " source found. Try another title or category."
+        ? movies.length + " " + "movies" + " result" + (movies.length === 1 ? "" : "s") + " found."
+        : "No matching " + "MOVIES".toLowerCase() + " source found. Try another title or category."
     );
   } catch (error) {
     results.innerHTML =

@@ -322,7 +322,8 @@ const PLAYABLE_CATALOG = {
   "The Man From Utah": { durationSeconds: 4476, posterUrl: commonsThumb("The Man From Utah (1934).webm"), mediaUrl: commonsMedia("The Man From Utah (1934).webm") },
   "The Doorway to Hell": { durationSeconds: 4659, posterUrl: commonsThumb("The Doorway to Hell (1930).webm"), mediaUrl: commonsMedia("The Doorway to Hell (1930).webm") },
   "The Devil to Pay!": { durationSeconds: 4349, posterUrl: commonsThumb("The Devil to Pay!.webm"), mediaUrl: commonsMedia("The Devil to Pay!.webm") },
-  "The Most Dangerous Game (1932)": { durationSeconds: 3743, posterUrl: commonsThumb("The Most Dangerous Game (1932) High Quality.webm"), mediaUrl: commonsMedia("The Most Dangerous Game (1932) High Quality.webm") }\n};
+  "The Most Dangerous Game (1932)": { durationSeconds: 3743, posterUrl: commonsThumb("The Most Dangerous Game (1932) High Quality.webm"), mediaUrl: commonsMedia("The Most Dangerous Game (1932) High Quality.webm") }
+};
 
 const TEST_SOURCES = {
   "All Quiet on the Western Front": [createSource({

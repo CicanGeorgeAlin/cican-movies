@@ -1,0 +1,120 @@
+import { createMovie, createSource, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
+
+const SEARCH_URL = "https://archive.org/advancedsearch.php";
+const METADATA_URL = "https://archive.org/metadata/";
+
+function buildSearchUrl(query, rows = 12) {
+  const q = 'title:("' + query.replace(/"/g, "") + '") AND mediatype:movies';
+  const params = new URLSearchParams();
+  params.set("q", q);
+  params.append("fl[]", "identifier");
+  params.append("fl[]", "title");
+  params.append("fl[]", "year");
+  params.append("fl[]", "description");
+  params.append("fl[]", "creator");
+  params.set("rows", String(rows));
+  params.set("page", "1");
+  params.set("output", "json");
+  return SEARCH_URL + "?" + params.toString();
+}
+
+function pickPlayableFile(files = []) {
+  const candidates = files
+    .filter(file => file && file.name)
+    .filter(file => {
+      const name = String(file.name).toLowerCase();
+      const format = String(file.format || "").toLowerCase();
+      return /\.(mp4|m4v|webm|ogv)$/.test(name) ||
+        /mpeg-4|mpeg4|ogg video|webm/.test(format);
+    })
+    .filter(file => !String(file.name).toLowerCase().includes("_thumb"));
+
+  candidates.sort((a, b) => {
+    const af = String(a.format || a.name).toLowerCase();
+    const bf = String(b.format || b.name).toLowerCase();
+    return (/mp4|mpeg-4|mpeg4/.test(af) ? 0 : 1) -
+           (/mp4|mpeg-4|mpeg4/.test(bf) ? 0 : 1);
+  });
+  return candidates[0] || null;
+}
+
+function mediaUrl(identifier, fileName) {
+  return "https://archive.org/download/" +
+    encodeURIComponent(identifier) + "/" +
+    String(fileName).split("/").map(encodeURIComponent).join("/");
+}
+
+async function enrichItem(item) {
+  const identifier = item.identifier;
+  if (!identifier) return null;
+
+  try {
+    const response = await fetch(METADATA_URL + encodeURIComponent(identifier));
+    if (!response.ok) throw new Error("metadata " + response.status);
+
+    const metadata = await response.json();
+    const file = pickPlayableFile(metadata.files || []);
+    const sourcePage = "https://archive.org/details/" + encodeURIComponent(identifier);
+
+    const source = file
+      ? createSource({
+          id: "archive-" + identifier,
+          provider: "archive.org",
+          name: "Internet Archive",
+          type: SOURCE_TYPES.MEDIA,
+          status: SOURCE_STATUS.READY,
+          mediaUrl: mediaUrl(identifier, file.name),
+          url: sourcePage,
+          rightsNote: "Playback is supplied by Internet Archive. Review the item's rights information before treating it as public-domain or otherwise cleared."
+        })
+      : createSource({
+          id: "archive-" + identifier,
+          provider: "archive.org",
+          name: "Internet Archive",
+          type: SOURCE_TYPES.EXTERNAL,
+          status: SOURCE_STATUS.REVIEW,
+          url: sourcePage,
+          rightsNote: "No directly playable media file was detected by the CICAN adapter."
+        });
+
+    return createMovie({
+      id: "archive-" + identifier,
+      title: String(metadata.metadata?.title || item.title || identifier).replace(/\s+/g, " ").trim(),
+      year: metadata.metadata?.year || item.year || null,
+      description: metadata.metadata?.description || item.description || "",
+      genres: [],
+      searchTerms: [metadata.metadata?.creator || item.creator || "", identifier].filter(Boolean),
+      sources: [source]
+    });
+  } catch {
+    return createMovie({
+      id: "archive-" + identifier,
+      title: String(item.title || identifier).replace(/\s+/g, " ").trim(),
+      year: item.year || null,
+      genres: [],
+      searchTerms: [identifier],
+      sources: [createSource({
+        id: "archive-" + identifier,
+        provider: "archive.org",
+        name: "Internet Archive",
+        type: SOURCE_TYPES.EXTERNAL,
+        status: SOURCE_STATUS.REVIEW,
+        url: "https://archive.org/details/" + encodeURIComponent(identifier),
+        rightsNote: "Metadata lookup failed. Review the source directly."
+      })]
+    });
+  }
+}
+
+export async function searchArchive(query, { rows = 12 } = {}) {
+  const trimmed = String(query || "").trim();
+  if (!trimmed) return [];
+
+  const response = await fetch(buildSearchUrl(trimmed, rows));
+  if (!response.ok) throw new Error("Internet Archive search failed: " + response.status);
+
+  const payload = await response.json();
+  const docs = Array.isArray(payload.response?.docs) ? payload.response.docs : [];
+  const enriched = await Promise.all(docs.map(enrichItem));
+  return enriched.filter(Boolean);
+}

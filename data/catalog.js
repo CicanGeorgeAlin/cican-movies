@@ -9,6 +9,8 @@ const movieSeeds = [
   ["The Kid",1921,["comedy","drama"],["the kid","charlie chaplin","1921"]],
   ["The Gold Rush",1925,["comedy","silent"],["the gold rush","charlie chaplin","1925"]],
   ["A Trip to the Moon",1902,["fantasy","silent"],["a trip to the moon","le voyage dans la lune","georges melies","1902"]],
+  ["Animal Crackers",1930,["comedy"],["animal crackers","marx brothers","1930"]],
+  ["Anna Christie",1930,["drama","romance"],["anna christie","1930"]],
   ["The Cabinet of Dr. Caligari",1920,["horror","silent"],["the cabinet of dr caligari","das cabinet des dr caligari","1920"]],
   ["Night of the Living Dead",1968,["horror"],["night of the living dead","george romero","1968"]],
   ["Carnival of Souls",1962,["horror"],["carnival of souls","1962"]],
@@ -126,7 +128,134 @@ const movieSeeds = [
   ["Young Frankenstein",1974,["comedy"],["young frankenstein","1974"]]
 ];
 
+
+
+function commonsMedia(fileName) {
+  return "https://commons.wikimedia.org/wiki/Special:Redirect/file/" +
+    encodeURIComponent(fileName);
+}
+
+function commonsThumb(fileName) {
+  return "https://commons.wikimedia.org/w/thumb.php?f=" +
+    encodeURIComponent(fileName) + "&w=500";
+}
+
+const PLAYABLE_CATALOG = {
+  "All Quiet on the Western Front": {
+    durationSeconds: 8002,
+    posterUrl: commonsThumb("All Quiet on the Western Front (1930, sound version).webm"),
+    mediaUrl: commonsMedia("All Quiet on the Western Front (1930, sound version).webm")
+  },
+  "Angel and the Badman": {
+    durationSeconds: 5974,
+    posterUrl: commonsThumb("Angel and the Badman (1947).webm"),
+    mediaUrl: commonsMedia("Angel and the Badman (1947).webm")
+  },
+  "Animal Crackers": {
+    durationSeconds: 5895,
+    posterUrl: commonsThumb("Animal Crackers (1930).webm"),
+    mediaUrl: commonsMedia("Animal Crackers (1930).webm")
+  },
+  "Anna Christie": {
+    durationSeconds: 5368,
+    posterUrl: commonsThumb("Anna Christie (1930, English version).webm"),
+    mediaUrl: commonsMedia("Anna Christie (1930, English version).webm")
+  },
+  "Safety Last!": {
+    durationSeconds: 4362,
+    posterUrl: commonsThumb("Safety Last (1923).webm"),
+    mediaUrl: commonsMedia("Safety Last (1923).webm")
+  },
+  "Nosferatu": {
+    durationSeconds: 5519,
+    posterUrl: commonsThumb("Nosferatu (1922).webm"),
+    mediaUrl: commonsMedia("Nosferatu (1922).webm")
+  },
+  "Road to Bali": {
+    durationSeconds: 5455,
+    posterUrl: commonsThumb("Road To Bali (1952).webm"),
+    mediaUrl: commonsMedia("Road To Bali (1952).webm")
+  }
+};
+
 const TEST_SOURCES = {
+  "All Quiet on the Western Front": [createSource({
+    id: "commons-all-quiet-1930",
+    provider: "wikimedia-commons",
+    name: "Wikimedia Commons",
+    type: SOURCE_TYPES.MEDIA,
+    status: SOURCE_STATUS.READY,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
+    mediaUrl: PLAYABLE_CATALOG["All Quiet on the Western Front"].mediaUrl,
+    url: "https://commons.wikimedia.org/wiki/File:All_Quiet_on_the_Western_Front_(1930,_sound_version).webm",
+    rightsNote: "Wikimedia Commons identifies this 1930 film file as public domain in the United States."
+  })],
+  "Angel and the Badman": [createSource({
+    id: "commons-angel-badman-1947",
+    provider: "wikimedia-commons",
+    name: "Wikimedia Commons",
+    type: SOURCE_TYPES.MEDIA,
+    status: SOURCE_STATUS.READY,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
+    mediaUrl: PLAYABLE_CATALOG["Angel and the Badman"].mediaUrl,
+    url: "https://commons.wikimedia.org/wiki/File:Angel_and_the_Badman_(1947).webm",
+    rightsNote: "Wikimedia Commons hosts this film file and identifies it as public domain."
+  })],
+  "Animal Crackers": [createSource({
+    id: "commons-animal-crackers-1930",
+    provider: "wikimedia-commons",
+    name: "Wikimedia Commons",
+    type: SOURCE_TYPES.MEDIA,
+    status: SOURCE_STATUS.READY,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
+    mediaUrl: PLAYABLE_CATALOG["Animal Crackers"].mediaUrl,
+    url: "https://commons.wikimedia.org/wiki/File:Animal_Crackers_(1930).webm",
+    rightsNote: "Wikimedia Commons identifies this film file as public domain in the United States."
+  })],
+  "Anna Christie": [createSource({
+    id: "commons-anna-christie-1930",
+    provider: "wikimedia-commons",
+    name: "Wikimedia Commons",
+    type: SOURCE_TYPES.MEDIA,
+    status: SOURCE_STATUS.READY,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
+    mediaUrl: PLAYABLE_CATALOG["Anna Christie"].mediaUrl,
+    url: "https://commons.wikimedia.org/wiki/File:Anna_Christie_(1930,_English_version).webm",
+    rightsNote: "Wikimedia Commons identifies this film file as public domain in the United States."
+  })],
+  "Safety Last!": [createSource({
+    id: "commons-safety-last-1923",
+    provider: "wikimedia-commons",
+    name: "Wikimedia Commons",
+    type: SOURCE_TYPES.MEDIA,
+    status: SOURCE_STATUS.READY,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
+    mediaUrl: PLAYABLE_CATALOG["Safety Last!"].mediaUrl,
+    url: "https://commons.wikimedia.org/wiki/File:Safety_Last_(1923).webm",
+    rightsNote: "Wikimedia Commons identifies this film file as public domain."
+  })],
+  "Nosferatu": [createSource({
+    id: "commons-nosferatu-1922",
+    provider: "wikimedia-commons",
+    name: "Wikimedia Commons",
+    type: SOURCE_TYPES.MEDIA,
+    status: SOURCE_STATUS.READY,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
+    mediaUrl: PLAYABLE_CATALOG["Nosferatu"].mediaUrl,
+    url: "https://commons.wikimedia.org/wiki/File:Nosferatu_(1922).webm",
+    rightsNote: "Wikimedia Commons identifies this film file as public domain."
+  })],
+  "Road to Bali": [createSource({
+    id: "commons-road-to-bali-1952",
+    provider: "wikimedia-commons",
+    name: "Wikimedia Commons",
+    type: SOURCE_TYPES.MEDIA,
+    status: SOURCE_STATUS.READY,
+    rightsStatus: RIGHTS_STATUS.REVIEW,
+    mediaUrl: PLAYABLE_CATALOG["Road to Bali"].mediaUrl,
+    url: "https://commons.wikimedia.org/wiki/File:Road_To_Bali_(1952).webm",
+    rightsNote: "Wikimedia Commons source; review the file's current rights information before reuse."
+  })],
   "The General": [createSource({
     id: "archive-TheGeneral1926-test",
     provider: "archive.org",
@@ -159,6 +288,8 @@ export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>
     year,
     genres,
     searchTerms,
+    posterUrl: PLAYABLE_CATALOG[title]?.posterUrl || "",
+    durationSeconds: PLAYABLE_CATALOG[title]?.durationSeconds || 0,
     sources: TEST_SOURCES[title] || []
   })
 );

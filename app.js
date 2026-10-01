@@ -20,6 +20,19 @@ let currentSourceIndex = -1;
 let currentSources = [];
 let failedSourceIds = new Set();
 let voiceRecognition = null;
+let selectedCategory = "movie";
+
+const categoryLabels = {
+  movie: "MOVIES",
+  documentary: "DOCUMENTARIES",
+  podcast: "PODCASTS",
+  music: "MUSIC",
+  education: "EDUCATION",
+  news: "NEWS",
+  sports: "SPORTS",
+  gaming: "GAMING",
+  other: "ALL VIDEO"
+};
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, c => ({
@@ -29,6 +42,23 @@ function escapeHtml(value) {
 
 function escapeAttribute(value) {
   return String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+}
+
+function addFullscreenExitButton() {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "fullscreen-exit";
+  button.setAttribute("aria-label", "Exit fullscreen");
+  button.title = "Exit fullscreen";
+  button.textContent = "×";
+  button.addEventListener("click", async () => {
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+    } catch (error) {
+      console.error(error);
+    }
+  });
+  playerStage.appendChild(button);
 }
 
 function sourcePriority(source) {
@@ -374,6 +404,7 @@ function loadEmbed(source) {
     '" title="' + escapeAttribute(currentMovie.title) +
     '" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" ' +
     'allowfullscreen></iframe>';
+  addFullscreenExitButton();
 
   const frame = playerStage.querySelector("iframe");
   frame?.addEventListener("load", () => saveLastSource(currentMovie, source));
@@ -387,6 +418,7 @@ function loadMedia(source) {
     escapeAttribute(source.mediaUrl) + '">' +
     'Your browser cannot play this media source.' +
     '</video>';
+  addFullscreenExitButton();
 
   const video = playerStage.querySelector("video");
   if (video) {
@@ -476,6 +508,17 @@ function setupVoiceSearch() {
   });
 }
 
+document.querySelectorAll(".category-button").forEach(button => {
+  button.addEventListener("click", () => {
+    selectedCategory = button.dataset.category || "movie";
+    document.querySelectorAll(".category-button").forEach(item => item.classList.toggle("active", item === button));
+    input.placeholder = "Search " + (categoryLabels[selectedCategory] || "VIDEO").toLowerCase() + "…";
+    input.setAttribute("aria-label", "Search " + (categoryLabels[selectedCategory] || "video").toLowerCase());
+    setSearchStatus((categoryLabels[selectedCategory] || "VIDEO") + " search selected.");
+    input.focus();
+  });
+});
+
 shareButton?.addEventListener("click", shareCurrentVideo);
 fullscreenButton?.addEventListener("click", toggleFullscreen);
 setupVoiceSearch();
@@ -528,12 +571,12 @@ form.addEventListener("submit", async event => {
   setSearchStatus("Searching local index and enabled source providers…");
 
   try {
-    const movies = await resolveMovies(query);
+    const movies = await resolveMovies(query, { contentType: selectedCategory });
     renderResults(movies, query);
     setSearchStatus(
       movies.length
-        ? movies.length + " movie result" + (movies.length === 1 ? "" : "s") + " found."
-        : "No matching source found."
+        ? movies.length + " " + (categoryLabels[selectedCategory] || "VIDEO").toLowerCase() + " result" + (movies.length === 1 ? "" : "s") + " found."
+        : "No matching " + (categoryLabels[selectedCategory] || "video").toLowerCase() + " source found. Try another title or category."
     );
   } catch (error) {
     results.innerHTML =

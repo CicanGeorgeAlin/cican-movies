@@ -1,4 +1,5 @@
 import { resolveMovies } from "./source-engine.js";
+import { createVoiceSearch, isVoiceSearchSupported } from "./voice-search.js";
 
 const form = document.querySelector("#search-form");
 const input = document.querySelector("#search-input");
@@ -9,8 +10,13 @@ const playerStage = document.querySelector("#player-stage");
 const sourceList = document.querySelector("#source-list");
 const backButton = document.querySelector("#back-button");
 const searchStatus = document.querySelector("#search-status");
+const voiceButton = document.querySelector("#voice-button");
+const shareButton = document.querySelector("#share-button");
+const fullscreenButton = document.querySelector("#fullscreen-button");
 
 let currentMovie = null;
+let currentSource = null;
+let voiceRecognition = null;
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, c => ({
@@ -141,11 +147,11 @@ function setSearchStatus(message = "") {
   searchStatus.textContent = message;
 }
 
-backButton.onclick = () => {
+async function shareCurrentVideo() {\n  if (!currentMovie) return;\n  const url = new URL(window.location.href);\n  url.searchParams.set("watch", currentMovie.id);\n  const shareData = { title: currentMovie.title, text: "Watch " + currentMovie.title + " on CICAN", url: url.toString() };\n\n  try {\n    if (navigator.share) {\n      await navigator.share(shareData);\n    } else if (navigator.clipboard?.writeText) {\n      await navigator.clipboard.writeText(url.toString());\n      setSearchStatus("CICAN video link copied.");\n    }\n  } catch (error) {\n    if (error?.name !== "AbortError") console.error(error);\n  }\n}\n\nasync function toggleFullscreen() {\n  try {\n    if (document.fullscreenElement) {\n      await document.exitFullscreen();\n      return;\n    }\n    await playerStage.requestFullscreen?.();\n  } catch (error) {\n    console.error(error);\n  }\n}\n\nfunction setupVoiceSearch() {\n  if (!voiceButton) return;\n  if (!isVoiceSearchSupported()) {\n    voiceButton.hidden = true;\n    return;\n  }\n\n  voiceRecognition = createVoiceSearch({\n    onStart: () => {\n      voiceButton.classList.add("listening");\n      voiceButton.textContent = "●";\n      setSearchStatus("Listening… speak your video search.");\n    },\n    onEnd: () => {\n      voiceButton.classList.remove("listening");\n      voiceButton.textContent = "🎙";\n    },\n    onError: error => {\n      setSearchStatus(error === "not-allowed" ? "Microphone permission is required for voice search." : "Voice search is unavailable. Try typing instead.");\n    },\n    onResult: transcript => {\n      input.value = transcript;\n      form.requestSubmit();\n    }\n  });\n\n  voiceButton.addEventListener("click", () => {\n    try {\n      voiceRecognition?.start();\n    } catch (error) {\n      if (error.name !== "InvalidStateError") console.error(error);\n    }\n  });\n}\n\nshareButton?.addEventListener("click", shareCurrentVideo);\nfullscreenButton?.addEventListener("click", toggleFullscreen);\nsetupVoiceSearch();\n\nbackButton.onclick = () => {
   playerView.hidden = true;
   results.hidden = false;
   playerStage.innerHTML = "";
-  currentMovie = null;
+  currentMovie = null;\n  currentSource = null;
   window.scrollTo({ top: results.offsetTop - 20, behavior: "smooth" });
 };
 

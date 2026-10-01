@@ -16,6 +16,8 @@ const fullscreenButton = document.querySelector("#fullscreen-button");
 
 let currentMovie = null;
 let currentSource = null;
+let currentSourceIndex = -1;
+let currentSources = [];
 let voiceRecognition = null;
 
 function escapeHtml(value) {
@@ -88,6 +90,8 @@ function openMovie(movie) {
     '<p>Choose a source below.</p></div>';
 
   sourceList.innerHTML = "";
+  currentSources = playableSources(movie);
+  currentSourceIndex = -1;
 
   const sources = [...(movie.sources || [])].sort((a, b) => {
     const statusRank = { ready: 0, review: 1, unavailable: 2, blocked: 3 };
@@ -114,13 +118,13 @@ function openMovie(movie) {
       const button = document.createElement("button");
       button.className = "play-button";
       button.textContent = "PLAY";
-      button.onclick = () => loadEmbed(source);
+      button.onclick = () => loadSource(source);
       row.appendChild(button);
     } else if (source.type === "media" && source.mediaUrl) {
       const button = document.createElement("button");
       button.className = "play-button";
       button.textContent = "PLAY";
-      button.onclick = () => loadMedia(source);
+      button.onclick = () => loadSource(source);
       row.appendChild(button);
     } else if (source.url) {
       const link = document.createElement("a");
@@ -140,6 +144,39 @@ function openMovie(movie) {
   playerView.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function playableSources(movie) {
+  return [...(movie.sources || [])]
+    .filter(source =>
+      source.status === "ready" &&
+      ((source.type === "embed" && source.embedUrl) ||
+       (source.type === "media" && source.mediaUrl))
+    );
+}
+
+function showPlaybackFallback(message = "This source could not be played.") {
+  const remaining = currentSources.slice(currentSourceIndex + 1);
+  playerStage.innerHTML =
+    '<div class="player-error"><strong>' + escapeHtml(message) + '</strong>' +
+    (remaining.length
+      ? '<p>CICAN found another playable source.</p><button class="play-button" id="fallback-play">TRY NEXT SOURCE</button>'
+      : '<p>No additional playable source is currently available.</p>') +
+    '</div>';
+
+  document.querySelector("#fallback-play")?.addEventListener("click", () => {
+    const next = currentSources[currentSourceIndex + 1];
+    if (next) loadSource(next);
+  });
+}
+
+function loadSource(source) {
+  const index = currentSources.findIndex(item => item.id === source.id);
+  currentSourceIndex = index;
+  currentSource = source;
+
+  if (source.type === "embed") return loadEmbed(source);
+  if (source.type === "media") return loadMedia(source);
+}
+
 function loadEmbed(source) {
   currentSource = source;
   playerStage.innerHTML =
@@ -156,6 +193,9 @@ function loadMedia(source) {
     escapeAttribute(source.mediaUrl) + '">' +
     'Your browser cannot play this media source.' +
     '</video>';
+
+  const video = playerStage.querySelector("video");
+  video?.addEventListener("error", () => showPlaybackFallback("This media source failed to load."));
 }
 
 function setSearchStatus(message = "") {
@@ -248,6 +288,8 @@ backButton.onclick = () => {
   playerStage.innerHTML = "";
   currentMovie = null;
   currentSource = null;
+  currentSourceIndex = -1;
+  currentSources = [];
   window.scrollTo({ top: results.offsetTop - 20, behavior: "smooth" });
 };
 

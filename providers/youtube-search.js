@@ -36,6 +36,7 @@ export async function getYouTubeMovieById(id) {
     title: item.snippet?.title || "YouTube video",
     year: Number(String(item.snippet?.publishedAt || "").slice(0, 4)) || null,
     description: item.snippet?.description || "",
+    posterUrl: item.snippet?.thumbnails?.high?.url || item.snippet?.thumbnails?.medium?.url || item.snippet?.thumbnails?.default?.url || "",
     genres: ["Movie"],
     searchTerms: [item.snippet?.title || ""],
     sources: [youtubeSource(item.id, "YouTube")]
@@ -87,6 +88,7 @@ export async function searchYouTube(query, { maxResults = 8, regionCode = "IE", 
         contentType,
         title: item.snippet.title,
         description: item.snippet.description || "",
+        posterUrl: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || "",
         searchTerms: [
           item.snippet.channelTitle || "",
           ...(Array.isArray(item.snippet.tags) ? item.snippet.tags : [])

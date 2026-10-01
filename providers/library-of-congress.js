@@ -45,6 +45,14 @@ function toMovie(item) {
   const date = String(item.date || item.created_published || "");
   const yearMatch = date.match(/\b(18|19|20)\d{2}\b/);
   const mediaUrl = findMediaUrl(item);
+  const durationSeconds = Number(item.duration || item.duration_seconds || 0);
+  const candidate = {
+    title,
+    description: clean(item.description),
+    searchTerms: [title, clean(item.contributor), clean(item.partof)].filter(Boolean),
+    durationSeconds
+  };
+  if (!isFeatureMovie(candidate)) return null;
   const id = movieId(pageUrl);
 
   const source = createSource({
@@ -66,7 +74,8 @@ function toMovie(item) {
     contentType: "movie",
     description: clean(item.description),
     posterUrl: item.image_url || item.thumbnail_url || null,
-    searchTerms: candidate.searchTerms,\n    durationSeconds,
+    searchTerms: candidate.searchTerms,
+    durationSeconds,
     sources: [source]
   });
 }

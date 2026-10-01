@@ -97,6 +97,7 @@ function openMovie(movie) {
       '<div class="source-name">' + escapeHtml(source.name) + '</div>' +
       '<div class="source-status">' +
       escapeHtml(String(source.status || "").toUpperCase()) +
+      (source.rightsStatus ? " · RIGHTS " + escapeHtml(String(source.rightsStatus).toUpperCase()) : "") +
       '</div>';
 
     row.appendChild(info);

@@ -1,5 +1,5 @@
 import { catalog } from "./data/catalog.js";
-import { normaliseMovie } from "./data/schema.js";
+import { CONTENT_TYPES, normaliseMovie } from "./data/schema.js";
 import { providers, getProviderStatus } from "./providers/registry.js";
 
 function parseQuery(query = "") {
@@ -174,11 +174,13 @@ function mergeMovies(localMovies, remoteMovies, query) {
     .map(item => item.movie);
 }
 
-export async function resolveMovies(query, { id = null } = {}) {
+export async function resolveMovies(query, { id = null, contentType = CONTENT_TYPES.MOVIE } = {}) {
   const parsedQuery = parseQuery(query);
   const providerQuery = parsedQuery.title || parsedQuery.normalised;
+  const allVideo = contentType === "other";
   const localMatches = catalog.filter(movie =>
-    id ? movie.id === id : scoreMovie(movie, query) > 0
+    id ? movie.id === id :
+      (!allVideo && movie.contentType && movie.contentType !== contentType ? false : scoreMovie(movie, query) > 0)
   );
 
   if (id && localMatches.length) return localMatches;
@@ -196,11 +198,13 @@ export async function resolveMovies(query, { id = null } = {}) {
   const remoteResults = await Promise.allSettled(
     providers
       .filter(provider => provider.enabled)
-      .map(provider => provider.search(providerQuery))
+      .map(provider => provider.search(providerQuery, { contentType }))
   );
 
   const remoteMovies = remoteResults.flatMap(result =>
-    result.status === "fulfilled" ? result.value : []
+    result.status === "fulfilled"
+      ? result.value.filter(movie => allVideo || !movie.contentType || movie.contentType === contentType)
+      : []
   );
 
   const merged = mergeMovies(localMatches, remoteMovies, query);

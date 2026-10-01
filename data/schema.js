@@ -27,6 +27,13 @@ export const SOURCE_TYPES = Object.freeze({
   EXTERNAL: "external"
 });
 
+export const RIGHTS_STATUS = Object.freeze({
+  VERIFIED: "verified",
+  REVIEW: "review",
+  UNKNOWN: "unknown",
+  RESTRICTED: "restricted"
+});
+
 export function normaliseMovie(value = "") {
   return String(value)
     .toLowerCase()
@@ -47,6 +54,7 @@ export function createSource(source = {}) {
     embedUrl: source.embedUrl || null,
     mediaUrl: source.mediaUrl || null,
     url: source.url || null,
+    rightsStatus: source.rightsStatus || RIGHTS_STATUS.UNKNOWN,
     rightsNote: source.rightsNote || "",
     lastChecked: source.lastChecked || null,
     capabilities: {

@@ -46,7 +46,7 @@ export function normaliseMovie(value = "") {
 
 export function createSource(source = {}) {
   return {
-    id: source.id || "",
+    id: source.id || (source.provider || "unknown") + "-" + (source.type || SOURCE_TYPES.EXTERNAL),
     provider: source.provider || "unknown",
     name: source.name || source.provider || "Source",
     type: source.type || SOURCE_TYPES.EXTERNAL,

@@ -18,6 +18,7 @@ let currentSource = null;
 let currentSourceIndex = -1;
 let currentSources = [];
 let failedSourceIds = new Set();
+let resultsScrollY = 0;
 const MOVIE_CONTENT_TYPE = "movie";
 
 const FEATURED_MOVIE_QUERIES = [
@@ -153,6 +154,7 @@ function clearWatchUrl() {
 }
 
 function openMovie(movie) {
+  resultsScrollY = window.scrollY;
   currentMovie = movie;
   syncWatchUrl(movie);
   currentSource = null;
@@ -176,6 +178,7 @@ function openMovie(movie) {
   sources.forEach(source => {
     const row = document.createElement("div");
     row.className = "source-row";
+    row.dataset.sourceId = source.id;
 
     const info = document.createElement("div");
     info.innerHTML =
@@ -194,6 +197,7 @@ function openMovie(movie) {
     if (canPlay) {
       const button = document.createElement("button");
       button.className = "play-button";
+      button.dataset.sourceId = source.id;
       button.textContent = failedSourceIds.has(source.id) ? "RETRY" : "PLAY";
       button.onclick = () => {
         failedSourceIds.delete(source.id);
@@ -272,6 +276,12 @@ function showPlaybackFallback(message = "This source could not be played.", { au
     if (nextSource) loadSource(nextSource);
   });
 }
+function updateSourceSelection() {
+  sourceList.querySelectorAll(".source-row").forEach(row => {
+    row.classList.toggle("active", row.dataset.sourceId === currentSource?.id);
+  });
+}
+
 function loadSource(source) {
   const previousVideo = playerStage.querySelector("video");
   if (previousVideo && currentMovie && previousVideo.currentTime > 0 && !previousVideo.ended) {
@@ -281,6 +291,7 @@ function loadSource(source) {
   const index = currentSources.findIndex(item => item.id === source.id);
   currentSourceIndex = index;
   currentSource = source;
+  updateSourceSelection();
 
   if (source.type === "embed") return loadEmbed(source);
   if (source.type === "media") return loadMedia(source);
@@ -442,7 +453,11 @@ function loadMedia(source) {
   if (video) {
     attachMediaMemory(video);
     video.addEventListener("loadeddata", () => saveLastSource(currentMovie, source));
-    video.addEventListener("error", () => showPlaybackFallback("This media source failed to load.", { autoTryNext: true }));
+    video.addEventListener("error", () => {
+      if (currentSource?.id === source.id) {
+        showPlaybackFallback("This media source failed to load.", { autoTryNext: true });
+      }
+    });
   }
 }
 
@@ -522,10 +537,15 @@ input.addEventListener("input", () => {
 });
 
 
-function closePlayerView({ updateHistory = true } = {}) {
-  if (updateHistory && new URL(window.location.href).searchParams.has("watch")) {
-    window.history.back();
-    return;
+function closePlayerView() {
+  try {
+    if (document.fullscreenElement) document.exitFullscreen?.();
+  } catch {}
+
+  const video = playerStage.querySelector("video");
+  if (video) {
+    try { video.pause(); } catch {}
+    try { video.removeAttribute("src"); video.load(); } catch {}
   }
 
   clearWatchUrl();
@@ -537,7 +557,9 @@ function closePlayerView({ updateHistory = true } = {}) {
   currentSourceIndex = -1;
   currentSources = [];
   failedSourceIds = new Set();
-  window.scrollTo({ top: results.offsetTop - 20, behavior: "smooth" });
+  window.requestAnimationFrame(() => {
+    window.scrollTo({ top: Math.max(0, resultsScrollY), behavior: "smooth" });
+  });
 }
 
 backButton.onclick = () => closePlayerView();
@@ -555,7 +577,7 @@ window.addEventListener("popstate", event => {
     return;
   }
 
-  if (!playerView.hidden) closePlayerView({ updateHistory: false });
+  if (!playerView.hidden) closePlayerView();
 });
 
 form.addEventListener("submit", async event => {

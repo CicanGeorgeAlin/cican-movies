@@ -71,6 +71,26 @@ export function createSource(source = {}) {
   };
 }
 
+export function parseDurationSeconds(value = 0) {
+  if (Number.isFinite(Number(value)) && Number(value) > 0) return Number(value);
+  const text = String(value || "").toLowerCase().trim();
+  if (!text) return 0;
+
+  const clock = text.match(/^(\d+):(\d{2})(?::(\d{2}))?$/);
+  if (clock) {
+    if (clock[3] !== undefined) {
+      return Number(clock[1]) * 3600 + Number(clock[2]) * 60 + Number(clock[3]);
+    }
+    return Number(clock[1]) * 60 + Number(clock[2]);
+  }
+
+  const hours = Number(text.match(/(\d+(?:\.\d+)?)\s*h(?:ours?|r)?/)?.[1] || 0);
+  const minutes = Number(text.match(/(\d+(?:\.\d+)?)\s*m(?:in(?:ute)?s?)?/)?.[1] || 0);
+  const seconds = Number(text.match(/(\d+(?:\.\d+)?)\s*s(?:ec(?:ond)?s?)?/)?.[1] || 0);
+  const total = hours * 3600 + minutes * 60 + seconds;
+  return total > 0 ? total : 0;
+}
+
 export function isFeatureMovie(movie = {}) {
   const text = String([
     movie.title || "",
@@ -103,7 +123,7 @@ export function isFeatureMovie(movie = {}) {
 
   if (excluded.some(pattern => pattern.test(text))) return false;
 
-  const duration = Number(movie.durationSeconds);
+  const duration = parseDurationSeconds(movie.durationSeconds);
   if (Number.isFinite(duration) && duration > 0 && duration < 40 * 60) return false;
 
   return true;
@@ -117,7 +137,7 @@ export function createMovie(movie = {}) {
     year: movie.year || null,
     description: movie.description || "",
     posterUrl: movie.posterUrl || "",
-    durationSeconds: Number(movie.durationSeconds) || 0,
+    durationSeconds: parseDurationSeconds(movie.durationSeconds),
     genres: Array.isArray(movie.genres) ? movie.genres : [],
     searchTerms: Array.isArray(movie.searchTerms) ? movie.searchTerms : [],
     sources: Array.isArray(movie.sources) ? movie.sources.map(createSource) : []

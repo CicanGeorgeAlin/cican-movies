@@ -82,12 +82,19 @@ The repository currently contains:
 - Internet Archive provider adapter;
 - centralized provider registry for controlled source expansion;
 - optional official YouTube search adapter using the YouTube Data API;
+- Wikimedia Commons video provider using the official MediaWiki API;
 - embedded-player path;
 - direct-media playback path;
 - external-source fallback;
 - normalized movie/source schema;
 - source-engine documentation;
 - a preserved V1 demo branch.
+
+## Wikimedia Commons video search
+
+CICAN can search Wikimedia Commons through the official MediaWiki API and resolve file metadata for video results. Wikimedia documents open API access and media metadata through its API ecosystem. citeturn0search7turn0search9
+
+CICAN keeps these sources in `review` status by default because public availability and a displayed license are not the same thing as a universal clearance determination. The source page and license metadata remain available to the user.
 
 ## Optional YouTube search
 

@@ -61,4 +61,26 @@ if (!/the general/i.test(locTitle)) throw new Error("LOC movie identity check fa
 // playback capability.
 if (!locItem.image_url) throw new Error("LOC movie poster URL missing");
 
+
+// Runtime smoke test: importing the resolver must succeed, because the UI
+// depends on this module before it can wire A–Z buttons and search input.
+const { catalog } = await import("../data/catalog.js");
+await import("../source-engine.js");
+const playableCatalog = catalog.filter(movie =>
+  movie.posterUrl &&
+  Number(movie.durationSeconds) >= 40 * 60 &&
+  Array.isArray(movie.sources) &&
+  movie.sources.some(source =>
+    source &&
+    source.status !== "blocked" &&
+    source.status !== "unavailable" &&
+    (source.embedUrl || source.mediaUrl)
+  )
+);
+const letterA = playableCatalog.filter(movie => String(movie.title || "").trim().toLowerCase().startsWith("a"));
+const letterT = playableCatalog.filter(movie => String(movie.title || "").trim().toLowerCase().startsWith("t"));
+if (!letterA.length || !letterT.length) {
+  throw new Error("A-Z runtime smoke test failed: expected playable A and T titles");
+}
+
 console.log("MOVIE_INTEGRITY_OK");

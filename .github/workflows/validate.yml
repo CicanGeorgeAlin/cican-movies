@@ -1,0 +1,16 @@
+name: Validate CICAN MOVIES
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: |
+          set -e
+          find . -name "*.js" -not -path "./node_modules/*" -print0 |
+            xargs -0 -n1 node --check

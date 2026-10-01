@@ -1,10 +1,6 @@
 import { catalog } from "./data/catalog.js";
 import { normaliseMovie } from "./data/schema.js";
-import { getArchiveMovieById, searchArchive } from "./providers/archive-org.js";
-
-const providers = [
-  { id: "archive.org", search: searchArchive, getById: getArchiveMovieById }
-];
+import { providers, getProviderStatus } from "./providers/registry.js";
 
 function scoreMovie(movie, query) {
   const q = normaliseMovie(query);
@@ -114,6 +110,4 @@ export async function resolveMovies(query, { id = null } = {}) {
     : merged;
 }
 
-export function getProviderStatus() {
-  return providers.map(provider => ({ id: provider.id, enabled: true }));
-}
+export { getProviderStatus };

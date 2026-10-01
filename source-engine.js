@@ -2,9 +2,24 @@ import { catalog } from "./data/catalog.js";
 import { normaliseMovie } from "./data/schema.js";
 import { providers, getProviderStatus } from "./providers/registry.js";
 
+function parseQuery(query = "") {
+  const raw = String(query).trim();
+  const normalised = normaliseMovie(raw);
+  const yearMatch = normalised.match(/\b(18|19|20)\d{2}\b/);
+  const year = yearMatch ? yearMatch[0] : null;
+  const title = normalised
+    .replace(/\b(18|19|20)\d{2}\b/g, " ")
+    .replace(/\b(watch|movie|film|full|online|free)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return { raw, normalised, title, year };
+}
+
 function scoreMovie(movie, query) {
-  const q = normaliseMovie(query);
-  const title = normaliseMovie(movie.title);
+  const parsed = parseQuery(query);
+  const q = parsed.title;
+  const title = normaliseTitle(movie.title);
   if (!q || !title) return 0;
 
   const tokens = q.split(" ").filter(Boolean);
@@ -16,15 +31,28 @@ function scoreMovie(movie, query) {
     ...(movie.searchTerms || [])
   ].join(" "));
 
-  if (title === q) return 100;
-  if (title.startsWith(q)) return 90;
-  if (title.includes(q)) return 75;
-  if (tokens.length > 1 && tokens.every(token => titleTokens.some(item => item === token))) return 70;
-  if (tokens.length > 1 && tokens.every(token => titleTokens.some(item => item.startsWith(token)))) return 60;
-  if (haystack.includes(q)) return 45;
-  if (tokens.length && tokens.every(token => haystack.includes(token))) return 35;
+  let score = 0;
 
-  return 0;
+  if (title === q) score = 100;
+  else if (title.startsWith(q)) score = 90;
+  else if (title.includes(q)) score = 75;
+  else if (tokens.length > 1 && tokens.every(token => titleTokens.includes(token))) score = 70;
+  else if (tokens.length > 1 && tokens.every(token => titleTokens.some(item => item.startsWith(token)))) score = 60;
+  else if (haystack.includes(q)) score = 45;
+  else if (tokens.length && tokens.every(token => haystack.includes(token))) score = 35;
+
+  if (!score) return 0;
+
+  if (parsed.year) {
+    const movieYear = Number.parseInt(String(movie.year || "").slice(0, 4), 10);
+    const requestedYear = Number.parseInt(parsed.year, 10);
+
+    if (!Number.isFinite(movieYear)) return Math.max(score - 15, 1);
+    if (movieYear === requestedYear) score += 25;
+    else score -= 45;
+  }
+
+  return Math.max(score, 0);
 }
 
 function sourceScore(source) {

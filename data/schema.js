@@ -67,6 +67,17 @@ export function createSource(source = {}) {
       chapters: Boolean(source.capabilities?.chapters),
       pip: Boolean(source.capabilities?.pip),
       download: Boolean(source.capabilities?.download)
+    },
+    subtitles: Array.isArray(source.subtitles)
+      ? source.subtitles
+          .filter(track => track && track.src && track.srclang)
+          .map(track => ({
+            src: String(track.src),
+            srclang: String(track.srclang).toLowerCase(),
+            label: String(track.label || track.srclang).trim(),
+            kind: String(track.kind || "subtitles")
+          }))
+      : []
     }
   };
 }

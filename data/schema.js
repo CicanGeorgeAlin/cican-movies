@@ -45,11 +45,15 @@ export function normaliseMovie(value = "") {
 }
 
 export function createSource(source = {}) {
+  const provider = source.provider || "unknown";
+  const type = source.type || SOURCE_TYPES.EXTERNAL;
+  const reference = source.embedUrl || source.mediaUrl || source.url || source.name || "source";
+  const identity = Array.from(String(reference)).map(char => char.codePointAt(0).toString(16)).join("");
   return {
-    id: source.id || (source.provider || "unknown") + "-" + (source.type || SOURCE_TYPES.EXTERNAL),
-    provider: source.provider || "unknown",
+    id: source.id || provider + "-" + type + "-" + identity,
+    provider,
     name: source.name || source.provider || "Source",
-    type: source.type || SOURCE_TYPES.EXTERNAL,
+    type,
     status: source.status || SOURCE_STATUS.REVIEW,
     embedUrl: source.embedUrl || null,
     mediaUrl: source.mediaUrl || null,

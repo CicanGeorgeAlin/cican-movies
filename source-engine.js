@@ -175,6 +175,8 @@ function mergeMovies(localMovies, remoteMovies, query) {
 }
 
 export async function resolveMovies(query, { id = null } = {}) {
+  const parsedQuery = parseQuery(query);
+  const providerQuery = parsedQuery.title || parsedQuery.normalised;
   const localMatches = catalog.filter(movie =>
     id ? movie.id === id : scoreMovie(movie, query) > 0
   );
@@ -194,7 +196,7 @@ export async function resolveMovies(query, { id = null } = {}) {
   const remoteResults = await Promise.allSettled(
     providers
       .filter(provider => provider.enabled)
-      .map(provider => provider.search(query))
+      .map(provider => provider.search(providerQuery))
   );
 
   const remoteMovies = remoteResults.flatMap(result =>

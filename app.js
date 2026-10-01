@@ -250,7 +250,7 @@ function attachMediaMemory(video) {
   const savedPosition = getSavedPosition(currentMovie);
   restoreMediaPosition(video);
 
-  if (savedPosition > 5) {
+  if (savedPosition > 5 && (!Number.isFinite(video.duration) || savedPosition < video.duration - 2)) {
     const notice = document.createElement("div");
     notice.className = "resume-notice";
     notice.innerHTML =

@@ -220,6 +220,14 @@ const movieSeeds = [
   ["The Big Lift",1950,["drama","war"],["the big lift","1950"]],
   ["La Escalinata",1950,["drama"],["la escalinata","1950"]],
   ["Timur and His Commandos",1940,["drama"],["timur and his commandos","1940"]]
+  ["Argila",1940,["drama"],["argila","1940"]],
+  ["The Pay-Off",1930,["drama"],["the pay-off","1930"]],
+  ["The Ghost That Never Returns",1930,["drama"],["the ghost that never returns","1930"]],
+  ["Lábios Sem Beijos",1930,["drama"],["lábios sem beijos","1930"]],
+  ["The Unholy Three (Remake)",1930,["drama"],["the unholy three (remake)","1930"]],
+  ["The Return of Dr Fu Manchu",1930,["drama"],["the return of dr fu manchu","1930"]],
+  ["Mammy",1930,["drama"],["mammy","1930"]],
+  ["The Phantom Empire",1940,["drama"],["the phantom empire","1940"]],
 ];
 
 
@@ -464,7 +472,15 @@ const TEST_SOURCES = {
   "Woman on the Run": { durationSeconds: 4713, posterUrl: commonsThumb("Woman On The Run 1950.webm"), mediaUrl: commonsMedia("Woman On The Run 1950.webm") },
   "The Big Lift": { durationSeconds: 5660, posterUrl: commonsThumb("The Big Lift (1950).webm"), mediaUrl: commonsMedia("The Big Lift (1950).webm") },
   "La Escalinata": { durationSeconds: 4428, posterUrl: commonsThumb("La Escalinata (1950).webm"), mediaUrl: commonsMedia("La Escalinata (1950).webm") },
-  "Timur and His Commandos": { durationSeconds: 5400, posterUrl: commonsThumb("1940 Тимур и его команда.webm"), mediaUrl: commonsMedia("1940 Тимур и его команда.webm") }
+  "Timur and His Commandos": { durationSeconds: 5400, posterUrl: commonsThumb("1940 Тимур и его команда.webm"), mediaUrl: commonsMedia("1940 Тимур и его команда.webm") },
+  "Argila": { durationSeconds: 5561, posterUrl: commonsThumb("Argila (1940).webm"), mediaUrl: commonsMedia("Argila (1940).webm") },
+  "The Pay-Off": { durationSeconds: 4230, posterUrl: commonsThumb("The Pay Off - (1930, movie).webm"), mediaUrl: commonsMedia("The Pay Off - (1930, movie).webm") },
+  "The Ghost That Never Returns": { durationSeconds: 5632, posterUrl: commonsThumb("Prividenie Kotoroe Ne Vozvrashchaetsya - The Ghost That Never Returns (1930) by Abram Room.webm"), mediaUrl: commonsMedia("Prividenie Kotoroe Ne Vozvrashchaetsya - The Ghost That Never Returns (1930) by Abram Room.webm") },
+  "Lábios Sem Beijos": { durationSeconds: 4349, posterUrl: commonsThumb("Lábios Sem Beijos (1930).webm"), mediaUrl: commonsMedia("Lábios Sem Beijos (1930).webm") },
+  "The Unholy Three (Remake)": { durationSeconds: 4299, posterUrl: commonsThumb("The Unholy Three (Remake) 1930.webm"), mediaUrl: commonsMedia("The Unholy Three (Remake) 1930.webm") },
+  "The Return of Dr Fu Manchu": { durationSeconds: 4394, posterUrl: commonsThumb("The Return of Dr Fu Manchu (1930).webm"), mediaUrl: commonsMedia("The Return of Dr Fu Manchu (1930).webm") },
+  "Mammy": { durationSeconds: 5414, posterUrl: commonsThumb("Mammy 1930.webm"), mediaUrl: commonsMedia("Mammy 1930.webm") },
+  "The Phantom Empire": { durationSeconds: 4145, posterUrl: commonsThumb("The Phantom Empire 1940.ogv"), mediaUrl: commonsMedia("The Phantom Empire 1940.ogv") },
 };
 
 

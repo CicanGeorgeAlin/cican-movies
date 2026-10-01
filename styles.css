@@ -595,3 +595,126 @@ a{text-decoration:none}
 @media(min-width:851px){
   .results{grid-template-columns:repeat(4,minmax(0,1fr));}
 }
+
+
+/* Movie-first landing refinement */
+.hero{
+  padding-top:clamp(64px,11vh,112px);
+  padding-bottom:54px;
+}
+.hero .eyebrow{
+  color:#aaa;
+  letter-spacing:.42em;
+}
+.hero h1{
+  font-size:clamp(2.5rem,7vw,5.6rem);
+  margin-top:14px;
+  margin-bottom:18px;
+  letter-spacing:-.055em;
+}
+.hero-intro{
+  max-width:30rem;
+  margin:0 auto 24px;
+  line-height:1.6;
+}
+.search-toggle{
+  border:1px solid #292929;
+  background:#070707;
+  color:#aaa;
+  padding:11px 17px;
+  font-size:.62rem;
+  font-weight:800;
+  letter-spacing:.16em;
+  transition:.18s ease;
+}
+.search-toggle:hover,
+.search-toggle[aria-expanded="true"]{
+  border-color:#777;
+  color:#fff;
+  background:#0c0c0c;
+}
+.search-box[hidden]{
+  display:none;
+}
+.search-box{
+  margin-top:12px;
+  max-width:680px;
+}
+.alphabet-wrap{
+  margin-top:46px;
+  padding-top:24px;
+  border-top:1px solid #151515;
+}
+.alphabet-label{
+  display:block;
+  color:#666;
+  font-size:.58rem;
+  font-weight:800;
+  letter-spacing:.28em;
+}
+.alphabet{
+  margin-top:14px;
+  gap:4px;
+}
+.alphabet-button{
+  width:32px;
+  height:32px;
+  border-color:#1b1b1b;
+  color:#666;
+  background:#030303;
+}
+.alphabet-button:hover{
+  border-color:#777;
+  color:#fff;
+}
+.alphabet-button.active{
+  background:#fff;
+  color:#000;
+  border-color:#fff;
+  box-shadow:0 0 22px rgba(255,255,255,.1);
+}
+.results{
+  margin-top:10px;
+}
+.results::before{
+  content:none;
+}
+.results:has(.result-card)::before{
+  content:"AVAILABLE MOVIES";
+  display:block;
+  grid-column:1/-1;
+  color:#555;
+  font-size:.58rem;
+  font-weight:800;
+  letter-spacing:.24em;
+}
+.result-card{
+  border-color:#191919;
+  background:#050505;
+}
+.result-card:hover{
+  border-color:#555;
+  box-shadow:0 16px 45px rgba(0,0,0,.45);
+}
+@media(max-width:600px){
+  .hero{
+    padding-top:48px;
+    padding-bottom:38px;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem,12vw,4rem);
+  }
+  .alphabet-wrap{
+    margin-top:38px;
+    padding-top:20px;
+  }
+  .alphabet{
+    justify-content:flex-start;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    scrollbar-width:none;
+    padding:2px 1px 6px;
+  }
+  .alphabet::-webkit-scrollbar{display:none}
+  .alphabet-button{flex:0 0 auto}
+}

@@ -82,7 +82,11 @@ function identitySimilarity(a, b) {
   const jaccard = union ? intersection / union : 0;
 
   if (jaccard < 0.75) return 0;
-  if (a.year && b.year && String(a.year) !== String(b.year)) return 0;
+  if (a.year && b.year) {
+    const ay = Number.parseInt(String(a.year).slice(0, 4), 10);
+    const by = Number.parseInt(String(b.year).slice(0, 4), 10);
+    if (Number.isFinite(ay) && Number.isFinite(by) && ay !== by) return 0;
+  }
   return jaccard;
 }
 

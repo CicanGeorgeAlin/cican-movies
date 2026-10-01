@@ -193,7 +193,6 @@ function loadSource(source) {
   const index = currentSources.findIndex(item => item.id === source.id);
   currentSourceIndex = index;
   currentSource = source;
-  saveLastSource(currentMovie, source);
 
   if (source.type === "embed") return loadEmbed(source);
   if (source.type === "media") return loadMedia(source);
@@ -330,6 +329,7 @@ function loadEmbed(source) {
     'allowfullscreen></iframe>';
 
   const frame = playerStage.querySelector("iframe");
+  frame?.addEventListener("load", () => saveLastSource(currentMovie, source));
   frame?.addEventListener("error", () => showPlaybackFallback("This embedded source failed to load."));
 }
 
@@ -344,6 +344,7 @@ function loadMedia(source) {
   const video = playerStage.querySelector("video");
   if (video) {
     attachMediaMemory(video);
+    video.addEventListener("loadeddata", () => saveLastSource(currentMovie, source));
     video.addEventListener("error", () => showPlaybackFallback("This media source failed to load."));
   }
 }

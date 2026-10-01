@@ -1,4 +1,4 @@
-import { createMovie, createSource, isFeatureMovie, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
+import { createMovie, createSource, isFeatureMovie, parseDurationSeconds, RIGHTS_STATUS, SOURCE_STATUS, SOURCE_TYPES } from "../data/schema.js";
 
 const API_URL = "https://commons.wikimedia.org/w/api.php";
 
@@ -39,7 +39,7 @@ function toMovie(page) {
 
   const title = String(page.title || "").replace(/^File:/i, "").replace(/\.[^.]+$/, "").trim();
   const pageUrl = "https://commons.wikimedia.org/wiki/" + encodeURIComponent(String(page.title || "").replace(/ /g, "_"));
-  const durationSeconds = Number(String(info.extmetadata?.Duration?.value || "").match(/\d+(?:\.\d+)?/)?.[0] || 0);
+  const durationSeconds = parseDurationSeconds(info.extmetadata?.Duration?.value || "");
   const candidate = {
     title,
     description: info.extmetadata?.ImageDescription?.value || "",

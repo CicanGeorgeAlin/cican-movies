@@ -588,7 +588,7 @@ async function loadMedia(source, options = {}) {
       }
     });
 
-    await addSubtitleTracks(video, source);
+    addSubtitleTracks(video, source).catch(() => {});
 
     if (options.userInitiated && options.autoplay) {
       if (options.fullscreen) await requestPlayerFullscreen(video);

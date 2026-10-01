@@ -139,16 +139,11 @@ function openMovie(movie) {
 
     row.appendChild(info);
 
-    if (source.type === "embed" && source.embedUrl) {
-      const button = document.createElement("button");
-      button.className = "play-button";
-      button.textContent = failedSourceIds.has(source.id) ? "RETRY" : "PLAY";
-      button.onclick = () => {
-        failedSourceIds.delete(source.id);
-        loadSource(source);
-      };
-      row.appendChild(button);
-    } else if (source.type === "media" && source.mediaUrl) {
+    const canPlay = source.status === "ready" &&
+      ((source.type === "embed" && source.embedUrl) ||
+       (source.type === "media" && source.mediaUrl));
+
+    if (canPlay) {
       const button = document.createElement("button");
       button.className = "play-button";
       button.textContent = failedSourceIds.has(source.id) ? "RETRY" : "PLAY";
@@ -163,8 +158,13 @@ function openMovie(movie) {
       link.href = source.url;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
-      link.textContent = "OPEN SOURCE";
+      link.textContent = source.status === "ready" ? "OPEN SOURCE" : "REVIEW SOURCE";
       row.appendChild(link);
+    } else {
+      const label = document.createElement("span");
+      label.className = "source-status";
+      label.textContent = "NOT PLAYABLE";
+      row.appendChild(label);
     }
 
     sourceList.appendChild(row);

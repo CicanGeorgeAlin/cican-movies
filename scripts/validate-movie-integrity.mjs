@@ -44,7 +44,12 @@ if (!commonsInfo.thumburl) throw new Error("Wikimedia movie poster URL missing")
 const commonsPoster = await fetch(commonsInfo.thumburl, { method: "HEAD" });
 if (!commonsPoster.ok) throw new Error("Wikimedia movie poster failed: " + commonsPoster.status);
 
-const locResponse = await fetch("https://www.loc.gov/item/90716884/?fo=json");
+const locResponse = await fetch("https://www.loc.gov/item/90716884/?fo=json", {
+  headers: {
+    "User-Agent": "CICAN-MOVIES-integrity/1.0 (+https://github.com/CicanGeorgeAlin/cican-movies)",
+    "Accept": "application/json"
+  }
+});
 if (!locResponse.ok) throw new Error("Library of Congress movie endpoint failed: " + locResponse.status);
 const loc = await locResponse.json();
 const locItem = loc.item || loc;

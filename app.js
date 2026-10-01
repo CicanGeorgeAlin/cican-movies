@@ -73,6 +73,7 @@ function renderResults(items, query) {
 
 function openMovie(movie) {
   currentMovie = movie;
+  currentSource = null;
   playerTitle.textContent = movie.title;
   playerStage.innerHTML =
     '<div class="player-empty"><div class="play-orb">▶</div>' +
@@ -128,6 +129,7 @@ function openMovie(movie) {
 }
 
 function loadEmbed(source) {
+  currentSource = source;
   playerStage.innerHTML =
     '<iframe src="' + escapeAttribute(source.embedUrl) +
     '" title="' + escapeAttribute(currentMovie.title) +
@@ -136,6 +138,7 @@ function loadEmbed(source) {
 }
 
 function loadMedia(source) {
+  currentSource = source;
   playerStage.innerHTML =
     '<video controls playsinline preload="metadata" src="' +
     escapeAttribute(source.mediaUrl) + '">' +
@@ -147,11 +150,92 @@ function setSearchStatus(message = "") {
   searchStatus.textContent = message;
 }
 
-async function shareCurrentVideo() {\n  if (!currentMovie) return;\n  const url = new URL(window.location.href);\n  url.searchParams.set("watch", currentMovie.id);\n  const shareData = { title: currentMovie.title, text: "Watch " + currentMovie.title + " on CICAN", url: url.toString() };\n\n  try {\n    if (navigator.share) {\n      await navigator.share(shareData);\n    } else if (navigator.clipboard?.writeText) {\n      await navigator.clipboard.writeText(url.toString());\n      setSearchStatus("CICAN video link copied.");\n    }\n  } catch (error) {\n    if (error?.name !== "AbortError") console.error(error);\n  }\n}\n\nasync function toggleFullscreen() {\n  try {\n    if (document.fullscreenElement) {\n      await document.exitFullscreen();\n      return;\n    }\n    await playerStage.requestFullscreen?.();\n  } catch (error) {\n    console.error(error);\n  }\n}\n\nfunction setupVoiceSearch() {\n  if (!voiceButton) return;\n  if (!isVoiceSearchSupported()) {\n    voiceButton.hidden = true;\n    return;\n  }\n\n  voiceRecognition = createVoiceSearch({\n    onStart: () => {\n      voiceButton.classList.add("listening");\n      voiceButton.textContent = "●";\n      setSearchStatus("Listening… speak your video search.");\n    },\n    onEnd: () => {\n      voiceButton.classList.remove("listening");\n      voiceButton.textContent = "🎙";\n    },\n    onError: error => {\n      setSearchStatus(error === "not-allowed" ? "Microphone permission is required for voice search." : "Voice search is unavailable. Try typing instead.");\n    },\n    onResult: transcript => {\n      input.value = transcript;\n      form.requestSubmit();\n    }\n  });\n\n  voiceButton.addEventListener("click", () => {\n    try {\n      voiceRecognition?.start();\n    } catch (error) {\n      if (error.name !== "InvalidStateError") console.error(error);\n    }\n  });\n}\n\nshareButton?.addEventListener("click", shareCurrentVideo);\nfullscreenButton?.addEventListener("click", toggleFullscreen);\nsetupVoiceSearch();\n\nbackButton.onclick = () => {
+async function shareCurrentVideo() {
+  if (!currentMovie) return;
+
+  const url = new URL(window.location.href);
+  url.searchParams.set("watch", currentMovie.id);
+
+  const shareData = {
+    title: currentMovie.title,
+    text: "Watch " + currentMovie.title + " on CICAN",
+    url: url.toString()
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url.toString());
+      setSearchStatus("CICAN video link copied.");
+    }
+  } catch (error) {
+    if (error?.name !== "AbortError") console.error(error);
+  }
+}
+
+async function toggleFullscreen() {
+  try {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen();
+      return;
+    }
+    await playerStage.requestFullscreen?.();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function setupVoiceSearch() {
+  if (!voiceButton) return;
+
+  if (!isVoiceSearchSupported()) {
+    voiceButton.hidden = true;
+    return;
+  }
+
+  voiceRecognition = createVoiceSearch({
+    onStart: () => {
+      voiceButton.classList.add("listening");
+      voiceButton.textContent = "●";
+      setSearchStatus("Listening… speak your video search.");
+    },
+    onEnd: () => {
+      voiceButton.classList.remove("listening");
+      voiceButton.textContent = "🎙";
+    },
+    onError: error => {
+      setSearchStatus(
+        error === "not-allowed"
+          ? "Microphone permission is required for voice search."
+          : "Voice search is unavailable. Try typing instead."
+      );
+    },
+    onResult: transcript => {
+      input.value = transcript;
+      form.requestSubmit();
+    }
+  });
+
+  voiceButton.addEventListener("click", () => {
+    try {
+      voiceRecognition?.start();
+    } catch (error) {
+      if (error.name !== "InvalidStateError") console.error(error);
+    }
+  });
+}
+
+shareButton?.addEventListener("click", shareCurrentVideo);
+fullscreenButton?.addEventListener("click", toggleFullscreen);
+setupVoiceSearch();
+
+backButton.onclick = () => {
   playerView.hidden = true;
   results.hidden = false;
   playerStage.innerHTML = "";
-  currentMovie = null;\n  currentSource = null;
+  currentMovie = null;
+  currentSource = null;
   window.scrollTo({ top: results.offsetTop - 20, behavior: "smooth" });
 };
 
@@ -183,3 +267,13 @@ form.addEventListener("submit", async event => {
 
   results.scrollIntoView({ behavior: "smooth", block: "start" });
 });
+
+const initialWatchId = new URLSearchParams(window.location.search).get("watch");
+if (initialWatchId) {
+  resolveMovies(initialWatchId)
+    .then(items => {
+      const movie = items.find(item => item.id === initialWatchId);
+      if (movie) openMovie(movie);
+    })
+    .catch(() => {});
+}

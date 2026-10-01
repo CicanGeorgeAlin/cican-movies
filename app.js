@@ -168,7 +168,15 @@ function playableSources(movie) {
 }
 
 function showPlaybackFallback(message = "This source could not be played.") {
-  if (currentSource?.id) failedSourceIds.add(currentSource.id);
+  const failedSource = currentSource;
+  if (failedSource?.id) failedSourceIds.add(failedSource.id);
+
+  const video = playerStage.querySelector("video");
+  if (video && currentMovie && video.currentTime > 0 && !video.ended) {
+    savePosition(currentMovie, video.currentTime, video.duration);
+  }
+
+  currentSource = null;
   const remaining = currentSources.slice(currentSourceIndex + 1)
     .filter(source => !failedSourceIds.has(source.id));
   playerStage.innerHTML =

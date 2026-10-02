@@ -41,24 +41,6 @@ a{text-decoration:none}
 .player-stage{position:relative}
 .player-empty{text-align:center;color:#666}
 .play-orb{font-size:2rem;color:#fff;margin-bottom:10px}
-.subtitle-controls label{
-  color:#aaa;
-  font-size:.58rem;
-  font-weight:800;
-  letter-spacing:.12em;
-}
-.subtitle-select{
-  min-width:120px;
-  border:1px solid #444;
-  background:#050505;
-  color:#fff;
-  padding:6px 8px;
-  font-size:.65rem;
-}
-.subtitle-select:focus-visible{
-  outline:2px solid #fff;
-  outline-offset:2px;
-}
 
 .source-list{display:grid;gap:8px;margin-top:12px}
 .source-row{display:flex;justify-content:space-between;align-items:center;gap:15px;border-bottom:1px solid #171717;padding:13px 2px}
@@ -173,12 +155,7 @@ a{text-decoration:none}
   }
   .category-picker::-webkit-scrollbar{display:none}
   .category-button{flex:0 0 auto}
-  .fullscreen-exit{
-    top:max(12px,env(safe-area-inset-top));
-    right:12px;
-  }
-}
-
+  
 
 .category-button{
   position:relative;

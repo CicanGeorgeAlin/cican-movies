@@ -270,6 +270,11 @@ const movieSeeds = [
   ["Strike",1925,["drama","silent"],["strike","stachka","сергей эйзенштейн","1925"]],
   ["Twilight of a Woman's Soul",1913,["drama","silent"],["twilight of a woman's soul","сумерки женской души","yevgene bauer","1913"]],
   ["Defence of Sevastopol",1911,["war","drama","silent"],["defence of sevastopol","оборона севастополя","1911"]],
+  ["Helena",1924,["drama","silent"],["helena","helena trojańska","manfred noa","1924"]],
+  ["Das Wachsfigurenkabinett",1924,["horror","silent"],["das wachsfigurenkabinett","waxworks","paul leni","1924"]],
+  ["Der Kaufmann von Venedig",1923,["drama","silent"],["der kaufmann von venedig","merchant of venice","peter paul felner","1923"]],
+  ["Crainquebille",1922,["drama","silent"],["crainquebille","jacques feyder","1922"]],
+  ["Die Flamme",1923,["drama","silent"],["die flamme","the flame","ernst lubitsch","1923"]],
 ];
 
 
@@ -402,9 +407,12 @@ const PLAYABLE_CATALOG = {
   "Strike": { durationSeconds: 5276, posterUrl: commonsThumb("Strike (1925).webm"), mediaUrl: commonsMedia("Strike (1925).webm") },
   "Twilight of a Woman's Soul": { durationSeconds: 2918, posterUrl: commonsThumb("Twilight of a Woman's Soul (1913).webm"), mediaUrl: commonsMedia("Twilight of a Woman's Soul (1913).webm") },
   "Defence of Sevastopol": { durationSeconds: 2215, posterUrl: commonsThumb("Defence of Sevastopol.webm"), mediaUrl: commonsMedia("Defence of Sevastopol.webm") },
-};
 
-
+  "Helena": { durationSeconds: 13058, posterUrl: commonsThumb("Helena (1924).webm"), mediaUrl: commonsMedia("Helena (1924).webm") },
+  "Das Wachsfigurenkabinett": { durationSeconds: 4792, posterUrl: commonsThumb("Das Wachsfigurenkabinett (1924).webm"), mediaUrl: commonsMedia("Das Wachsfigurenkabinett (1924).webm") },
+  "Der Kaufmann von Venedig": { durationSeconds: 5159, posterUrl: commonsThumb("Der Kaufmann von Venedig (1923).webm"), mediaUrl: commonsMedia("Der Kaufmann von Venedig (1923).webm") },
+  "Crainquebille": { durationSeconds: 4522, posterUrl: commonsThumb("Crainquebille (1922).webm"), mediaUrl: commonsMedia("Crainquebille (1922).webm") },
+  "Die Flamme": { durationSeconds: 2570, posterUrl: commonsThumb("Die Flamme (1923).webm"), mediaUrl: commonsMedia("Die Flamme (1923).webm") },
 const TEST_SOURCES = {
   "All Quiet on the Western Front": [createSource({
     id: "commons-all-quiet-1930",
@@ -641,7 +649,12 @@ const MOVIE_LANGUAGES = Object.freeze({
   "My Home Village": "ko",
   "Strike": "ru",
   "Twilight of a Woman's Soul": "ru",
-  "Defence of Sevastopol": "ru"
+  "Defence of Sevastopol": "ru",
+  "Helena": "de",
+  "Das Wachsfigurenkabinett": "de",
+  "Der Kaufmann von Venedig": "de",
+  "Crainquebille": "fr",
+  "Die Flamme": "de"
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

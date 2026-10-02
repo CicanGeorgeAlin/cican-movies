@@ -303,6 +303,11 @@ const movieSeeds = [
   ["Speedy",1928,["comedy","silent"],["speedy","harold lloyd","ted wilde","1928"]],
   ["Ella Cinders",1926,["comedy","silent"],["ella cinders","1926"]],
   ["The Virginian",1923,["western","drama","silent"],["the virginian","1923"]],
+  ["Saturday Night",1922,["comedy","romance","silent"],["saturday night","cecil b demille","leatrice joy","1922"]],
+  ["The World and Its Women",1919,["drama","silent"],["the world and its women","the world and its woman","1919"]],
+  ["The Greatest Question",1919,["drama","silent"],["the greatest question","d w griffith","lillian gish","1919"]],
+  ["The Hoodlum",1919,["comedy","drama","silent"],["the hoodlum","mary pickford","1919"]],
+  ["A Tale of Two Cities",1917,["drama","history","silent"],["a tale of two cities","tale of two cities","frank lloyd","1917"]],
   ["Just Pals",1920,["western","silent"],["just pals","john ford","1920"]],
   ["The Flapper",1920,["comedy","romance","silent"],["the flapper","olive thomas","alan crosland","1920"]],
   ["Heading Home",1920,["comedy","drama","silent"],["heading home","headin home","babe ruth","1920"]],
@@ -323,6 +328,11 @@ function commonsThumb(fileName) {
 
 const PLAYABLE_CATALOG = {
   "West of Zanzibar": { durationSeconds: 3888, posterUrl: commonsThumb("West of Zanzibar (1928).webm"), mediaUrl: commonsMedia("West of Zanzibar (1928).webm") },
+  "Saturday Night": { durationSeconds: 7771, posterUrl: commonsThumb("Saturday night (1922).webm"), mediaUrl: commonsMedia("Saturday night (1922).webm") },
+  "The World and Its Women": { durationSeconds: 5564, posterUrl: commonsThumb("The World and Its Women (1919).webm"), mediaUrl: commonsMedia("The World and Its Women (1919).webm") },
+  "The Greatest Question": { durationSeconds: 4858, posterUrl: commonsThumb("The Greatest Question (1919).webm"), mediaUrl: commonsMedia("The Greatest Question (1919).webm") },
+  "The Hoodlum": { durationSeconds: 4958, posterUrl: commonsThumb("The Hoodlum (1919).webm"), mediaUrl: commonsMedia("The Hoodlum (1919).webm") },
+  "A Tale of Two Cities": { durationSeconds: 4817, posterUrl: commonsThumb("Tale of Two Cities (1917).webm"), mediaUrl: commonsMedia("Tale of Two Cities (1917).webm") },
   "Just Pals": { durationSeconds: 2982, posterUrl: commonsThumb("Just Pals (1920).webm"), mediaUrl: commonsMedia("Just Pals (1920).webm") },
   "The Flapper": { durationSeconds: 5128, posterUrl: commonsThumb("The Flapper (1920).webm"), mediaUrl: commonsMedia("The Flapper (1920).webm") },
   "Heading Home": { durationSeconds: 3321, posterUrl: commonsThumb("Heading Home(1920).webm"), mediaUrl: commonsMedia("Heading Home(1920).webm") },
@@ -679,6 +689,11 @@ for (const [title, item] of Object.entries(PLAYABLE_CATALOG)) {
 
 
 const MOVIE_LANGUAGES = Object.freeze({
+  "Saturday Night": "en",
+  "The World and Its Women": "en",
+  "The Greatest Question": "en",
+  "The Hoodlum": "en",
+  "A Tale of Two Cities": "en",
   "Just Pals": "en",
   "The Flapper": "en",
   "Heading Home": "en",

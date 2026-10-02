@@ -574,14 +574,12 @@ function buildVideoControls(video) {
   controls.innerHTML =
     '<button type="button" class="cican-center-play" aria-label="Play movie">▶</button>' +
     '<div class="cican-control-bar">' +
-      '<button type="button" class="cican-control-play" aria-label="Play movie">▶</button>' +
       '<input class="cican-seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Movie timeline">' +
       '<span class="cican-time">0:00 / 0:00</span>' +
       '<button type="button" class="cican-control-fullscreen" aria-label="Enter fullscreen">⛶</button>' +
     '</div>';
 
   const centerPlay = controls.querySelector(".cican-center-play");
-  const play = controls.querySelector(".cican-control-play");
   const seek = controls.querySelector(".cican-seek");
   const time = controls.querySelector(".cican-time");
   const fullscreen = controls.querySelector(".cican-control-fullscreen");
@@ -593,8 +591,6 @@ function buildVideoControls(video) {
     seek.value = hasDuration ? String(Math.round((current / duration) * 1000)) : "0";
     time.textContent = formatPlayerTime(current) + " / " + formatPlayerTime(duration);
     const paused = video.paused || video.ended;
-    play.textContent = paused ? "▶" : "❚❚";
-    play.setAttribute("aria-label", paused ? "Play movie" : "Pause movie");
     centerPlay.textContent = paused ? "▶" : "❚❚";
     centerPlay.classList.toggle("visible", paused);
     fullscreen.textContent = isFullscreenActive() ? "×" : "⛶";
@@ -614,7 +610,6 @@ function buildVideoControls(video) {
   };
 
   centerPlay.addEventListener("click", togglePlay);
-  play.addEventListener("click", togglePlay);
 
   seek.addEventListener("input", () => {
     const duration = Number(video.duration);

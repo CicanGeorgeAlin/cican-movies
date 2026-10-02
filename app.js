@@ -584,6 +584,7 @@ function buildVideoControls(video) {
     window.clearTimeout(hideTimer);
     if (!video.paused && !video.ended && !interacting) {
       hideTimer = window.setTimeout(() => {
+        hideTimer = null;
         if (!video.paused && !video.ended && !interacting) {
           controls.classList.add("auto-hidden");
         }
@@ -605,7 +606,7 @@ function buildVideoControls(video) {
     if (paused) {
       controls.classList.remove("auto-hidden");
       window.clearTimeout(hideTimer);
-    } else if (!interacting) {
+    } else if (!interacting && !controls.classList.contains("auto-hidden") && !hideTimer) {
       showControls();
     }
   };

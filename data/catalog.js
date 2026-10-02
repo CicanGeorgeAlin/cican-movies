@@ -322,6 +322,7 @@ const movieSeeds = [
   ["Salome",1923,["drama","silent"],["salome","charles bryant","1923"]],
   ["Ashes of Vengeance",1923,["drama","history","silent"],["ashes of vengeance","frank lloyd","1923"]],
   ["Tiger Rose",1923,["drama","silent"],["tiger rose","sidney franklin","1923"]],
+  ["The Ten Commandments",1923,["drama","history","silent"],["the ten commandments","cecil b demille","1923"]],
 ];
 
 
@@ -689,6 +690,10 @@ const TEST_SOURCES = {
   "Salome": { durationSeconds: 4333, posterUrl: commonsThumb("Salome (1923).webm"), mediaUrl: commonsMedia("Salome (1923).webm") },
   "Ashes of Vengeance": { durationSeconds: 6316, posterUrl: commonsThumb("Ashes of Vengeance (1923).webm"), mediaUrl: commonsMedia("Ashes of Vengeance (1923).webm") },
   "Tiger Rose": { durationSeconds: 3644, posterUrl: commonsThumb("Tiger Rose (1923).webm"), mediaUrl: commonsMedia("Tiger Rose (1923).webm") },
+  "The Sea Hawk": { durationSeconds: 7364, posterUrl: commonsThumb("The Sea Hawk (1924).webm"), mediaUrl: commonsMedia("The Sea Hawk (1924).webm") },
+  "The Cat and the Canary": { durationSeconds: 5039, posterUrl: commonsThumb("The Cat and the Canary (1927).webm"), mediaUrl: commonsMedia("The Cat and the Canary (1927).webm") },
+  "The Phantom of the Opera": { durationSeconds: 5475, posterUrl: commonsThumb("The Phantom of the Opera (1925).webm"), mediaUrl: commonsMedia("The Phantom of the Opera (1925).webm") },
+  "The Ten Commandments": { durationSeconds: 8172, posterUrl: commonsThumb("The Ten Commandments (1923).webm"), mediaUrl: commonsMedia("The Ten Commandments (1923).webm") },
 };
 
 
@@ -789,6 +794,10 @@ const MOVIE_LANGUAGES = Object.freeze({
   "Salome": "en",
   "Ashes of Vengeance": "en",
   "Tiger Rose": "en",
+  "The Sea Hawk": "en",
+  "The Cat and the Canary": "en",
+  "The Phantom of the Opera": "en",
+  "The Ten Commandments": "en",
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

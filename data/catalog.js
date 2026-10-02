@@ -327,6 +327,9 @@ const movieSeeds = [
   ["La Belle Nivernaise",1924,["drama","silent"],["la belle nivernaise","the beauty from nivernais","jean epstein","1924"]],
   ["3 Bad Men",1926,["western","drama","silent"],["3 bad men","three bad men","john ford","1926"]],
   ["East Side, West Side",1927,["drama","silent"],["east side west side","east side, west side","allan dwan","1927"]],
+  ["The Saphead",1920,["comedy","silent"],["the saphead","buster keaton","1920"]],
+  ["America (1924)",1924,["drama","silent"],["america","america 1924","d w griffith","1924"]],
+  ["Reaching for the Moon (1930)",1930,["comedy","romance"],["reaching for the moon","1930","edmund goulding"]],
 ];
 
 
@@ -702,6 +705,12 @@ const TEST_SOURCES = {
   "La Belle Nivernaise": { durationSeconds: 4604, posterUrl: commonsThumb("La Belle Nivernaise (1924) by Jean Epstein.webm"), mediaUrl: commonsMedia("La Belle Nivernaise (1924) by Jean Epstein.webm") },
   "3 Bad Men": { durationSeconds: 5522, posterUrl: commonsThumb("3 Bad Men 1926 George O'Brien, Olive Borden, Lou Tellegen Western Silent Movie.webm"), mediaUrl: commonsMedia("3 Bad Men 1926 George O'Brien, Olive Borden, Lou Tellegen Western Silent Movie.webm") },
   "East Side, West Side": { durationSeconds: 5454, posterUrl: commonsThumb("East Side, West Side (1927).webm"), mediaUrl: commonsMedia("East Side, West Side (1927).webm") },
+  "The Saphead": { durationSeconds: 4615, posterUrl: commonsThumb("The Saphead (1920).webm"), mediaUrl: commonsMedia("The Saphead (1920).webm") },
+  "America (1924)": { durationSeconds: 8384, posterUrl: commonsThumb("America (1924).webm"), mediaUrl: commonsMedia("America (1924).webm") },
+  "Reaching for the Moon (1930)": { durationSeconds: 3979, posterUrl: commonsThumb("Reaching for the Moon (1930).webm"), mediaUrl: commonsMedia("Reaching for the Moon (1930).webm") },
+  "Soup to Nuts": { durationSeconds: 4115, posterUrl: commonsThumb("Soup to Nuts (1930).webm"), mediaUrl: commonsMedia("Soup to Nuts (1930).webm") },
+  "El presidio": { durationSeconds: 5290, posterUrl: commonsThumb("El presidio (1930).webm"), mediaUrl: commonsMedia("El presidio (1930).webm") },
+  "Just Imagine": { durationSeconds: 6491, posterUrl: commonsThumb("Just Imagine (1930).webm"), mediaUrl: commonsMedia("Just Imagine (1930).webm") },
 };
 
 
@@ -810,6 +819,12 @@ const MOVIE_LANGUAGES = Object.freeze({
   "La Belle Nivernaise": "fr",
   "3 Bad Men": "en",
   "East Side, West Side": "en",
+  "The Saphead": "en",
+  "America (1924)": "en",
+  "Reaching for the Moon (1930)": "en",
+  "Soup to Nuts": "en",
+  "El presidio": "es",
+  "Just Imagine": "en",
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

@@ -263,6 +263,15 @@ const movieSeeds = [
   ["The Goddess",1934,["drama","silent"],["the goddess","shen nu","1934","chinese film"]],
   ["Der weiße Teufel",1930,["drama","silent"],["der weiße teufel","the white devil","1930","german film"]],
   ["Faust",1926,["drama","fantasy","silent"],["faust","1926","f w murnau","german film"]],
+  ["The Squaw Man",1914,["western","drama","silent"],["the squaw man","le mari de l'indienne","cecil b de mille","1914"]],
+  ["The Italian",1915,["drama","silent"],["the italian","reginald barker","1915"]],
+  ["King of Paris",1917,["drama","silent"],["king of paris","korol parizha","yevgene bauer","1917"]],
+  ["Straight Shooting",1917,["western","silent"],["straight shooting","john ford","1917"]],
+  ["The Student of Prague",1913,["horror","drama","silent"],["the student of prague","der student von prag","1913"]],
+  ["Merry-Go-Round",1923,["drama","silent"],["merry-go-round","erich von stroheim","1923"]],
+  ["Don Juan",1926,["romance","drama"],["don juan","john barrymore","1926"]],
+  ["Reefer Madness",1936,["drama"],["reefer madness","tell your children","1936"]],
+  ["My Home Village",1949,["drama"],["my home village","nae gohyang","내 고향","1949","korean film"]],
 ];
 
 
@@ -555,6 +564,15 @@ const TEST_SOURCES = {
   "The Return of Dr Fu Manchu": { durationSeconds: 4394, posterUrl: commonsThumb("The Return of Dr Fu Manchu (1930).webm"), mediaUrl: commonsMedia("The Return of Dr Fu Manchu (1930).webm") },
   "Mammy": { durationSeconds: 5414, posterUrl: commonsThumb("Mammy 1930.webm"), mediaUrl: commonsMedia("Mammy 1930.webm") },
   "The Phantom Empire": { durationSeconds: 4145, posterUrl: commonsThumb("The Phantom Empire 1940.ogv"), mediaUrl: commonsMedia("The Phantom Empire 1940.ogv") },
+  "The Squaw Man": { durationSeconds: 4348, posterUrl: commonsThumb("The Squaw Man (1914).webm"), mediaUrl: commonsMedia("The Squaw Man (1914).webm") },
+  "The Italian": { durationSeconds: 4448, posterUrl: commonsThumb("The Italian (1915).webm"), mediaUrl: commonsMedia("The Italian (1915).webm") },
+  "King of Paris": { durationSeconds: 3711, posterUrl: commonsThumb("King of Paris (1917).webm"), mediaUrl: commonsMedia("King of Paris (1917).webm") },
+  "Straight Shooting": { durationSeconds: 7992, posterUrl: commonsThumb("Straight Shooting (1917) - Long version.webm"), mediaUrl: commonsMedia("Straight Shooting (1917) - Long version.webm") },
+  "The Student of Prague": { durationSeconds: 2461, posterUrl: commonsThumb("The Student of Prague (1913).webm"), mediaUrl: commonsMedia("The Student of Prague (1913).webm") },
+  "Merry-Go-Round": { durationSeconds: 6749, posterUrl: commonsThumb("Merry-Go-Round (1923).webm"), mediaUrl: commonsMedia("Merry-Go-Round (1923).webm") },
+  "Don Juan": { durationSeconds: 6778, posterUrl: commonsThumb("Don Juan (1926) - 16mm - Flat - Sound.webm"), mediaUrl: commonsMedia("Don Juan (1926) - 16mm - Flat - Sound.webm") },
+  "Reefer Madness": { durationSeconds: 4096, posterUrl: commonsThumb("Reefer Madness.webm"), mediaUrl: commonsMedia("Reefer Madness.webm") },
+  "My Home Village": { durationSeconds: 5450, posterUrl: commonsThumb("My Home Village (1949).webm"), mediaUrl: commonsMedia("My Home Village (1949).webm") },
 };
 
 
@@ -593,7 +611,16 @@ const MOVIE_LANGUAGES = Object.freeze({
   "Days of Youth": "ja",
   "The Goddess": "zh",
   "Der weiße Teufel": "de",
-  "Faust": "de"
+  "Faust": "de",
+  "The Squaw Man": "en",
+  "The Italian": "en",
+  "King of Paris": "ru",
+  "Straight Shooting": "en",
+  "The Student of Prague": "de",
+  "Merry-Go-Round": "en",
+  "Don Juan": "en",
+  "Reefer Madness": "en",
+  "My Home Village": "ko"
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

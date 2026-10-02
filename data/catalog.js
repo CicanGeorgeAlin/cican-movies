@@ -345,7 +345,8 @@ const movieSeeds = [
   ["The Quiet One",1948,["drama","documentary"],["the quiet one","sidney meyers","1948"]],
   ["Life with Father",1947,["comedy","family"],["life with father","michael curtiz","1947"]],
   ["White Fang",1946,["adventure","family"],["white fang","alexander zguridi","1946","белый клык"]],
-  ["My Favorite Brunette",1947,["comedy","mystery"],["my favorite brunette","elliott nugent","1947"]]
+  ["My Favorite Brunette",1947,["comedy","mystery"],["my favorite brunette","elliott nugent","1947"]],
+  ["Till the Clouds Roll By",1946,["musical","biographical"],["till the clouds roll by","richard whorf","1946"]],
   ["Aabroo",1943,["drama","hindi"],["aabroo","govind ram","1943"]],
   ["City Without Men",1943,["drama"],["city without men","sidney salkow","1943"]],
   ["Жди меня",1943,["war","drama","russian"],["zhdi menya","wait for me","1943"]],

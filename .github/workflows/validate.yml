@@ -16,3 +16,5 @@ jobs:
             xargs -0 -n1 node --check
       - name: Validate movie filtering and representative playback sources
         run: node scripts/validate-movie-integrity.mjs
+      - name: Validate player and subtitle architecture
+        run: node scripts/validate-player.mjs

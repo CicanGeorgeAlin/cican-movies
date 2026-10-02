@@ -109,7 +109,7 @@ async function discoverWikimediaSubtitles(source) {
       return pages.map(page => {
         const title = String(page.title || "");
         const suffix = title.slice(("TimedText:" + fileName + ".").length);
-        const languageMatch = suffix.match(/^([a-z]{2,3}(?:-[A-Z]{2})?)\.(?:vtt|srt)$/i);
+        const languageMatch = suffix.match(/^([a-z]{2,3}(?:-[A-Z]{2})?)\.vtt$/i);
         if (!languageMatch) return null;
         const srclang = languageMatch[1].toLowerCase();
         return {
@@ -159,12 +159,94 @@ function addFullscreenExitButton() {
   button.textContent = "×";
   button.addEventListener("click", async () => {
     try {
-      if (document.fullscreenElement) await document.exitFullscreen();
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
     } catch (error) {
       console.error(error);
     }
   });
   playerStage.appendChild(button);
+}
+
+function isFullscreenActive() {
+  return Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+}
+
+function syncFullscreenUi() {
+  const active = isFullscreenActive();
+  fullscreenButton?.setAttribute("aria-pressed", String(active));
+  fullscreenButton?.setAttribute("aria-label", active ? "Exit fullscreen" : "Enter fullscreen");
+  fullscreenButton?.setAttribute("title", active ? "Exit fullscreen" : "Enter fullscreen");
+  if (fullscreenButton) fullscreenButton.textContent = active ? "× EXIT FULLSCREEN" : "⛶ FULLSCREEN";
+  playerStage?.classList.toggle("is-fullscreen", active);
+}
+
+function installFullscreenListeners() {
+  document.addEventListener("fullscreenchange", syncFullscreenUi);
+  document.addEventListener("webkitfullscreenchange", syncFullscreenUi);
+  syncFullscreenUi();
+}
+
+function addSubtitleSelector(video, tracks) {
+  const existing = playerStage.querySelector(".subtitle-controls");
+  existing?.remove();
+  if (!tracks.length) return;
+
+  const wrap = document.createElement("div");
+  wrap.className = "subtitle-controls";
+  const label = document.createElement("label");
+  label.setAttribute("for", "subtitle-select");
+  label.textContent = "SUBTITLES";
+  const select = document.createElement("select");
+  select.id = "subtitle-select";
+  select.className = "subtitle-select";
+  select.setAttribute("aria-label", "Subtitle language");
+  select.innerHTML = '<option value="">OFF</option>' +
+    tracks.map((track, index) =>
+      '<option value="' + index + '">' + escapeHtml(track.label || languageLabel(track.srclang)) + '</option>'
+    ).join("");
+
+  select.addEventListener("change", () => {
+    const selected = select.value === "" ? -1 : Number(select.value);
+    Array.from(video.textTracks || []).forEach((textTrack, index) => {
+      textTrack.mode = index === selected ? "showing" : "disabled";
+    });
+  });
+
+  wrap.appendChild(label);
+  wrap.appendChild(select);
+  playerStage.appendChild(wrap);
+}
+
+async function addSubtitleTracks(video, source) {
+  const supplied = subtitleTracksForSource(source);
+  const discovered = await discoverWikimediaSubtitles(source);
+  const tracks = [...supplied, ...discovered]
+    .filter(track => /.vtt(?:[?#]|$)/i.test(String(track.src || "")))
+    .filter((track, index, all) =>
+      all.findIndex(item => item.src === track.src || item.srclang === track.srclang) === index
+    );
+
+  tracks.forEach((track, index) => {
+    const element = document.createElement("track");
+    element.kind = track.kind || "subtitles";
+    element.label = track.label || languageLabel(track.srclang);
+    element.srclang = track.srclang;
+    element.src = track.src;
+    element.default = Boolean(track.default) || (!tracks.some(item => item.default) && index === 0 && track.srclang.startsWith("en"));
+    video.appendChild(element);
+  });
+
+  if (tracks.length) {
+    source.capabilities = { ...(source.capabilities || {}), subtitles: true };
+    addSubtitleSelector(video, tracks);
+  } else {
+    source.capabilities = { ...(source.capabilities || {}), subtitles: false };
+  }
+  return tracks.length;
 }
 
 function sourcePriority(source) {
@@ -375,19 +457,19 @@ function updateSourceSelection() {
   });
 }
 
-async function requestPlayerFullscreen(target = playerStage) {
-  if (document.fullscreenElement) return true;
+async function requestPlayerFullscreen() {
+  if (isFullscreenActive()) return true;
 
   try {
-    if (target?.requestFullscreen) {
-      await target.requestFullscreen({ navigationUI: "hide" });
+    if (playerStage?.requestFullscreen) {
+      await playerStage.requestFullscreen({ navigationUI: "hide" });
       return true;
     }
   } catch {}
 
   try {
-    if (target?.webkitRequestFullscreen) {
-      target.webkitRequestFullscreen();
+    if (playerStage?.webkitRequestFullscreen) {
+      playerStage.webkitRequestFullscreen();
       return true;
     }
   } catch {}
@@ -571,7 +653,6 @@ async function loadMedia(source, options = {}) {
     attachMediaMemory(video);
     const centerPlay = playerStage.querySelector(".player-center-play");
     centerPlay?.addEventListener("click", async () => {
-      await requestPlayerFullscreen(video);
       try { await video.play(); } catch {}
       centerPlay.hidden = true;
     });
@@ -588,10 +669,12 @@ async function loadMedia(source, options = {}) {
       }
     });
 
-    addSubtitleTracks(video, source).catch(() => {});
+    addSubtitleTracks(video, source).catch(() => {
+      source.capabilities = { ...(source.capabilities || {}), subtitles: false };
+    });
 
     if (options.userInitiated && options.autoplay) {
-      if (options.fullscreen) await requestPlayerFullscreen(video);
+      if (options.fullscreen) await requestPlayerFullscreen();
       try { await video.play(); } catch {}
     }
   }
@@ -631,8 +714,11 @@ async function toggleFullscreen() {
       await document.exitFullscreen();
       return;
     }
-    const video = playerStage.querySelector("video");
-    await requestPlayerFullscreen(video || playerStage);
+    if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+      return;
+    }
+    await requestPlayerFullscreen();
   } catch (error) {
     console.error(error);
   }
@@ -653,6 +739,7 @@ searchToggle?.addEventListener("click", () => {
   }
 });
 fullscreenButton?.addEventListener("click", toggleFullscreen);
+installFullscreenListeners();
 document.querySelectorAll(".alphabet-button").forEach(button => {
   button.addEventListener("click", () => {
     const letter = button.dataset.letter || "";
@@ -694,6 +781,7 @@ input.addEventListener("input", () => {
 function closePlayerView() {
   try {
     if (document.fullscreenElement) document.exitFullscreen?.();
+    else if (document.webkitFullscreenElement && document.webkitExitFullscreen) document.webkitExitFullscreen();
   } catch {}
 
   const video = playerStage.querySelector("video");

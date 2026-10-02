@@ -413,6 +413,8 @@ const PLAYABLE_CATALOG = {
   "Der Kaufmann von Venedig": { durationSeconds: 5159, posterUrl: commonsThumb("Der Kaufmann von Venedig (1923).webm"), mediaUrl: commonsMedia("Der Kaufmann von Venedig (1923).webm") },
   "Crainquebille": { durationSeconds: 4522, posterUrl: commonsThumb("Crainquebille (1922).webm"), mediaUrl: commonsMedia("Crainquebille (1922).webm") },
   "Die Flamme": { durationSeconds: 2570, posterUrl: commonsThumb("Die Flamme (1923).webm"), mediaUrl: commonsMedia("Die Flamme (1923).webm") },
+};
+
 const TEST_SOURCES = {
   "All Quiet on the Western Front": [createSource({
     id: "commons-all-quiet-1930",

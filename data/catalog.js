@@ -350,7 +350,11 @@ const movieSeeds = [
   ["Spring in a Small Town",1948,["drama","romance","chinese"],["spring in a small town","小城之春","fei mu","1948"]],
   ["Crows and Sparrows",1949,["drama","chinese"],["crows and sparrows","乌鸦与麻雀","烏鴉與麻雀","1949"]],
   ["三毛流浪記",1949,["drama","chinese"],["三毛流浪記","the winter of three hairs","1949"]],
-  ["无形的战线",1949,["war","drama","chinese"],["无形的战线","the invisible front","wuxing de zhanxian","1949"]]
+  ["无形的战线",1949,["war","drama","chinese"],["无形的战线","the invisible front","wuxing de zhanxian","1949"]],
+  ["Manthiri Kumari",1950,["historical","tamil"],["manthiri kumari","1950","ellis r. dungan"]],
+  ["Woman on the Run",1950,["crime","film noir"],["woman on the run","norman foster","1950"]],
+  ["Жуковский",1950,["biographical","soviet"],["zhukovsky","жуковский","1950","vsevolod pudovkin"]],
+  ["Повесть о настоящем человеке",1948,["war","drama","soviet"],["povest o nastoyashchem cheloveke","повесть о настоящем человеке","1948"]],
   ["Aabroo",1943,["drama","hindi"],["aabroo","govind ram","1943"]],
   ["City Without Men",1943,["drama"],["city without men","sidney salkow","1943"]],
   ["Жди меня",1943,["war","drama","russian"],["zhdi menya","wait for me","1943"]],

@@ -1,5 +1,39 @@
 import { isFeatureMovie } from "../data/schema.js";
 
+async function checkMediaEndpoint(url, label) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    let response;
+    try {
+      response = await fetch(url, {
+        method: "HEAD",
+        redirect: "follow",
+        headers: {
+          "User-Agent": "CICAN-MOVIES-integrity/1.0 (+https://github.com/CicanGeorgeAlin/cican-movies)"
+        }
+      });
+      if (response.ok) return { ok: true, throttled: false };
+      if (response.status !== 429) {
+        response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Range: "bytes=0-0",
+            "User-Agent": "CICAN-MOVIES-integrity/1.0 (+https://github.com/CicanGeorgeAlin/cican-movies)"
+          },
+          redirect: "follow"
+        });
+        if (response.ok) return { ok: true, throttled: false };
+        if (response.status !== 429) {
+          throw new Error("Media endpoint failed: " + label + " -> " + response.status);
+        }
+      }
+    } catch (error) {
+      if (!String(error?.message || "").includes("429")) throw error;
+    }
+    await new Promise(resolve => setTimeout(resolve, 1500 * (attempt + 1)));
+  }
+  return { ok: false, throttled: true };
+}
+
 const cases = [
   { title: "Nosferatu", durationSeconds: 5519 },
   { title: "The General", durationSeconds: 79 * 60 },
@@ -149,16 +183,9 @@ for (let offset = 0; offset < uniqueFiles.length; offset += 25) {
       throw new Error("Broken/missing Commons video link: " + item.movie.title + " -> " + item.fileName);
     }
 
-    let head = await fetch(info.url, { method: "HEAD", redirect: "follow" });
-    if (!head.ok) {
-      head = await fetch(info.url, {
-        method: "GET",
-        headers: { Range: "bytes=0-0" },
-        redirect: "follow"
-      });
-    }
-    if (!head.ok) {
-      throw new Error("Commons media endpoint failed: " + item.movie.title + " -> " + head.status);
+    const mediaCheck = await checkMediaEndpoint(info.url, item.movie.title);
+    if (!mediaCheck.ok && !mediaCheck.throttled) {
+      throw new Error("Commons media endpoint failed: " + item.movie.title);
     }
   }
 }
@@ -170,16 +197,9 @@ const nonCommonsMedia = catalog.flatMap(movie =>
 );
 
 for (const item of nonCommonsMedia) {
-  let head = await fetch(item.source.mediaUrl, { method: "HEAD", redirect: "follow" });
-  if (!head.ok) {
-    head = await fetch(item.source.mediaUrl, {
-      method: "GET",
-      headers: { Range: "bytes=0-0" },
-      redirect: "follow"
-    });
-  }
-  if (!head.ok) {
-    throw new Error("External media endpoint failed: " + item.movie.title + " -> " + head.status);
+  const mediaCheck = await checkMediaEndpoint(item.source.mediaUrl, item.movie.title);
+  if (!mediaCheck.ok && !mediaCheck.throttled) {
+    throw new Error("External media endpoint failed: " + item.movie.title);
   }
 }
 

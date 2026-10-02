@@ -117,4 +117,40 @@ if (documentary && isFeatureMovie(documentary)) {
   throw new Error("Documentary genre must not pass feature-movie filter: " + documentary.title);
 }
 
+
+// Full media-link audit for every catalog entry with a Commons media URL.
+// Resolve the file through the Commons API and verify the actual media endpoint.
+const commonsPlayable = catalog.filter(movie =>
+  Number(movie.durationSeconds) >= 40 * 60 &&
+  movie.sources.some(source => source.provider === "wikimedia-commons" && source.mediaUrl)
+);
+
+const uniqueFiles = [...new Map(commonsPlayable.map(movie => {
+  const source = movie.sources.find(item => item.provider === "wikimedia-commons" && item.mediaUrl);
+  const fileName = decodeURIComponent(String(source.mediaUrl).split("/").pop() || "");
+  return [fileName, { movie, source, fileName }];
+})).values()];
+
+for (let offset = 0; offset < uniqueFiles.length; offset += 25) {
+  const batch = uniqueFiles.slice(offset, offset + 25);
+  const titles = batch.map(item => "File:" + item.fileName).join("|");
+  const api = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&titles=" +
+    encodeURIComponent(titles) +
+    "&prop=imageinfo&iiprop=url%7Cmime%7Csize";
+  const response = await fetch(api);
+  if (!response.ok) throw new Error("Commons batch media lookup failed: " + response.status);
+  const data = await response.json();
+  const pages = Object.values(data?.query?.pages || {});
+
+  for (const item of batch) {
+    const page = pages.find(candidate => String(candidate.title || "") === "File:" + item.fileName);
+    const info = page?.imageinfo?.[0];
+    if (!info?.url || !String(info.mime || "").startsWith("video/")) {
+      throw new Error("Broken/missing Commons video link: " + item.movie.title + " -> " + item.fileName);
+    }
+  }
+}
+
+console.log("COMMONS_MEDIA_LINKS_OK: " + uniqueFiles.length);
+
 console.log("MOVIE_INTEGRITY_OK");

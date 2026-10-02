@@ -281,6 +281,18 @@ const movieSeeds = [
   ["Sappho",1921,["drama","silent"],["sappho","dimitri buchowetzki","pola negri","1921","german film"]],
   ["Last Days of Pompei",1913,["drama","adventure","silent"],["last days of pompei","gli ultimi giorni di pompei","mario caserini","1913","italian film"]],
   ["Die Flamme",1923,["drama","silent"],["die flamme","the flame","ernst lubitsch","1923"]],
+  ["Penrod and Sam",1923,["drama","silent"],["penrod and sam","1923"]],
+  ["He Who Gets Slapped",1924,["drama","silent"],["he who gets slapped","1924"]],
+  ["Shadows",1922,["drama","silent"],["shadows","1922","lon chaney"]],
+  ["The Blot",1921,["drama","silent"],["the blot","1921","lois weber"]],
+  ["Das Weib des Pharao",1922,["drama","silent"],["das weib des pharao","the loves of pharaoh","1922","ernst lubitsch"]],
+  ["The Glorious Adventure",1922,["adventure","silent"],["the glorious adventure","1922"]],
+  ["The Love Light",1921,["drama","silent"],["the love light","1921","frances marion"]],
+  ["Forbidden Fruit",1921,["drama","silent"],["forbidden fruit","1921","cecil b de mille"]],
+  ["Beauty's Worth",1922,["drama","romance","silent"],["beautys worth","beauty's worth","1922"]],
+  ["Why Worry?",1923,["comedy","silent"],["why worry","why worry?","1923","harold lloyd"]],
+  ["Romola",1924,["drama","silent"],["romola","1924"]],
+  ["The Virginian",1923,["western","drama","silent"],["the virginian","1923"]],
 ];
 
 
@@ -606,6 +618,18 @@ const TEST_SOURCES = {
   "Strike": { durationSeconds: 5276, posterUrl: commonsThumb("Strike (1925).webm"), mediaUrl: commonsMedia("Strike (1925).webm") },
   "Twilight of a Woman's Soul": { durationSeconds: 2918, posterUrl: commonsThumb("Twilight of a Woman's Soul (1913).webm"), mediaUrl: commonsMedia("Twilight of a Woman's Soul (1913).webm") },
   "Defence of Sevastopol": { durationSeconds: 2215, posterUrl: commonsThumb("Defence of Sevastopol.webm"), mediaUrl: commonsMedia("Defence of Sevastopol.webm") },
+  "Penrod and Sam": { durationSeconds: 5013, posterUrl: commonsThumb("Penrod and Sam (1923).webm"), mediaUrl: commonsMedia("Penrod and Sam (1923).webm") },
+  "He Who Gets Slapped": { durationSeconds: 4304, posterUrl: commonsThumb("He Who Gets Slapped 1924.webm"), mediaUrl: commonsMedia("He Who Gets Slapped 1924.webm") },
+  "Shadows": { durationSeconds: 5451, posterUrl: commonsThumb("Shadows (1922).webm"), mediaUrl: commonsMedia("Shadows (1922).webm") },
+  "The Blot": { durationSeconds: 5598, posterUrl: commonsThumb("The Blot (1921).webm"), mediaUrl: commonsMedia("The Blot (1921).webm") },
+  "Das Weib des Pharao": { durationSeconds: 5969, posterUrl: commonsThumb("Das Weib des Pharao (1922).webm"), mediaUrl: commonsMedia("Das Weib des Pharao (1922).webm") },
+  "The Glorious Adventure": { durationSeconds: 5209, posterUrl: commonsThumb("The Glorious Adventure (1922).webm"), mediaUrl: commonsMedia("The Glorious Adventure (1922).webm") },
+  "The Love Light": { durationSeconds: 5253, posterUrl: commonsThumb("The Love Light (1921).webm"), mediaUrl: commonsMedia("The Love Light (1921).webm") },
+  "Forbidden Fruit": { durationSeconds: 5190, posterUrl: commonsThumb("Forbidden Fruit (1921).webm"), mediaUrl: commonsMedia("Forbidden Fruit (1921).webm") },
+  "Beauty's Worth": { durationSeconds: 6734, posterUrl: commonsThumb("Beauty's Worth (1922).webm"), mediaUrl: commonsMedia("Beauty's Worth (1922).webm") },
+  "Why Worry?": { durationSeconds: 3806, posterUrl: commonsThumb("Why Worry? (1923).webm"), mediaUrl: commonsMedia("Why Worry? (1923).webm") },
+  "Romola": { durationSeconds: 6322, posterUrl: commonsThumb("Romola (1924).webm"), mediaUrl: commonsMedia("Romola (1924).webm") },
+  "The Virginian": { durationSeconds: 4771, posterUrl: commonsThumb("The Virginian (1923).webm"), mediaUrl: commonsMedia("The Virginian (1923).webm") },
 };
 
 
@@ -675,6 +699,18 @@ const MOVIE_LANGUAGES = Object.freeze({
   "Die Bergkatze": "de",
   "Sappho": "de",
   "Last Days of Pompei": "it",
+  "Penrod and Sam": "en",
+  "He Who Gets Slapped": "en",
+  "Shadows": "en",
+  "The Blot": "en",
+  "Das Weib des Pharao": "de",
+  "The Glorious Adventure": "en",
+  "The Love Light": "en",
+  "Forbidden Fruit": "en",
+  "Beauty's Worth": "en",
+  "Why Worry?": "en",
+  "Romola": "en",
+  "The Virginian": "en",
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

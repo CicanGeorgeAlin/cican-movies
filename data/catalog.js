@@ -274,6 +274,12 @@ const movieSeeds = [
   ["Das Wachsfigurenkabinett",1924,["horror","silent"],["das wachsfigurenkabinett","waxworks","paul leni","1924"]],
   ["Der Kaufmann von Venedig",1923,["drama","silent"],["der kaufmann von venedig","merchant of venice","peter paul felner","1923"]],
   ["Crainquebille",1922,["drama","silent"],["crainquebille","jacques feyder","1922"]],
+  ["The Sheik",1921,["drama","romance","silent"],["the sheik","george melford","rudolph valentino","1921"]],
+  ["The Freshman",1925,["comedy","silent"],["the freshman","harold lloyd","1925"]],
+  ["La Libre Belgique",1921,["drama","silent"],["la libre belgique","armand du plessy","1921","french film"]],
+  ["Die Bergkatze",1921,["comedy","silent"],["die bergkatze","the wildcat","ernst lubitsch","1921","german film"]],
+  ["Sappho",1921,["drama","silent"],["sappho","dimitri buchowetzki","pola negri","1921","german film"]],
+  ["Last Days of Pompei",1913,["drama","adventure","silent"],["last days of pompei","gli ultimi giorni di pompei","mario caserini","1913","italian film"]],
   ["Die Flamme",1923,["drama","silent"],["die flamme","the flame","ernst lubitsch","1923"]],
 ];
 
@@ -412,6 +418,12 @@ const PLAYABLE_CATALOG = {
   "Das Wachsfigurenkabinett": { durationSeconds: 4792, posterUrl: commonsThumb("Das Wachsfigurenkabinett (1924).webm"), mediaUrl: commonsMedia("Das Wachsfigurenkabinett (1924).webm") },
   "Der Kaufmann von Venedig": { durationSeconds: 5159, posterUrl: commonsThumb("Der Kaufmann von Venedig (1923).webm"), mediaUrl: commonsMedia("Der Kaufmann von Venedig (1923).webm") },
   "Crainquebille": { durationSeconds: 4522, posterUrl: commonsThumb("Crainquebille (1922).webm"), mediaUrl: commonsMedia("Crainquebille (1922).webm") },
+  "The Sheik": { durationSeconds: 4537, posterUrl: commonsThumb("The Sheik (1921) by George Melford.webm"), mediaUrl: commonsMedia("The Sheik (1921) by George Melford.webm") },
+  "The Freshman": { durationSeconds: 4523, posterUrl: commonsThumb("The Freshman.webm"), mediaUrl: commonsMedia("The Freshman.webm") },
+  "La Libre Belgique": { durationSeconds: 5806, posterUrl: commonsThumb("La Libre Belgique (1921).webm"), mediaUrl: commonsMedia("La Libre Belgique (1921).webm") },
+  "Die Bergkatze": { durationSeconds: 4846, posterUrl: commonsThumb("Die Bergkatze (1921).webm"), mediaUrl: commonsMedia("Die Bergkatze (1921).webm") },
+  "Sappho": { durationSeconds: 4911, posterUrl: commonsThumb("Sappho (1921) .webm"), mediaUrl: commonsMedia("Sappho (1921) .webm") },
+  "Last Days of Pompei": { durationSeconds: 5284, posterUrl: commonsThumb("Last Days of Pompei (1913).webm"), mediaUrl: commonsMedia("Last Days of Pompei (1913).webm") },
   "Die Flamme": { durationSeconds: 2570, posterUrl: commonsThumb("Die Flamme (1923).webm"), mediaUrl: commonsMedia("Die Flamme (1923).webm") },
 };
 
@@ -656,7 +668,13 @@ const MOVIE_LANGUAGES = Object.freeze({
   "Das Wachsfigurenkabinett": "de",
   "Der Kaufmann von Venedig": "de",
   "Crainquebille": "fr",
-  "Die Flamme": "de"
+  "Die Flamme": "de",
+  "The Sheik": "en",
+  "The Freshman": "en",
+  "La Libre Belgique": "fr",
+  "Die Bergkatze": "de",
+  "Sappho": "de",
+  "Last Days of Pompei": "it",
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

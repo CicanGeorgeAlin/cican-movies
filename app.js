@@ -1,4 +1,4 @@
-import { resolveMovies } from "./source-engine.js?v=az-browse-fix-20261002";
+import { resolveMovies } from "./source-engine.js?v=landing-browse-20261002";
 import { catalog } from "./data/catalog.js?v=landing-browse-20261002";
 
 const form = document.querySelector("#search-form");

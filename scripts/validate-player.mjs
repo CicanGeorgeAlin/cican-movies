@@ -15,7 +15,9 @@ const checks = [
   [app.includes('document.createElement("track")'), "native HTML5 track element missing"],
   [app.includes("subtitle-select"), "subtitle language selector missing"],
   [app.includes('kind = track.kind || "subtitles"'), "subtitle track kind missing"],
-  [app.includes(".vtt"), "VTT-only subtitle guard missing"],
+  [app.includes(".vtt") && app.includes(".srt"), "VTT/SRT subtitle discovery guard missing"],
+  [app.includes("srtToVtt"), "SRT-to-WebVTT conversion missing"],
+  [(app.match(/async function addSubtitleTracks/g) || []).length === 1, "duplicate subtitle loader detected"],
   [css.includes(".player-stage:fullscreen") && css.includes("object-fit:contain"), "fullscreen aspect-ratio preservation missing"],
   [schema.includes("default: Boolean(track.default)"), "subtitle default metadata missing"],
   [schema.includes("originalLanguage"), "movie original-language metadata missing"]

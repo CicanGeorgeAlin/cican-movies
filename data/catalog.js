@@ -303,6 +303,9 @@ const movieSeeds = [
   ["Speedy",1928,["comedy","silent"],["speedy","harold lloyd","ted wilde","1928"]],
   ["Ella Cinders",1926,["comedy","silent"],["ella cinders","1926"]],
   ["The Virginian",1923,["western","drama","silent"],["the virginian","1923"]],
+  ["Just Pals",1920,["western","silent"],["just pals","john ford","1920"]],
+  ["The Flapper",1920,["comedy","romance","silent"],["the flapper","olive thomas","alan crosland","1920"]],
+  ["Heading Home",1920,["comedy","drama","silent"],["heading home","headin home","babe ruth","1920"]],
 ];
 
 
@@ -320,6 +323,9 @@ function commonsThumb(fileName) {
 
 const PLAYABLE_CATALOG = {
   "West of Zanzibar": { durationSeconds: 3888, posterUrl: commonsThumb("West of Zanzibar (1928).webm"), mediaUrl: commonsMedia("West of Zanzibar (1928).webm") },
+  "Just Pals": { durationSeconds: 2982, posterUrl: commonsThumb("Just Pals (1920).webm"), mediaUrl: commonsMedia("Just Pals (1920).webm") },
+  "The Flapper": { durationSeconds: 5128, posterUrl: commonsThumb("The Flapper (1920).webm"), mediaUrl: commonsMedia("The Flapper (1920).webm") },
+  "Heading Home": { durationSeconds: 3321, posterUrl: commonsThumb("Heading Home(1920).webm"), mediaUrl: commonsMedia("Heading Home(1920).webm") },
   "The Chaser": { durationSeconds: 3764, posterUrl: commonsThumb("The Chaser (1928).webm"), mediaUrl: commonsMedia("The Chaser (1928).webm") },
   "While The City Sleeps": { durationSeconds: 3950, posterUrl: commonsThumb("While The City Sleeps 1928.webm"), mediaUrl: commonsMedia("While The City Sleeps 1928.webm") },
   "Surrender": { durationSeconds: 4645, posterUrl: commonsThumb("Surrender (1927).webm"), mediaUrl: commonsMedia("Surrender (1927).webm") },
@@ -673,6 +679,9 @@ for (const [title, item] of Object.entries(PLAYABLE_CATALOG)) {
 
 
 const MOVIE_LANGUAGES = Object.freeze({
+  "Just Pals": "en",
+  "The Flapper": "en",
+  "Heading Home": "en",
   "Le Chevalier de Maison-Rouge": "fr",
   "Die keusche Susanne": "de",
   "Wrzos": "pl",

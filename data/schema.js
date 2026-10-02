@@ -152,6 +152,8 @@ export function createMovie(movie = {}) {
     originalLanguage: movie.originalLanguage || movie.language || null,
     languages: Array.isArray(movie.languages) ? movie.languages : (movie.originalLanguage ? [movie.originalLanguage] : []),
     year: movie.year || null,
+    country: movie.country || null,
+    countries: Array.isArray(movie.countries) ? movie.countries : (movie.country ? [movie.country] : []),
     description: movie.description || "",
     posterUrl: movie.posterUrl || "",
     durationSeconds: parseDurationSeconds(movie.durationSeconds),

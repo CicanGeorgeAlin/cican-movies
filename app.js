@@ -217,26 +217,57 @@ function isFullscreenActive() {
 function fitFullscreenVideo() {
   const video = playerStage?.querySelector("video");
   if (!video) return;
-  video.style.removeProperty("width");
-  video.style.removeProperty("height");
+
+  if (!isFullscreenActive()) {
+    video.style.removeProperty("width");
+    video.style.removeProperty("height");
+    video.style.removeProperty("max-width");
+    video.style.removeProperty("max-height");
+    return;
+  }
+
+  const sourceWidth = Number(video.videoWidth);
+  const sourceHeight = Number(video.videoHeight);
+  const stageWidth = playerStage.clientWidth || window.innerWidth;
+  const stageHeight = playerStage.clientHeight || window.innerHeight;
+
+  if (!(sourceWidth > 0 && sourceHeight > 0 && stageWidth > 0 && stageHeight > 0)) return;
+
+  const scale = Math.min(stageWidth / sourceWidth, stageHeight / sourceHeight);
+  const width = Math.max(1, Math.round(sourceWidth * scale));
+  const height = Math.max(1, Math.round(sourceHeight * scale));
+
+  video.style.width = width + "px";
+  video.style.height = height + "px";
+  video.style.maxWidth = "none";
+  video.style.maxHeight = "none";
 }
 function syncFullscreenUi() {
   const active = isFullscreenActive();
-  if (active) lockLandscapeOrientation();
-  else unlockScreenOrientation();
+  if (active) {
+    lockLandscapeOrientation().finally(() => {
+      window.requestAnimationFrame(() => {
+        fitFullscreenVideo();
+        window.setTimeout(fitFullscreenVideo, 120);
+      });
+    });
+  } else {
+    unlockScreenOrientation();
+    fitFullscreenVideo();
+  }
   fullscreenButton?.setAttribute("aria-pressed", String(active));
   fullscreenButton?.setAttribute("aria-label", active ? "Exit fullscreen" : "Enter fullscreen");
   fullscreenButton?.setAttribute("title", active ? "Exit fullscreen" : "Enter fullscreen");
   if (fullscreenButton) fullscreenButton.textContent = active ? "× EXIT FULLSCREEN" : "⛶ FULLSCREEN";
   playerStage?.classList.toggle("is-fullscreen", active);
-  window.requestAnimationFrame(fitFullscreenVideo);
 }
 
 function installFullscreenListeners() {
   document.addEventListener("fullscreenchange", syncFullscreenUi);
   document.addEventListener("webkitfullscreenchange", syncFullscreenUi);
-  window.addEventListener("resize", fitFullscreenVideo);
-  window.addEventListener("orientationchange", () => window.setTimeout(fitFullscreenVideo, 120));
+  window.addEventListener("resize", () => window.requestAnimationFrame(fitFullscreenVideo));
+  window.addEventListener("orientationchange", () => window.setTimeout(fitFullscreenVideo, 180));
+  window.visualViewport?.addEventListener("resize", () => window.requestAnimationFrame(fitFullscreenVideo));
   syncFullscreenUi();
 }
 

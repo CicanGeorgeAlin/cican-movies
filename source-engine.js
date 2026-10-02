@@ -250,7 +250,6 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
 
   if (countryFilter || languageFilter) {
     return localMatches
-      .filter(movie => normaliseMovie(movie.title).startsWith(browseLetter || normaliseMovie(movie.title).slice(0, 0)))
       .sort((a, b) => normaliseTitle(a.title).localeCompare(normaliseTitle(b.title)));
   }
 

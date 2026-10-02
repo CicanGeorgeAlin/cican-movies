@@ -389,3 +389,12 @@ The objective is a large catalogue in which each published movie has a defensibl
 When evidence is insufficient, CICAN waits.
 
 **QUALITY GATE BEFORE QUANTITY.**
+
+
+## Rejected / Held Research Ledger
+
+Every investigated candidate that does not enter the public catalogue must be preserved in `docs/REJECTED-MOVIE-LEDGER.md`. A failed current investigation is not necessarily a permanent rejection.
+
+For each held/rejected candidate, preserve the title, year, investigation date, discovery/playback sources investigated, rights and jurisdiction findings, feature/playback/subtitle findings, exact reason for the current hold, missing evidence, and a concrete re-investigation target. These candidates remain excluded from the public catalogue and must never affect the public movie count.
+
+Future Continue cycles should update existing ledger entries rather than creating duplicates. When new evidence resolves all blocking issues, the candidate may be promoted through the normal investigation gates and added to the public catalogue.

@@ -127,12 +127,55 @@ async function discoverWikimediaSubtitles(source) {
   return promise;
 }
 
+function srtToVtt(text) {
+  const normalized = String(text || "").replace(/^\\uFEFF/, "").replace(/\\r\\n?/g, "\\n").trim();
+  if (!normalized) throw new Error("Empty subtitle file");
+  const cues = normalized
+    .split(/\\n{2,}/)
+    .map(block => block.trim())
+    .filter(Boolean)
+    .map(block => block.replace(/(\\d{2}:\\d{2}:\\d{2}),\\d{3}/g, "$1.$2"))
+    .filter(block => /\\d{2}:\\d{2}:\\d{2}\\.\\d{3}\\s+-->\\s+\\d{2}:\\d{2}:\\d{2}\\.\\d{3}/.test(block));
+  if (!cues.length) throw new Error("Invalid SRT subtitle timing");
+  return "WEBVTT\\n\\n" + cues.join("\\n\\n") + "\\n";
+}
+
+async function prepareSubtitleTrack(track) {
+  const url = String(track?.src || "");
+  if (!url) return null;
+  const isVtt = /\\.vtt(?:[?#]|$)/i.test(url);
+  const isSrt = /\\.srt(?:[?#]|$)/i.test(url);
+  if (!isVtt && !isSrt) return null;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Subtitle request failed");
+    const text = await response.text();
+
+    if (isVtt) {
+      if (!/^\\s*WEBVTT(?:\\s|$)/i.test(text)) throw new Error("Invalid WebVTT");
+      return { ...track, src: url };
+    }
+
+    const vtt = srtToVtt(text);
+    const blobUrl = URL.createObjectURL(new Blob([vtt], { type: "text/vtt" }));
+    return { ...track, src: blobUrl, convertedFrom: "srt" };
+  } catch {
+    if (isVtt) return { ...track, src: url };
+    return null;
+  }
+}
+
 async function addSubtitleTracks(video, source) {
   const supplied = subtitleTracksForSource(source);
   const discovered = await discoverWikimediaSubtitles(source);
-  const tracks = [...supplied, ...discovered].filter((track, index, all) =>
-    all.findIndex(item => item.src === track.src || item.srclang === track.srclang) === index
-  );
+  const candidates = [...supplied, ...discovered]
+    .filter(track => /\\.(?:vtt|srt)(?:[?#]|$)/i.test(String(track.src || "")))
+    .filter((track, index, all) =>
+      all.findIndex(item => item.src === track.src || item.srclang === track.srclang) === index
+    );
+
+  const tracks = (await Promise.all(candidates.map(prepareSubtitleTrack))).filter(Boolean);
 
   tracks.forEach((track, index) => {
     const element = document.createElement("track");
@@ -140,12 +183,15 @@ async function addSubtitleTracks(video, source) {
     element.label = track.label || languageLabel(track.srclang);
     element.srclang = track.srclang;
     element.src = track.src;
-    element.default = index === 0 && track.srclang.startsWith("en");
+    element.default = Boolean(track.default) || (!tracks.some(item => item.default) && index === 0 && track.srclang.startsWith("en"));
     video.appendChild(element);
   });
 
   if (tracks.length) {
     source.capabilities = { ...(source.capabilities || {}), subtitles: true };
+    addSubtitleSelector(video, tracks);
+  } else {
+    source.capabilities = { ...(source.capabilities || {}), subtitles: false };
   }
   return tracks.length;
 }

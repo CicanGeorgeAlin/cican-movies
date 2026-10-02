@@ -292,6 +292,16 @@ const movieSeeds = [
   ["Beauty's Worth",1922,["drama","romance","silent"],["beautys worth","beauty's worth","1922"]],
   ["Why Worry?",1923,["comedy","silent"],["why worry","why worry?","1923","harold lloyd"]],
   ["Romola",1924,["drama","silent"],["romola","1924"]],
+  ["West of Zanzibar",1928,["drama","silent"],["west of zanzibar","lon chaney","1928"]],
+  ["The Chaser",1928,["comedy","silent"],["the chaser","harry langdon","1928"]],
+  ["While The City Sleeps",1928,["mystery","drama","silent"],["while the city sleeps","lon chaney","1928"]],
+  ["Surrender",1927,["drama","silent"],["surrender","1927"]],
+  ["The Winning of Barbara Worth",1926,["drama","romance","silent"],["the winning of barbara worth","henry king","1926"]],
+  ["Sparrows",1926,["drama","silent"],["sparrows","mary pickford","1926"]],
+  ["Old San Francisco",1927,["drama","silent"],["old san francisco","warner bros","1927"]],
+  ["Flesh and the Devil",1927,["drama","romance","silent"],["flesh and the devil","greta garbo","john gilbert","1927"]],
+  ["Speedy",1928,["comedy","silent"],["speedy","harold lloyd","ted wilde","1928"]],
+  ["Ella Cinders",1926,["comedy","silent"],["ella cinders","1926"]],
   ["The Virginian",1923,["western","drama","silent"],["the virginian","1923"]],
 ];
 
@@ -308,7 +318,17 @@ function commonsThumb(fileName) {
     encodeURIComponent(fileName) + "&w=500";
 }
 
-const PLAYABLE_CATALOG = {
+const PLAYABLE_CATALOG = {\n  "West of Zanzibar": { durationSeconds: 3888, posterUrl: commonsThumb("West of Zanzibar (1928).webm"), mediaUrl: commonsMedia("West of Zanzibar (1928).webm") },
+  "The Chaser": { durationSeconds: 3764, posterUrl: commonsThumb("The Chaser (1928).webm"), mediaUrl: commonsMedia("The Chaser (1928).webm") },
+  "While The City Sleeps": { durationSeconds: 3950, posterUrl: commonsThumb("While The City Sleeps 1928.webm"), mediaUrl: commonsMedia("While The City Sleeps 1928.webm") },
+  "Surrender": { durationSeconds: 4645, posterUrl: commonsThumb("Surrender (1927).webm"), mediaUrl: commonsMedia("Surrender (1927).webm") },
+  "The Winning of Barbara Worth": { durationSeconds: 5353, posterUrl: commonsThumb("The Winning of Barbara Worth (1926).webm"), mediaUrl: commonsMedia("The Winning of Barbara Worth (1926).webm") },
+  "Sparrows": { durationSeconds: 5547, posterUrl: commonsThumb("Sparrows (1926).webm"), mediaUrl: commonsMedia("Sparrows (1926).webm") },
+  "Old San Francisco": { durationSeconds: 5293, posterUrl: commonsThumb("Old San Francisco (1927).webm"), mediaUrl: commonsMedia("Old San Francisco (1927).webm") },
+  "Flesh and the Devil": { durationSeconds: 6735, posterUrl: commonsThumb("Flesh And The Devil (1927).webm"), mediaUrl: commonsMedia("Flesh And The Devil (1927).webm") },
+  "Speedy": { durationSeconds: 5111, posterUrl: commonsThumb("Speedy (1928).webm"), mediaUrl: commonsMedia("Speedy (1928).webm") },
+  "Ella Cinders": { durationSeconds: 5263, posterUrl: commonsThumb("Ella Cinders (1926).webm"), mediaUrl: commonsMedia("Ella Cinders (1926).webm") },
+
   "All Quiet on the Western Front": {
     durationSeconds: 8002,
     posterUrl: commonsThumb("All Quiet on the Western Front (1930, sound version).webm"),

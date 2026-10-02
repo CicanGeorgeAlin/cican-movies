@@ -336,43 +336,48 @@ const movieSeeds = [
   ["Brief Encounter",1945,["romance","drama","british"],["brief encounter","david lean","1945"]],
   ["The Killers",1946,["crime","film noir"],["the killers","robert siodmak","1946"]],
   ["The Lady from Shanghai",1947,["mystery","film noir"],["the lady from shanghai","orson welles","1947"]],
-  ["The Seventh Victim",1943,["horror","mystery"],["the seventh victim","mark robson","1943"]]
+  ["The Seventh Victim",1943,["horror","mystery"],["the seventh victim","mark robson","1943"]],
+  ["Reet, Petite and Gone",1947,["musical","race film"],["reet petite and gone","louis jordan","1947"]],
+  ["Love Laughs at Andy Hardy",1946,["comedy","romance"],["love laughs at andy hardy","willis goldbeck","1946"]],
+  ["Dressed to Kill",1946,["mystery","sherlock holmes"],["dressed to kill","roy william neill","1946","sherlock holmes"]],
+  ["O Ébrio",1946,["drama","musical"],["o ébrio","o ebrio","gilda de abreu","1946"]],
+  ["Diary of the Homecoming",1947,["comedy","mandarin"],["diary of the homecoming","还乡日记","1947"]],
   ["Aabroo",1943,["drama","hindi"],["aabroo","govind ram","1943"]],
   ["City Without Men",1943,["drama"],["city without men","sidney salkow","1943"]],
   ["Жди меня",1943,["war","drama","russian"],["zhdi menya","wait for me","1943"]],
-  ["Родные поля",1944,["war","drama","russian"],["rodnye polya","native fields","1944"]]
+  ["Родные поля",1944,["war","drama","russian"],["rodnye polya","native fields","1944"]],
   ["The Magnificent Ambersons",1942,["drama"],["the magnificent ambersons","orson welles","1942"]],
   ["The Talk of the Town",1942,["comedy","drama"],["the talk of the town","george stevens","1942"]],
   ["The Ox-Bow Incident",1942,["western","drama"],["the ox-bow incident","william a wellman","1942"]],
-  ["The More the Merrier",1943,["comedy","romance"],["the more the merrier","george stevens","1943"]]
+  ["The More the Merrier",1943,["comedy","romance"],["the more the merrier","george stevens","1943"]],
   ["The Maltese Falcon",1941,["crime","mystery"],["the maltese falcon","john huston","1941"]],
   ["Sullivan's Travels",1941,["comedy","drama"],["sullivan's travels","preston sturges","1941"]],
   ["Meet John Doe",1941,["drama","romance"],["meet john doe","frank capra","1941"]],
-  ["Ball of Fire",1941,["comedy","romance"],["ball of fire","howard hawks","1941"]]
+  ["Ball of Fire",1941,["comedy","romance"],["ball of fire","howard hawks","1941"]],
   ["The Philadelphia Story",1940,["comedy","romance"],["the philadelphia story","george cukor","1940"]],
   ["The Grapes of Wrath",1940,["drama"],["the grapes of wrath","john ford","1940"]],
   ["Kitty Foyle",1940,["drama","romance"],["kitty foyle","sam wood","1940"]],
-  ["The Devil and Miss Jones",1941,["comedy"],["the devil and miss jones","sam wood","1941"]]
+  ["The Devil and Miss Jones",1941,["comedy"],["the devil and miss jones","sam wood","1941"]],
   ["Dark Victory",1939,["drama","romance"],["dark victory","edmund goulding","1939"]],
   ["Dodge City",1939,["western"],["dodge city","michael curtiz","1939"]],
   ["The Roaring Twenties",1939,["crime","drama"],["the roaring twenties","raoul walsh","1939"]],
-  ["Only Angels Have Wings",1939,["adventure","drama"],["only angels have wings","howard hawks","1939"]]
+  ["Only Angels Have Wings",1939,["adventure","drama"],["only angels have wings","howard hawks","1939"]],
   ["Ganga Din",1939,["adventure","war"],["ganga din","george stevens","1939"]],
   ["The Adventures of Sherlock Holmes",1939,["mystery"],["the adventures of sherlock holmes","alfred l werker","1939"]],
   ["La Habanera",1937,["drama","german"],["la habanera","detlef sierck","1937"]],
-  ["La Bête humaine",1938,["drama","french"],["la bête humaine","jean renoir","1938"]]
+  ["La Bête humaine",1938,["drama","french"],["la bête humaine","jean renoir","1938"]],
   ["Митька Лелюк",1938,["drama","children"],["mitka lelyuk","митька лелюк","1938"]],
   ["Моряки",1939,["drama","soviet"],["moryaki","моряки","1939"]],
   ["На границе",1938,["drama","soviet"],["na granitse","on the frontier","1938"]],
-  ["Высокая награда",1939,["drama","spy"],["vysokaya nagrada","high award","1939"]]
+  ["Высокая награда",1939,["drama","spy"],["vysokaya nagrada","high award","1939"]],
   ["The Letter",1929,["drama","silent"],["the letter","jean de limur","1929"]],
   ["The Stranger's Return",1933,["drama"],["the stranger's return","king vidor","1933"]],
   ["The Great McGinty",1940,["comedy"],["the great mcginty","preston sturges","1940"]],
-  ["The Shopworn Angel",1938,["romance","drama"],["the shopworn angel","h.c. potter","1938"]]
+  ["The Shopworn Angel",1938,["romance","drama"],["the shopworn angel","h.c. potter","1938"]],
   ["The Prisoner of Shark Island",1936,["historical","drama"],["the prisoner of shark island","john ford","1936"]],
   ["Black Legion",1937,["drama"],["black legion","archibald mayo","1937"]],
   ["The Dawn Patrol",1938,["war","drama"],["the dawn patrol","edmund goulding","1938"]],
-  ["Made for Each Other",1939,["romance","drama"],["made for each other","john cromwell","1939"]]
+  ["Made for Each Other",1939,["romance","drama"],["made for each other","john cromwell","1939"]],
   ["The Devil Doll",1936,["horror","drama"],["the devil doll","tod browning","1936"]],
   ["The Last Days of Pompeii",1935,["historical","adventure"],["the last days of pompeii","ernest b schoedsack","1935"]],
   ["The Good Earth",1937,["drama"],["the good earth","sidney franklin","1937"]],

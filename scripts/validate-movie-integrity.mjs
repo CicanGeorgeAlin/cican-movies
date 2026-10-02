@@ -104,7 +104,7 @@ for (const [title, language] of internationalTitles) {
   if (!movie) throw new Error("International catalog movie missing: " + title);
   if (movie.originalLanguage !== language) throw new Error("International language metadata missing for: " + title);
   if (!movie.posterUrl || Number(movie.durationSeconds) < 40 * 60) {
-    throw new Error("International feature metadata invalid for: " + title);
+    throw new Error("International feature metadata invalid for: " + title + " " + JSON.stringify({posterUrl: movie.posterUrl, durationSeconds: movie.durationSeconds, sourceCount: movie.sources.length}));
   }
   const media = movie.sources.find(source => source.mediaUrl && source.status !== "blocked" && source.status !== "unavailable");
   if (!media) throw new Error("International playable source missing for: " + title);

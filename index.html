@@ -25,6 +25,25 @@
       placeholder="Search a movie title or year…" aria-label="Search movies">
   </form>
   <p id="search-status" class="search-status" aria-live="polite"></p>
+  <div class="browse-switcher" aria-label="Browse movie library">
+    <button type="button" class="browse-switch active" data-browse="az">A–Z</button>
+    <button type="button" class="browse-switch" data-browse="country">COUNTRIES</button>
+    <button type="button" class="browse-switch" data-browse="language">LANGUAGES</button>
+  </div>
+  <div id="browse-panel" class="browse-panel" hidden>
+    <div id="country-browser" class="browse-field" hidden>
+      <label for="country-filter">COUNTRY</label>
+      <input id="country-filter" type="search" autocomplete="off" placeholder="Type a country, e.g. Romania" list="country-options">
+      <datalist id="country-options"></datalist>
+    </div>
+    <div id="language-browser" class="browse-field" hidden>
+      <label for="language-filter">ORIGINAL LANGUAGE</label>
+      <select id="language-filter">
+        <option value="">All languages</option>
+      </select>
+    </div>
+    <button type="button" id="clear-browse" class="browse-clear">CLEAR FILTERS</button>
+  </div>
   <div class="library-hint">Choose a letter. Find a movie. Press WATCH.</div>
   <div class="support-wrap">
     <a class="support-button" href="https://buymeacoffee.com/cican" target="_blank" rel="noopener noreferrer" aria-label="Support CICAN MOVIES on Buy Me a Coffee">

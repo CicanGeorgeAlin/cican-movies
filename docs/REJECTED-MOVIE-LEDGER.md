@@ -51,6 +51,7 @@ Each candidate should record, where known:
 | Title | Year | Status | Reason / next investigation |
 |---|---:|---|---|
 | The County Fair | 1920 | RECHECK | Complete feature playback source was not verified in the current Commons investigation. Recheck archive/authorized playback sources and rights evidence later. |
+| Dick Turpin | 1925 | HELD | Complete 1h 18m 31s Commons feature with English captions and U.S. public-domain tagging, but the Commons file currently carries a “license review needed” notice. Hold until the source licence status is independently confirmed. |
 
 ## Maintenance
 

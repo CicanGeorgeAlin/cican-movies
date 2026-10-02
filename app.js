@@ -602,6 +602,14 @@ function restoreMediaPosition(video) {
   video.addEventListener("loadedmetadata", restore);
 }
 
+function syncVideoAspectRatio(video) {
+  if (!video || !video.videoWidth || !video.videoHeight) return;
+  const ratio = video.videoWidth / video.videoHeight;
+  if (!Number.isFinite(ratio) || ratio <= 0) return;
+  playerStage.style.setProperty("--player-ratio", ratio.toFixed(6));
+  playerStage.dataset.videoRatio = ratio.toFixed(6);
+}
+
 function formatPlaybackTime(seconds) {
   const total = Math.max(0, Math.floor(Number(seconds) || 0));
   const minutes = Math.floor(total / 60);
@@ -682,7 +690,11 @@ async function loadMedia(source, options = {}) {
     video.addEventListener("pause", () => {
       if (centerPlay && !video.ended) centerPlay.hidden = false;
     });
-    video.addEventListener("loadeddata", () => saveLastSource(currentMovie, source));
+    video.addEventListener("loadedmetadata", () => {
+      syncVideoAspectRatio(video);
+      saveLastSource(currentMovie, source);
+    });
+    video.addEventListener("resize", () => syncVideoAspectRatio(video));
     video.addEventListener("error", () => {
       if (currentSource?.id === source.id) {
         showPlaybackFallback("This media source failed to load.", { autoTryNext: true });

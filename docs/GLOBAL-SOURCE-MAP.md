@@ -1,4 +1,4 @@
-# CICAN MOVIES — GLOBAL SOURCE MAP & ACQUISITION STRATEGY v1.1
+# CICAN MOVIES — GLOBAL SOURCE MAP & ACQUISITION STRATEGY v1.3
 
 Date: 2026-10-02
 
@@ -975,3 +975,392 @@ GLOBAL MOVIE HUNT
 → TEST
 → DEPLOY
 → REPEAT
+
+
+## 49. Global professional-network discovery layer
+
+CICAN must search professional archive networks as discovery multipliers, not merely individual institution pages.
+
+### CCAAA
+The Coordinating Council of Audiovisual Archives Associations is a global network connecting major audiovisual-archive associations. Its member network currently includes:
+- AMIA
+- FIAF
+- FIAT/IFTA
+- IASA
+- ICA
+- IFLA
+- SEAPAVAA
+- ARSC
+- and UNESCO as observer
+
+Use CCAAA to discover professional networks, regional institutions, standards, preservation projects and archive contacts. It is a network-of-networks, not a blanket content licence.
+
+### ACE
+Association des Cinémathèques Européennes is a regional network of European national and regional film archives. Search ACE members, projects, restoration programmes and online-access initiatives in addition to FIAF.
+
+### SEAPAVAA
+Southeast Asia-Pacific Audiovisual Archive Association covers Southeast Asia, Australasia and Pacific Island audiovisual heritage. Use it as a dedicated regional discovery layer.
+
+### AMIA
+Association of Moving Image Archivists provides a large professional network in the moving-image field. Its member-facing directory is access-controlled, so public sources, publications and institution websites are used where available; membership itself is not treated as an open catalogue.
+
+These networks must feed institution discovery, not bypass item-level rights.
+
+## 50. Film-school and educational-cinema discovery layer
+
+Film schools can contain unique student films, graduation films, exercises and early works that never enter national film archives.
+
+CICAN should systematically discover:
+- CILECT member schools
+- national film schools
+- university film departments
+- media academies
+- cinematography schools
+- film laboratories
+- student-film festivals connected to educational institutions
+- institutional student-film archives
+
+CILECT's country-filterable member directory is a useful global institution index, and its Prize archive demonstrates that student-film records span many countries and regions.
+
+Student material must be treated carefully:
+- identify the actual work
+- verify feature status
+- identify filmmaker/institution
+- verify rights
+- verify whether the institution or filmmaker authorizes online playback
+- do not infer reuse permission from educational status
+
+## 51. Regional and underrepresented-archive strategy
+
+A global search must not depend on English-language or Europe/North-America-centric indexes.
+
+For each region, create an explicit secondary discovery pass:
+
+Africa
+→ national film archives
+→ national broadcasters
+→ national libraries
+→ museums
+→ universities
+→ regional audiovisual networks
+→ filmmaker institutions
+→ local-language searches
+
+Middle East
+→ national audiovisual archives
+→ film institutes
+→ national libraries
+→ broadcasters
+→ universities
+→ museums
+→ Arabic/Persian/Turkish/Hebrew/Kurdish and other relevant-language searches
+
+South Asia
+→ national film archives
+→ broadcasters
+→ film institutes
+→ universities
+→ museums
+→ regional-language searches
+
+Southeast Asia & Pacific
+→ SEAPAVAA
+→ national archives
+→ broadcasters
+→ universities
+→ museums
+→ local-language searches
+
+Latin America & Caribbean
+→ national film archives
+→ national libraries
+→ broadcasters
+→ universities
+→ museums
+→ regional cultural institutions
+→ Spanish/Portuguese/French/Dutch/English and indigenous-language searches where relevant
+
+Central Asia & Caucasus
+→ national film archives
+→ state film funds
+→ broadcasters
+→ universities
+→ museums
+→ Cyrillic/Latin/native-script variants
+
+Balkans & Eastern Europe
+→ national film archives
+→ cinematheques
+→ broadcasters
+→ universities
+→ local-language and historical-language variants
+
+## 52. Repository-platform discovery layer
+
+Many institutions publish collections through shared repository platforms. CICAN should identify the institution first, then inspect its platform.
+
+Search for:
+- CONTENTdm
+- DSpace
+- Islandora
+- Omeka / Omeka S
+- ArchivesSpace public interfaces
+- Hyrax / Samvera
+- Fedora-based repositories
+- Preservica
+- Avalon Media System
+- Kaltura institutional archives
+- IIIF manifests
+- OAI-PMH endpoints
+- institutional Solr/search APIs
+- institutional sitemaps and structured-data feeds
+
+These are discovery/harvesting mechanisms, not rights grants.
+
+A platform search must preserve the originating institution and item-level licence.
+
+## 53. Filmography-to-archive reverse discovery
+
+Do not only search archives for films.
+
+Reverse the direction:
+
+FILMOGRAPHY / NATIONAL FILMOGRAPHY
+→ identify film
+→ identify director/production company
+→ identify archive/rightsholder
+→ locate digitised copy
+→ rights check
+→ playback check
+
+Use:
+- national filmographies
+- historical film catalogues
+- director filmographies
+- production-company catalogues
+- festival catalogues
+- national cinema databases
+- library authority records
+- scholarly filmographies
+
+This catches films whose archive copy is poorly indexed.
+
+## 54. Person/institution reverse discovery
+
+For important filmmakers, studios, cinematographers and producers:
+
+PERSON / STUDIO
+→ alternate names
+→ country/language
+→ filmography
+→ archive holdings
+→ institutional collection
+→ legal playback source
+
+Preserve authority identifiers and name variants.
+
+This is especially important for countries where archive metadata is incomplete or romanization varies.
+
+## 55. Festival and restoration-project discovery
+
+Film festivals and restoration projects can reveal digitised films before they become easy to find through ordinary archive searches.
+
+Search:
+- national film festivals
+- archive festivals
+- restoration programmes
+- retrospectives
+- “lost film” recovery projects
+- restoration grant programmes
+- archive anniversary programmes
+- online festival archives
+- educational retrospective programmes
+
+A festival page is normally a discovery lead. The actual archive/rightsholder/source must be verified separately.
+
+## 56. Lost-film and rediscovery tracking
+
+Create a special status for historically documented films that are:
+- known to exist
+- partially located
+- restored but not yet online
+- digitised but access-restricted
+- missing/lost
+- awaiting rights clearance
+
+Do not count these as playable films.
+
+They become future research/permission targets.
+
+## 57. Language/script authority layer
+
+In addition to searching native text, maintain language and script authority mappings:
+
+language
+→ ISO 639 code where applicable
+→ script
+→ historical script/orthography
+→ transliteration systems
+→ diacritic-free variant
+→ colonial/historical language name
+→ alternate country naming
+
+This is particularly important for:
+- Arabic
+- Persian
+- Cyrillic languages
+- Greek
+- Hebrew
+- South Asian scripts
+- Chinese
+- Japanese
+- Korean
+- Southeast Asian scripts
+- African languages with multiple orthographies
+- historical national names and pre-standardization spellings
+
+## 58. Date and calendar normalization
+
+Search and identity matching must account for:
+- Gregorian dates
+- historical calendars where applicable
+- alternate release dates
+- festival premiere date vs national release date
+- production year vs release year
+- restoration year
+
+Never treat a restoration year as the original film's release year.
+
+## 59. Version/restoration lineage
+
+A single film may have:
+- original cut
+- censored cut
+- export version
+- alternate-language version
+- restored version
+- incomplete surviving version
+- reconstructed version
+- fan-created reconstruction
+
+Each must be represented as a version/source relationship.
+
+A reconstructed film must not be silently treated as an untouched complete original.
+
+## 60. Subtitle discovery expansion
+
+Subtitle discovery should include:
+- archive-provided captions
+- official broadcaster captions
+- authorized subtitle files
+- accessibility/SDH tracks
+- multilingual institutional player tracks
+- officially published subtitle resources
+
+Subtitle candidates remain separate from the film rights decision.
+
+Never scrape or redistribute copyrighted subtitle files merely because they are publicly visible.
+
+## 61. Source-change discovery
+
+Source monitoring should also search for positive changes:
+
+OLD SOURCE
+→ newly digitised collection
+→ newly added film
+→ newly opened territory
+→ new subtitle track
+→ new API
+→ new authorized embed
+→ restoration release
+
+A source can become more useful without its URL changing.
+
+## 62. Discovery-source independence
+
+For high-value films, seek confirmation through more than one independent discovery path when practical:
+
+archive catalogue
++
+national filmography
++
+institutional/festival record
+
+This reduces identity errors caused by incomplete or inconsistent metadata.
+
+Independence is a confidence signal, not a legal substitute for rights evidence.
+
+## 63. Final “near-100%” source-family audit
+
+Before beginning a major global hunt, CICAN should have explicit coverage for:
+
+1. film archives
+2. cinematheques
+3. audiovisual archives
+4. broadcasters
+5. national archives
+6. national libraries
+7. museums
+8. universities
+9. film schools
+10. government/cultural institutions
+11. professional archive networks
+12. regional archive networks
+13. global aggregators
+14. repository directories
+15. repository platforms
+16. open-media repositories
+17. official film platforms
+18. authorized video channels
+19. festival archives
+20. restoration projects
+21. filmographies
+22. filmmaker/person reverse discovery
+23. production-company/rightsholder discovery
+24. structured metadata/API/OAI-PMH/IIIF sources
+25. subtitle/accessibility sources
+26. lost-film/rediscovery records
+27. local-language/native-script discovery
+28. historical-title/orthography discovery
+29. source monitoring/recovery
+30. permission/rightsholder pathways
+
+The target is not mathematical omniscience. The target is that no major *class* of legitimate discovery source has been knowingly omitted.
+
+## 64. Final audit result
+
+AUDIT STATUS: NEAR-100% OPERATIONAL COVERAGE
+
+Newly elevated discovery networks and layers:
+- CCAAA
+- ACE
+- SEAPAVAA
+- AMIA
+- CILECT
+- film-school archives
+- repository-platform ecosystems
+- filmography reverse discovery
+- person/studio reverse discovery
+- festival/restoration discovery
+- lost-film tracking
+- language/script authority
+- version/restoration lineage
+- source-change discovery
+
+The map is now locked as the operating blueprint for the global hunt.
+
+Next phase:
+GLOBAL MOVIE HUNT
+→ COUNTRY
+→ LANGUAGE
+→ SOURCE FAMILY
+→ EXHAUST
+→ VERIFY
+→ RIGHTS
+→ PLAYBACK
+→ SUBTITLES
+→ DEDUPLICATE
+→ IMPORT
+→ TEST
+→ DEPLOY
+→ NEXT

@@ -52,6 +52,9 @@ Each candidate should record, where known:
 |---|---:|---|---|
 | The County Fair | 1920 | RECHECK | Complete feature playback source was not verified in the current Commons investigation. Recheck archive/authorized playback sources and rights evidence later. |
 | Dick Turpin | 1925 | HELD | Complete 1h 18m 31s Commons feature with English captions and U.S. public-domain tagging, but the Commons file currently carries a “license review needed” notice. Hold until the source licence status is independently confirmed. |
+| The White Sister | 1923 | HELD | Complete 2h 14m 30s Commons feature found, but current investigation did not establish sufficient rights evidence for the playback source. Recheck source-country/EU status and authorization before import. |
+| The Enemy | 1927 | RECHECK | No verified complete feature playback source established in this pass. Recheck national archives, Commons, Internet Archive and authorized collections. |
+| The Last Warning | 1929 | RECHECK | No verified complete feature playback source established in this pass. Recheck archive and authorized restoration sources. |
 
 ## Maintenance
 

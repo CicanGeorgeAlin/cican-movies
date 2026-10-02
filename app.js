@@ -676,24 +676,12 @@ async function loadMedia(source, options = {}) {
     '<video controls playsinline webkit-playsinline preload="metadata" src="' +
     escapeAttribute(source.mediaUrl) + '">' +
     'Your browser cannot play this media source.' +
-    '</video>' +
-    '<button class="player-center-play" type="button" aria-label="Play movie">▶</button>';
+    '</video>';
   addFullscreenExitButton();
 
   const video = playerStage.querySelector("video");
   if (video) {
     attachMediaMemory(video);
-    const centerPlay = playerStage.querySelector(".player-center-play");
-    centerPlay?.addEventListener("click", async () => {
-      try { await video.play(); } catch {}
-      centerPlay.hidden = true;
-    });
-    video.addEventListener("play", () => {
-      if (centerPlay) centerPlay.hidden = true;
-    });
-    video.addEventListener("pause", () => {
-      if (centerPlay && !video.ended) centerPlay.hidden = false;
-    });
     video.addEventListener("loadedmetadata", () => {
       syncVideoAspectRatio(video);
       saveLastSource(currentMovie, source);

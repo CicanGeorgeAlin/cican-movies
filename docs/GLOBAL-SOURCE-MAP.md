@@ -1,4 +1,4 @@
-# CICAN MOVIES — GLOBAL SOURCE MAP & ACQUISITION STRATEGY v1.0
+# CICAN MOVIES — GLOBAL SOURCE MAP & ACQUISITION STRATEGY v1.1
 
 Date: 2026-10-02
 
@@ -35,7 +35,7 @@ Anything discovered outside the map is added to the Source Map rather than silen
 8. Film restoration institutions
 9. Specialist cinematheques
 
-FIAF's live directory is a core discovery index. FIAF currently lists 99 Members and 88 Associates across 80 countries.
+FIAF's live directory is a core discovery index. FIAF's Online Directory is searchable by institution, city and country and is updated frequently. FIAF also maintains a separate catalogue/database index of film and audiovisual collections. [FIAF directory and collection catalogues are discovery indexes; individual access/rights must still be checked.]
 
 ### B. National audiovisual / broadcaster network
 For every country:
@@ -47,7 +47,7 @@ For every country:
 6. Historical newsreel archive
 7. Official broadcaster video channels
 
-FIAT/IFTA is a second global directory for broadcaster and audiovisual archives and includes organisations such as TVR, BBC, INA, RAI, RTVE, RTP, KBS, NFSA and many others.
+FIAT/IFTA is a global directory for broadcaster and audiovisual archives. Its member network includes national and regional broadcasters, archives and cultural institutions.
 
 ### C. National library and cultural-heritage network
 1. National library
@@ -71,8 +71,12 @@ FIAT/IFTA is a second global directory for broadcaster and audiovisual archives 
 7. WorldCat and library discovery systems
 8. UNESCO Memory of the World
 9. FIAF Directory
-10. FIAT/IFTA directory
-11. Other national/regional cultural-heritage aggregators discovered during country passes
+10. FIAF Film/AV Collection Catalogues and Databases
+11. FIAT/IFTA directory and resources
+12. EUscreen
+13. Other national/regional cultural-heritage aggregators discovered during country passes
+
+EUscreen is a major additional European audiovisual discovery layer: it provides free access to thousands of archival audiovisual items and connects a network of 40+ members from almost 30 European countries. Its material may link back to the original provider, so item-level rights and provider terms remain decisive.
 
 Aggregators are primarily discovery layers. The underlying institution and item rights are checked before CICAN uses a film.
 
@@ -81,16 +85,58 @@ Aggregators are primarily discovery layers. The underlying institution and item 
 2. Internet Archive
 3. Creative Commons search ecosystem
 4. Openverse
-5. Vimeo Creative Commons
-6. YouTube Creative Commons
-7. Public-domain repositories
-8. Openly licensed institutional repositories
-9. PeerTube instances where the uploader's rights/licence can be established
-10. Other open-media repositories discovered during systematic searches
+5. Open Images / Open Beelden
+6. Vimeo Creative Commons
+7. YouTube Creative Commons
+8. Public-domain repositories
+9. Openly licensed institutional repositories
+10. PeerTube instances where the uploader's rights/licence can be established
+11. Other open-media repositories discovered during systematic searches
 
-A platform's existence or an uploader's claim is never treated as proof of rights by itself.
+Open Images is particularly useful because its audiovisual items are published under individual Creative Commons licences, provide downloadable media, and expose an OAI-PMH API for structured harvesting. Each item must still be checked for the licence and whether it is suitable for CICAN's feature-film rules.
 
-### F. Official online film platforms
+### F. FIAF affiliate online collections
+FIAF itself maintains a list of free online streaming services used by its affiliates. This list is a major hunting index and includes, among many others:
+- Romanian National Film Archive / Cinemateca Română via European Film Gateway
+- Academy Film Archive YouTube playlists
+- Cineteca Nacional Mexico YouTube
+- Cineteca Nacional Chile Online
+- Italian Cineteca collections
+- Danish Film Institute / Danmark på film
+- German film archives
+- Eye Filmmuseum / Open Images
+- Filmoteca Española
+- Filmoteca de Catalunya
+- Filmoteka Narodowa / FINA digital repository
+- Finnish Elonet / Living Memory
+- IFI Irish Film Archive
+- Korean Film Archive Korean Classic Film Theater on YouTube
+- National Film Archive of Japan collections
+- National Film and Sound Archive of Australia
+- National Film Institute Hungary
+- National Film Archive of Ukraine / Dovzhenko Centre
+- Österreichisches Filmmuseum
+- Swedish Filminstitutet / Filmarkivet.se
+- Taiwan Film and Audiovisual Institute / Open Museum
+- UCLA Film & Television Archive
+- Yale Film Archive
+- National Film Preservation Foundation Screening Room
+- and many additional FIAF affiliate collections
+
+These are discovery/access leads, not blanket reuse licences. Rights and embedding/reuse terms are verified per title.
+
+### G. Audiovisual-archive directories beyond film-only archives
+IASA maintains a worldwide database of organisations involved in sound and audiovisual archiving, searchable by country and category, with hundreds of entries. This is now a permanent CICAN discovery index because national audiovisual heritage can sit outside traditional film archives.
+
+Use IASA to discover:
+- national archives
+- audiovisual archives
+- university collections
+- music/film archives
+- regional repositories
+- institutions in countries poorly represented in conventional film-archive directories
+
+### H. Official online film platforms
 Search country-by-country for:
 1. Legal national cinema platforms
 2. Official archive streaming portals
@@ -117,10 +163,12 @@ Romanian search layers:
 - Europeana / European Film Gateway
 - FIAF Romanian institutions
 - FIAT/IFTA Romanian broadcaster/archive members
+- IASA Romanian audiovisual institutions
 - Wikimedia Commons
 - Internet Archive
 - YouTube official/authorized/CC/public-domain sources
 - Vimeo CC/authorized sources
+- Open Images/Open Beelden where Romanian material appears
 - Other Romanian digital archives discovered during the country pass
 
 The same structure is then repeated for every country.
@@ -141,6 +189,7 @@ Country
 → regional archives
 → FIAF institutions
 → FIAT/IFTA institutions
+→ IASA institutions
 → aggregators
 → open repositories
 → YouTube
@@ -200,11 +249,6 @@ Only appropriate verified states enter the playable catalogue.
 
 A hosting platform is not itself a rights grant.
 
-Examples:
-- Library of Congress: many National Screening Room titles are freely reusable, but item-level restrictions must be checked.
-- Vimeo: a CC label supplies licence terms, but Vimeo warns that an uploader may not actually possess all underlying rights.
-- YouTube: a film being available on YouTube does not automatically give CICAN redistribution rights.
-
 ## 8. Film-integrity gate
 
 A candidate must be checked for:
@@ -236,7 +280,7 @@ A source can be:
 - DIRECT_MEDIA
 - AUTHORIZED_EMBED
 
-For example, FIAF and Europeana can identify a film and its archive without necessarily providing CICAN with a reusable media source.
+For example, FIAF, IASA, Europeana and EUscreen can identify a film and its archive without necessarily providing CICAN with a reusable media source.
 
 The canonical movie can have multiple verified sources:
 Movie → Wikimedia source → Internet Archive source → YouTube authorized source → archive embed → other authorized source
@@ -268,7 +312,7 @@ COUNTRY PASS
 → library
 → universities
 → museums
-→ FIAF/FIAT
+→ FIAF/FIAT/IASA
 → aggregators
 → open repositories
 → video platforms
@@ -300,24 +344,29 @@ No torrent, piracy index, unauthorized mirror or circumvention source is used as
 
 The first global indexes to exhaust are:
 1. FIAF Directory
-2. FIAT/IFTA members/archive network
-3. Europeana
-4. European Film Gateway
-5. Filmarchives Online
-6. DPLA
-7. DigitalNZ
-8. Trove
-9. UNESCO Memory of the World
-10. Library of Congress collections
-11. Wikimedia Commons
-12. Internet Archive
-13. Creative Commons/Openverse
-14. YouTube
-15. Vimeo
-16. PeerTube
-17. National archive/library/broadcaster networks
-18. Universities and museums
-19. Additional country-specific repositories
+2. FIAF Film/AV Collection Catalogues and Databases
+3. FIAF Affiliate Online Collections
+4. FIAT/IFTA member/archive network
+5. IASA audiovisual-archive directory
+6. Europeana
+7. European Film Gateway
+8. Filmarchives Online / MIDAS
+9. EUscreen
+10. DPLA
+11. DigitalNZ
+12. Trove
+13. UNESCO Memory of the World
+14. Library of Congress collections
+15. Wikimedia Commons
+16. Internet Archive
+17. Creative Commons/Openverse
+18. Open Images / Open Beelden
+19. YouTube
+20. Vimeo
+21. PeerTube
+22. National archive/library/broadcaster networks
+23. Universities and museums
+24. Additional country-specific repositories
 
 ## 14. Canonical CICAN acquisition states
 
@@ -371,17 +420,22 @@ Then:
 
 REPEAT FOREVER AS NEW SOURCES APPEAR.
 
-## Evidence base checked for v1.0
+## Evidence base checked for v1.1
 
-- FIAF live directory and affiliate network
-- FIAT/IFTA global audiovisual-archive membership
-- Library of Congress National Screening Room
+- FIAF Online Directory
+- FIAF Film/AV Collection Catalogues and Databases
+- FIAF Affiliate Online Collections
+- FIAT/IFTA member network
+- IASA worldwide audiovisual-archive links database
+- Library of Congress digital moving-image collections
 - European Film Gateway
 - Filmarchives Online / MIDAS
+- EUscreen
 - UNESCO Memory of the World
 - Creative Commons search ecosystem
-- Vimeo Creative Commons
-- Wikimedia Commons public-domain film categories
+- Open Images / Open Beelden
+- Wikimedia Commons
+- Internet Archive
 - DigitalNZ
 - Trove
 - Romanian National Film Archive / Cinemateca Română

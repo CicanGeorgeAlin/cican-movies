@@ -1,6 +1,6 @@
-import { catalog } from "./data/catalog.js?v=az-final3-20261002";
-import { CONTENT_TYPES, isFeatureMovie, normaliseMovie } from "./data/schema.js?v=az-landing-fix-20261002";
-import { providers, getProviderStatus } from "./providers/registry.js?v=az-landing-fix-20261002";
+import { catalog } from "./data/catalog.js";
+import { CONTENT_TYPES, normaliseMovie } from "./data/schema.js";
+import { providers, getProviderStatus } from "./providers/registry.js";
 
 function parseQuery(query = "") {
   const raw = String(query).trim();
@@ -128,8 +128,6 @@ function mergeMovieInto(existing, movie) {
     ...existing,
     year: existing.year || movie.year || null,
     description: existing.description || movie.description || "",
-    posterUrl: existing.posterUrl || movie.posterUrl || "",
-    durationSeconds: existing.durationSeconds || movie.durationSeconds || 0,
     genres: existing.genres?.length ? existing.genres : (movie.genres || []),
     searchTerms: [...new Set([
       ...(existing.searchTerms || []),
@@ -139,7 +137,7 @@ function mergeMovieInto(existing, movie) {
   };
 }
 
-function mergeMovies(localMovies, remoteMovies, query, browseLetter = "") {
+function mergeMovies(localMovies, remoteMovies, query) {
   const groups = [];
 
   [...localMovies, ...remoteMovies].forEach(movie => {
@@ -169,23 +167,9 @@ function mergeMovies(localMovies, remoteMovies, query, browseLetter = "") {
         ...group.movie,
         sources: rankSources(group.movie.sources || [])
       },
-      score: browseLetter
-        ? (String(group.movie.title || "").trim().toLowerCase().startsWith(browseLetter) ? 100 : 0)
-        : scoreMovie(group.movie, query)
+      score: scoreMovie(group.movie, query)
     }))
-    .filter(item =>
-      item.score > 0 &&
-      isFeatureMovie(item.movie) &&
-      Boolean(item.movie.posterUrl) &&
-      Number(item.movie.durationSeconds) >= 40 * 60 &&
-      Array.isArray(item.movie.sources) &&
-      item.movie.sources.some(source =>
-        source &&
-        source.status !== "blocked" &&
-        source.status !== "unavailable" &&
-        (source.embedUrl || source.mediaUrl)
-      )
-    )
+    .filter(item => item.score > 0)
     .sort((a, b) => b.score - a.score)
     .map(item => item.movie);
 }
@@ -194,38 +178,12 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
   const parsedQuery = parseQuery(query);
   const providerQuery = parsedQuery.title || parsedQuery.normalised;
   const allVideo = contentType === "other";
-  const browseLetter = /^[a-z]$/i.test(parsedQuery.normalised)
-    ? parsedQuery.normalised.toLowerCase()
-    : "";
+  const localMatches = catalog.filter(movie =>
+    id ? movie.id === id :
+      (!allVideo && movie.contentType && movie.contentType !== contentType ? false : scoreMovie(movie, query) > 0)
+  );
 
-  const localMatches = catalog.filter(movie => {
-    if (id) return movie.id === id;
-    if (!allVideo && movie.contentType && movie.contentType !== contentType) return false;
-
-    // A–Z browsing is an explicit title-prefix operation. Do not route it
-    // through general search scoring; that can discard valid local titles
-    // such as "The ..." before mergeMovies gets a chance to sort them.
-    if (browseLetter) {
-      return normaliseMovie(movie.title).startsWith(browseLetter);
-    }
-
-    return scoreMovie(movie, query) > 0;
-  });
-
-  if (id && localMatches.some(movie => (movie.sources || []).some(source => source?.embedUrl || source?.mediaUrl))) {
-    const playableLocal = localMatches.filter(movie => movie.posterUrl && isFeatureMovie(movie));
-    if (playableLocal.length) return playableLocal;
-  }
-
-  // A–Z is navigation, not a provider search. Render the verified local catalog
-  // immediately instead of waiting for every remote provider to scan an entire letter.
-  // This prevents mobile browsers from being overwhelmed by hundreds of remote metadata
-  // requests and ensures pressing a letter repeatedly always produces deterministic results.
-  if (browseLetter) {
-    return mergeMovies(localMatches, [], query, browseLetter)
-      .filter(movie => normaliseMovie(movie.title).startsWith(browseLetter))
-      .sort((a, b) => normaliseTitle(a.title).localeCompare(normaliseTitle(b.title)));
-  }
+  if (id && localMatches.length) return localMatches;
 
   if (id) {
     const directResults = await Promise.allSettled(
@@ -233,39 +191,14 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
     );
     const directMovies = directResults.flatMap(result =>
       result.status === "fulfilled" && result.value ? [result.value] : []
-    ).filter(movie =>
-      isFeatureMovie(movie) &&
-      Number(movie.durationSeconds) >= 40 * 60 &&
-      Boolean(movie.posterUrl) &&
-      Array.isArray(movie.sources) &&
-      movie.sources.some(source =>
-        source &&
-        source.status !== "blocked" &&
-        source.status !== "unavailable" &&
-        (source.embedUrl || source.mediaUrl)
-      )
     );
     if (directMovies.length) return directMovies;
   }
 
-  const movieQueries = contentType === CONTENT_TYPES.MOVIE
-    ? browseLetter
-      ? [browseLetter]
-      : [...new Set([
-          providerQuery,
-          parsedQuery.raw,
-          parsedQuery.title.replace(/\s+/g, " ").trim()
-        ].filter(Boolean))]
-    : [providerQuery];
-
   const remoteResults = await Promise.allSettled(
     providers
       .filter(provider => provider.enabled)
-      .flatMap(provider =>
-        movieQueries.map(searchQuery =>
-          provider.search(searchQuery, { contentType, browseLetter })
-        )
-      )
+      .map(provider => provider.search(providerQuery, { contentType }))
   );
 
   const remoteMovies = remoteResults.flatMap(result =>
@@ -274,23 +207,7 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
       : []
   );
 
-  // Always retain local catalog matches. Remote providers are merged into them
-  // so additional sources enrich a known movie instead of replacing its
-  // working/playable source.
-  const seedMatches = localMatches.map(movie => ({
-    ...movie,
-    sources: movie.sources || []
-  }));
-
-  const merged = mergeMovies(seedMatches, remoteMovies, query, browseLetter);
-
-  if (browseLetter) {
-    const letterMovies = merged
-      .filter(movie => normaliseMovie(movie.title).startsWith(browseLetter))
-      .sort((a, b) => normaliseTitle(a.title).localeCompare(normaliseTitle(b.title)));
-    return letterMovies;
-  }
-
+  const merged = mergeMovies(localMatches, remoteMovies, query);
   return id
     ? merged.filter(movie => movie.id === id)
     : merged;

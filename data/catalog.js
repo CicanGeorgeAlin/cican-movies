@@ -323,6 +323,11 @@ const movieSeeds = [
   ["Ashes of Vengeance",1923,["drama","history","silent"],["ashes of vengeance","frank lloyd","1923"]],
   ["Tiger Rose",1923,["drama","silent"],["tiger rose","sidney franklin","1923"]],
   ["The Ten Commandments",1923,["drama","history","silent"],["the ten commandments","cecil b demille","1923"]],
+  ["Silence",1926,["drama","silent"],["silence","rupert julian","1926"]],
+  ["La Belle Nivernaise",1924,["drama","silent"],["la belle nivernaise","the beauty from nivernais","jean epstein","1924"]],
+  ["3 Bad Men",1926,["western","drama","silent"],["3 bad men","three bad men","john ford","1926"]],
+  ["East Side, West Side",1927,["drama","silent"],["east side west side","east side, west side","allan dwan","1927"]],
+  ["The Scarlet Letter",1926,["drama","silent"],["the scarlet letter","victor sjostrom","1926"]],
 ];
 
 
@@ -694,6 +699,11 @@ const TEST_SOURCES = {
   "The Cat and the Canary": { durationSeconds: 5039, posterUrl: commonsThumb("The Cat and the Canary (1927).webm"), mediaUrl: commonsMedia("The Cat and the Canary (1927).webm") },
   "The Phantom of the Opera": { durationSeconds: 5475, posterUrl: commonsThumb("The Phantom of the Opera (1925).webm"), mediaUrl: commonsMedia("The Phantom of the Opera (1925).webm") },
   "The Ten Commandments": { durationSeconds: 8172, posterUrl: commonsThumb("The Ten Commandments (1923).webm"), mediaUrl: commonsMedia("The Ten Commandments (1923).webm") },
+  "Silence": { durationSeconds: 3614, posterUrl: commonsThumb("Silence (1926).webm"), mediaUrl: commonsMedia("Silence (1926).webm") },
+  "La Belle Nivernaise": { durationSeconds: 4604, posterUrl: commonsThumb("La Belle Nivernaise (1924) by Jean Epstein.webm"), mediaUrl: commonsMedia("La Belle Nivernaise (1924) by Jean Epstein.webm") },
+  "3 Bad Men": { durationSeconds: 5522, posterUrl: commonsThumb("3 Bad Men 1926 George O'Brien, Olive Borden, Lou Tellegen Western Silent Movie.webm"), mediaUrl: commonsMedia("3 Bad Men 1926 George O'Brien, Olive Borden, Lou Tellegen Western Silent Movie.webm") },
+  "East Side, West Side": { durationSeconds: 5454, posterUrl: commonsThumb("East Side, West Side (1927).webm"), mediaUrl: commonsMedia("East Side, West Side (1927).webm") },
+  "The Scarlet Letter": { durationSeconds: 0, posterUrl: commonsThumb("The Scarlet Letter (1926).webm"), mediaUrl: commonsMedia("The Scarlet Letter (1926).webm") },
 };
 
 
@@ -798,6 +808,11 @@ const MOVIE_LANGUAGES = Object.freeze({
   "The Cat and the Canary": "en",
   "The Phantom of the Opera": "en",
   "The Ten Commandments": "en",
+  "Silence": "en",
+  "La Belle Nivernaise": "fr",
+  "3 Bad Men": "en",
+  "East Side, West Side": "en",
+  "The Scarlet Letter": "en",
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

@@ -317,6 +317,11 @@ const movieSeeds = [
   ["The Shock",1923,["drama","silent"],["the shock","1923"]],
   ["Beau Brummel",1924,["drama","history","silent"],["beau brummel","john barrymore","1924"]],
   ["Greed",1924,["drama","silent"],["greed","erich von stroheim","1924"]],
+  ["Souls for Sale",1923,["drama","silent"],["souls for sale","rupert hughes","1923"]],
+  ["The Nut",1921,["comedy","silent"],["the nut","theodore reed","1921"]],
+  ["Salome",1923,["drama","silent"],["salome","charles bryant","1923"]],
+  ["Ashes of Vengeance",1923,["drama","history","silent"],["ashes of vengeance","frank lloyd","1923"]],
+  ["Tiger Rose",1923,["drama","silent"],["tiger rose","sidney franklin","1923"]],
 ];
 
 
@@ -679,6 +684,11 @@ const TEST_SOURCES = {
   "The Shock": { durationSeconds: 3835, posterUrl: commonsThumb("The Shock (1923).webm"), mediaUrl: commonsMedia("The Shock (1923).webm") },
   "Beau Brummel": { durationSeconds: 7627, posterUrl: commonsThumb("Beau Brummel (1924).webm"), mediaUrl: commonsMedia("Beau Brummel (1924).webm") },
   "Greed": { durationSeconds: 14179, posterUrl: commonsThumb("GREED 1924.webm"), mediaUrl: commonsMedia("GREED 1924.webm") },
+  "Souls for Sale": { durationSeconds: 5366, posterUrl: commonsThumb("Souls For Sale (1923).webm"), mediaUrl: commonsMedia("Souls For Sale (1923).webm") },
+  "The Nut": { durationSeconds: 4468, posterUrl: commonsThumb("The Nut (1921).webm"), mediaUrl: commonsMedia("The Nut (1921).webm") },
+  "Salome": { durationSeconds: 4333, posterUrl: commonsThumb("Salome (1923).webm"), mediaUrl: commonsMedia("Salome (1923).webm") },
+  "Ashes of Vengeance": { durationSeconds: 6316, posterUrl: commonsThumb("Ashes of Vengeance (1923).webm"), mediaUrl: commonsMedia("Ashes of Vengeance (1923).webm") },
+  "Tiger Rose": { durationSeconds: 3644, posterUrl: commonsThumb("Tiger Rose (1923).webm"), mediaUrl: commonsMedia("Tiger Rose (1923).webm") },
 };
 
 
@@ -774,6 +784,11 @@ const MOVIE_LANGUAGES = Object.freeze({
   "The Shock": "en",
   "Beau Brummel": "en",
   "Greed": "en",
+  "Souls for Sale": "en",
+  "The Nut": "en",
+  "Salome": "en",
+  "Ashes of Vengeance": "en",
+  "Tiger Rose": "en",
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

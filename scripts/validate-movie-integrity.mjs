@@ -1,5 +1,18 @@
 import { isFeatureMovie } from "../data/schema.js";
 
+async function fetchWithRetry(url, options = {}, label = "request") {
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const response = await fetch(url, options);
+    if (response.ok || response.status !== 429) return response;
+    const retryAfter = Number(response.headers.get("retry-after"));
+    const delay = Number.isFinite(retryAfter) && retryAfter > 0
+      ? Math.min(15000, retryAfter * 1000)
+      : Math.min(15000, 2000 * (attempt + 1));
+    await new Promise(resolve => setTimeout(resolve, delay));
+  }
+  throw new Error("HTTP 429 after retries: " + label);
+}
+
 async function checkMediaEndpoint(url, label) {
   for (let attempt = 0; attempt < 4; attempt++) {
     let response;
@@ -64,7 +77,7 @@ const archivePoster = await fetch("https://archive.org/services/img/TheGeneral19
 if (!archivePoster.ok) throw new Error("Archive movie poster failed: " + archivePoster.status);
 
 const commonsApi = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&titles=File%3ANosferatu%20%281922%29.webm&prop=imageinfo&iiprop=url%7Cmime%7Cextmetadata%7Cthumburl&iiurlwidth=400";
-const commonsResponse = await fetch(commonsApi);
+const commonsResponse = await fetchWithRetry(commonsApi, {}, "Wikimedia API");
 if (!commonsResponse.ok) throw new Error("Wikimedia API failed: " + commonsResponse.status);
 const commons = await commonsResponse.json();
 const commonsPage = Object.values(commons.query?.pages || {})[0];
@@ -171,7 +184,7 @@ for (let offset = 0; offset < uniqueFiles.length; offset += 25) {
   const api = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&titles=" +
     encodeURIComponent(titles) +
     "&prop=imageinfo&iiprop=url%7Cmime%7Csize";
-  const response = await fetch(api);
+  const response = await fetchWithRetry(api, {}, "Wikimedia batch API");
   if (!response.ok) throw new Error("Commons batch media lookup failed: " + response.status);
   const data = await response.json();
   const pages = Object.values(data?.query?.pages || {});

@@ -519,91 +519,38 @@ function loadEmbed(source, options = {}) {
   }
 }
 
-async function formatPlayerTime(seconds) {
-  if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
-  const total = Math.floor(seconds);
-  const hours = Math.floor(total / 3600);
-  const minutes = Math.floor((total % 3600) / 60);
-  const secs = String(total % 60).padStart(2, "0");
-  return hours ? hours + ":" + String(minutes).padStart(2, "0") + ":" + secs : minutes + ":" + secs;
-}
-
-function buildVideoControls(video) {
-  const controls = document.createElement("div");
-  controls.className = "cican-video-controls";
-  controls.innerHTML =
-    '<button type="button" class="cican-control-play" aria-label="Play movie">▶</button>' +
-    '<div class="cican-seek-wrap">' +
-      '<input class="cican-seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Movie timeline">' +
-    '</div>' +
-    '<span class="cican-time" aria-live="off">0:00 / 0:00</span>' +
-    '<button type="button" class="cican-control-fullscreen" aria-label="Fullscreen">⛶</button>';
-
-  const play = controls.querySelector(".cican-control-play");
-  const seek = controls.querySelector(".cican-seek");
-  const time = controls.querySelector(".cican-time");
-  const fullscreen = controls.querySelector(".cican-control-fullscreen");
-
-  const sync = () => {
-    const duration = Number(video.duration);
-    const current = Number(video.currentTime) || 0;
-    seek.value = Number.isFinite(duration) && duration > 0 ? String(Math.round((current / duration) * 1000)) : "0";
-    time.textContent = formatPlayerTime(current) + " / " + formatPlayerTime(duration);
-    play.textContent = video.paused || video.ended ? "▶" : "❚❚";
-    play.setAttribute("aria-label", video.paused || video.ended ? "Play movie" : "Pause movie");
-  };
-
-  play.addEventListener("click", async () => {
-    try {
-      if (video.paused || video.ended) await video.play();
-      else video.pause();
-    } catch {}
-  });
-
-  seek.addEventListener("input", () => {
-    const duration = Number(video.duration);
-    if (Number.isFinite(duration) && duration > 0) {
-      video.currentTime = (Number(seek.value) / 1000) * duration;
-    }
-  });
-
-  fullscreen.addEventListener("click", () => requestPlayerFullscreen());
-
-  ["loadedmetadata", "durationchange", "timeupdate", "play", "pause", "ended", "seeking", "seeked"].forEach(event => {
-    video.addEventListener(event, sync);
-  });
-  sync();
-
-  playerStage.appendChild(controls);
-}
-
-function loadMedia(source, options = {}) {
+async function loadMedia(source, options = {}) {
   currentSource = source;
   playerStage.innerHTML =
-    '<video playsinline webkit-playsinline preload="metadata" src="' +
+    '<video controls playsinline webkit-playsinline preload="metadata" src="' +
     escapeAttribute(source.mediaUrl) + '">' +
     'Your browser cannot play this media source.' +
-    '<\\/video>';
+    '</video>';
 
   const video = playerStage.querySelector("video");
-  if (video) {
-    video.addEventListener("loadeddata", () => saveLastSource(currentMovie, source));
-    video.addEventListener("error", () => {
-      if (currentSource?.id === source.id) {
-        showPlaybackFallback("This media source failed to load.", { autoTryNext: true });
-      }
-    });
+  if (!video) {
+    showPlaybackFallback("CICAN could not create the video player.");
+    return;
+  }
 
-    buildVideoControls(video);
-
-    addSubtitleTracks(video, source).catch(() => {
-      source.capabilities = { ...(source.capabilities || {}), subtitles: false };
-    });
-
-    if (options.userInitiated && options.autoplay) {
-      if (options.fullscreen) await requestPlayerFullscreen();
-      try { await video.play(); } catch {}
+  video.addEventListener("loadedmetadata", () => saveLastSource(currentMovie, source), { once: true });
+  video.addEventListener("error", () => {
+    if (currentSource?.id === source.id) {
+      showPlaybackFallback("This media source failed to load.", { autoTryNext: true });
     }
+  });
+
+  addSubtitleTracks(video, source).catch(() => {
+    source.capabilities = { ...(source.capabilities || {}), subtitles: false };
+  });
+
+  if (options.userInitiated && options.autoplay) {
+    if (options.fullscreen) {
+      await requestPlayerFullscreen();
+    }
+    try {
+      await video.play();
+    } catch {}
   }
 }
 

@@ -519,10 +519,102 @@ function loadEmbed(source, options = {}) {
   }
 }
 
+function formatPlayerTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
+  const total = Math.floor(seconds);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const secs = String(total % 60).padStart(2, "0");
+  return hours ? hours + ":" + String(minutes).padStart(2, "0") + ":" + secs : minutes + ":" + secs;
+}
+
+function buildVideoControls(video) {
+  const controls = document.createElement("div");
+  controls.className = "cican-video-controls";
+  controls.innerHTML =
+    '<button type="button" class="cican-center-play" aria-label="Play movie">▶</button>' +
+    '<div class="cican-control-bar">' +
+      '<button type="button" class="cican-control-play" aria-label="Play movie">▶</button>' +
+      '<input class="cican-seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Movie timeline">' +
+      '<span class="cican-time">0:00 / 0:00</span>' +
+      '<button type="button" class="cican-control-fullscreen" aria-label="Enter fullscreen">⛶</button>' +
+    '</div>';
+
+  const centerPlay = controls.querySelector(".cican-center-play");
+  const play = controls.querySelector(".cican-control-play");
+  const seek = controls.querySelector(".cican-seek");
+  const time = controls.querySelector(".cican-time");
+  const fullscreen = controls.querySelector(".cican-control-fullscreen");
+
+  const sync = () => {
+    const duration = Number(video.duration);
+    const current = Number(video.currentTime) || 0;
+    const hasDuration = Number.isFinite(duration) && duration > 0;
+    seek.value = hasDuration ? String(Math.round((current / duration) * 1000)) : "0";
+    time.textContent = formatPlayerTime(current) + " / " + formatPlayerTime(duration);
+    const paused = video.paused || video.ended;
+    play.textContent = paused ? "▶" : "❚❚";
+    play.setAttribute("aria-label", paused ? "Play movie" : "Pause movie");
+    centerPlay.textContent = paused ? "▶" : "❚❚";
+    centerPlay.classList.toggle("visible", paused);
+    fullscreen.textContent = isFullscreenActive() ? "×" : "⛶";
+    fullscreen.setAttribute("aria-label", isFullscreenActive() ? "Exit fullscreen" : "Enter fullscreen");
+  };
+
+  const togglePlay = async () => {
+    try {
+      if (video.paused || video.ended) {
+        if (video.ended) video.currentTime = 0;
+        await video.play();
+      } else {
+        video.pause();
+      }
+    } catch {}
+    sync();
+  };
+
+  centerPlay.addEventListener("click", togglePlay);
+  play.addEventListener("click", togglePlay);
+
+  seek.addEventListener("input", () => {
+    const duration = Number(video.duration);
+    if (Number.isFinite(duration) && duration > 0) {
+      video.currentTime = (Number(seek.value) / 1000) * duration;
+      sync();
+    }
+  });
+
+  fullscreen.addEventListener("click", async () => {
+    if (isFullscreenActive()) {
+      try {
+        if (document.exitFullscreen) await document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      } catch {}
+    } else {
+      await requestPlayerFullscreen();
+    }
+    sync();
+  });
+
+  video.addEventListener("click", () => {
+    if (video.paused || video.ended) togglePlay();
+  });
+
+  ["loadedmetadata", "durationchange", "timeupdate", "play", "pause", "ended", "seeking", "seeked"].forEach(event => {
+    video.addEventListener(event, sync);
+  });
+
+  document.addEventListener("fullscreenchange", sync);
+  document.addEventListener("webkitfullscreenchange", sync);
+
+  sync();
+  playerStage.appendChild(controls);
+}
+
 async function loadMedia(source, options = {}) {
   currentSource = source;
   playerStage.innerHTML =
-    '<video controls playsinline webkit-playsinline preload="metadata" src="' +
+    '<video playsinline webkit-playsinline preload="metadata" src="' +
     escapeAttribute(source.mediaUrl) + '">' +
     'Your browser cannot play this media source.' +
     '</video>';
@@ -533,12 +625,20 @@ async function loadMedia(source, options = {}) {
     return;
   }
 
-  video.addEventListener("loadedmetadata", () => saveLastSource(currentMovie, source), { once: true });
+  video.addEventListener("loadedmetadata", () => {
+    saveLastSource(currentMovie, source);
+    if (video.videoWidth > 0 && video.videoHeight > 0) {
+      playerStage.style.setProperty("--player-ratio", video.videoWidth + " / " + video.videoHeight);
+    }
+  }, { once: true });
+
   video.addEventListener("error", () => {
     if (currentSource?.id === source.id) {
       showPlaybackFallback("This media source failed to load.", { autoTryNext: true });
     }
   });
+
+  buildVideoControls(video);
 
   addSubtitleTracks(video, source).catch(() => {
     source.capabilities = { ...(source.capabilities || {}), subtitles: false };

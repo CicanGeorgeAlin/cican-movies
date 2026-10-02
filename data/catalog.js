@@ -267,6 +267,9 @@ const movieSeeds = [
   ["Don Juan",1926,["romance","drama"],["don juan","john barrymore","1926"]],
   ["Reefer Madness",1936,["drama"],["reefer madness","tell your children","1936"]],
   ["My Home Village",1949,["drama"],["my home village","nae gohyang","내 고향","1949","korean film"]],
+  ["Strike",1925,["drama","silent"],["strike","stachka","сергей эйзенштейн","1925"]],
+  ["Twilight of a Woman's Soul",1913,["drama","silent"],["twilight of a woman's soul","сумерки женской души","yevgene bauer","1913"]],
+  ["Defence of Sevastopol",1911,["war","drama","silent"],["defence of sevastopol","оборона севастополя","1911"]],
 ];
 
 
@@ -574,6 +577,9 @@ const TEST_SOURCES = {
   "Don Juan": { durationSeconds: 6778, posterUrl: commonsThumb("Don Juan (1926) - 16mm - Flat - Sound.webm"), mediaUrl: commonsMedia("Don Juan (1926) - 16mm - Flat - Sound.webm") },
   "Reefer Madness": { durationSeconds: 4096, posterUrl: commonsThumb("Reefer Madness.webm"), mediaUrl: commonsMedia("Reefer Madness.webm") },
   "My Home Village": { durationSeconds: 5450, posterUrl: commonsThumb("My Home Village (1949).webm"), mediaUrl: commonsMedia("My Home Village (1949).webm") },
+  "Strike": { durationSeconds: 5276, posterUrl: commonsThumb("Strike (1925).webm"), mediaUrl: commonsMedia("Strike (1925).webm") },
+  "Twilight of a Woman's Soul": { durationSeconds: 2918, posterUrl: commonsThumb("Twilight of a Woman's Soul (1913).webm"), mediaUrl: commonsMedia("Twilight of a Woman's Soul (1913).webm") },
+  "Defence of Sevastopol": { durationSeconds: 2215, posterUrl: commonsThumb("Defence of Sevastopol.webm"), mediaUrl: commonsMedia("Defence of Sevastopol.webm") },
 };
 
 
@@ -628,7 +634,10 @@ const MOVIE_LANGUAGES = Object.freeze({
   "Merry-Go-Round": "en",
   "Don Juan": "en",
   "Reefer Madness": "en",
-  "My Home Village": "ko"
+  "My Home Village": "ko",
+  "Strike": "ru",
+  "Twilight of a Woman's Soul": "ru",
+  "Defence of Sevastopol": "ru"
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

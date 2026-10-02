@@ -1,4 +1,5 @@
 import { resolveMovies } from "./source-engine.js?v=az-browse-fix-20261002";
+import { catalog } from "./data/catalog.js?v=landing-browse-20261002";
 
 const form = document.querySelector("#search-form");
 const input = document.querySelector("#search-input");
@@ -12,6 +13,75 @@ const searchStatus = document.querySelector("#search-status");
 const shareButton = document.querySelector("#share-button");
 const fullscreenButton = document.querySelector("#fullscreen-button");
 const searchToggle = document.querySelector("#search-toggle");
+const browsePanel = document.querySelector("#browse-panel");
+const countryFilter = document.querySelector("#country-filter");
+const languageFilter = document.querySelector("#language-filter");
+const clearBrowse = document.querySelector("#clear-browse");
+const countryBrowser = document.querySelector("#country-browser");
+const languageBrowser = document.querySelector("#language-browser");
+const browseSwitches = document.querySelectorAll(".browse-switch");
+
+const browseState = { country: "", language: "" };
+
+function syncBrowseUrl() {
+  const url = new URL(window.location.href);
+  if (browseState.country) url.searchParams.set("country", browseState.country);
+  else url.searchParams.delete("country");
+  if (browseState.language) url.searchParams.set("language", browseState.language);
+  else url.searchParams.delete("language");
+  history.replaceState(history.state, "", url);
+}
+
+function populateBrowseOptions() {
+  const languages = new Set();
+  const countries = new Set();
+  for (const movie of catalog) {
+    for (const code of [movie.originalLanguage, movie.language, ...(movie.languages || [])]) {
+      if (code) languages.add(String(code).toLowerCase());
+    }
+    for (const country of [movie.country, ...(movie.countries || [])]) {
+      if (country) countries.add(String(country).trim());
+    }
+  }
+  const languageEntries = [...languages].sort((a,b) => languageLabel(a).localeCompare(languageLabel(b)));
+  languageFilter.innerHTML = '<option value="">All languages</option>' +
+    languageEntries.map(code => '<option value="' + escapeAttribute(code) + '">' + escapeHtml(languageLabel(code)) + '</option>').join("");
+  const countryEntries = [...countries].sort((a,b) => a.localeCompare(b));
+  document.querySelector("#country-options").innerHTML =
+    countryEntries.map(country => '<option value="' + escapeAttribute(country) + '"></option>').join("");
+}
+
+function applyBrowseStateFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  browseState.country = params.get("country") || "";
+  browseState.language = params.get("language") || "";
+  if (countryFilter) countryFilter.value = browseState.country;
+  if (languageFilter) languageFilter.value = browseState.language;
+}
+
+function setBrowseMode(mode) {
+  browsePanel.hidden = mode === "az";
+  countryBrowser.hidden = mode !== "country";
+  languageBrowser.hidden = mode !== "language";
+  browseSwitches.forEach(button => button.classList.toggle("active", button.dataset.browse === mode));
+  if (mode === "country") countryFilter?.focus();
+  if (mode === "language") languageFilter?.focus();
+}
+
+function runBrowseFilter() {
+  browseState.country = countryFilter?.value.trim() || "";
+  browseState.language = languageFilter?.value || "";
+  syncBrowseUrl();
+  const query = input.value.trim();
+  if (!query) {
+    input.value = "A";
+    document.querySelector(".alphabet-button[data-letter='A']")?.classList.add("active");
+  }
+  form.requestSubmit();
+}
+
+populateBrowseOptions();
+applyBrowseStateFromUrl();
 
 let currentMovie = null;
 let currentSource = null;
@@ -790,6 +860,40 @@ searchToggle?.addEventListener("click", () => {
 });
 fullscreenButton?.addEventListener("click", toggleFullscreen);
 installFullscreenListeners();
+browseSwitches.forEach(button => {
+  button.addEventListener("click", () => {
+    const mode = button.dataset.browse || "az";
+    setBrowseMode(mode);
+    if (mode === "az") {
+      browseState.country = "";
+      browseState.language = "";
+      if (countryFilter) countryFilter.value = "";
+      if (languageFilter) languageFilter.value = "";
+      syncBrowseUrl();
+    }
+  });
+});
+
+countryFilter?.addEventListener("change", runBrowseFilter);
+countryFilter?.addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    runBrowseFilter();
+  }
+});
+languageFilter?.addEventListener("change", runBrowseFilter);
+clearBrowse?.addEventListener("click", () => {
+  browseState.country = "";
+  browseState.language = "";
+  countryFilter.value = "";
+  languageFilter.value = "";
+  syncBrowseUrl();
+  setBrowseMode("az");
+  results.hidden = true;
+  results.innerHTML = "";
+  setSearchStatus("");
+});
+
 document.querySelectorAll(".alphabet-button").forEach(button => {
   button.addEventListener("click", () => {
     const letter = button.dataset.letter || "";
@@ -883,10 +987,17 @@ form.addEventListener("submit", async event => {
     '<div class="searching">SEARCHING THE AVAILABLE MOVIE SOURCES…</div>';
   playerView.hidden = true;
   results.hidden = false;
-  setSearchStatus(query.length === 1 && /^[a-z]$/i.test(query) ? "Browsing movies starting with " + query.toUpperCase() + "…" : "Searching movies in the CICAN index and enabled source providers…");
+  const browseLabel = browseState.country
+    ? " in " + browseState.country
+    : browseState.language
+      ? " in " + languageLabel(browseState.language)
+      : "";
+  setSearchStatus(query.length === 1 && /^[a-z]$/i.test(query)
+    ? "Browsing movies starting with " + query.toUpperCase() + browseLabel + "…"
+    : "Searching the CICAN index" + browseLabel + "…");
 
   try {
-    const movies = await resolveMovies(query, { contentType: MOVIE_CONTENT_TYPE });
+    const movies = await resolveMovies(query, { contentType: MOVIE_CONTENT_TYPE, country: browseState.country, language: browseState.language });
     if (requestId !== searchRequestId) return;
     renderResults(movies, query);
     const isLetterBrowse = query.length === 1 && /^[a-z]$/i.test(query);

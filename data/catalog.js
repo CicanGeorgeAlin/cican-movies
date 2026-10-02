@@ -245,7 +245,15 @@ const movieSeeds = [
   ["Finis Terræ",1929,["drama","silent"],["finis terrae","1929","jean epstein"]],
   ["Mauprat",1926,["drama","silent"],["mauprat","1926","jean epstein"]],
   ["La Revue des revues",1927,["musical","comedy","silent"],["la revue des revues","1927","parisian pleasures"]],
-  ["L'Inferno",1911,["drama","silent"],["l inferno","1911","dante","italian film"]],];
+  ["L'Inferno",1911,["drama","silent"],["l inferno","1911","dante","italian film"]],
+  ["Le Chevalier de Maison-Rouge",1914,["drama","silent"],["le chevalier de maison-rouge","1914","french film"]],
+  ["Die keusche Susanne",1926,["comedy","silent"],["die keusche susanne","1926","german film"]],
+  ["Wrzos",1938,["drama"],["wrzos","1938","polish film"]],
+  ["Ludzie bez jutra",1919,["drama","silent"],["ludzie bez jutra","1919","polish film"]],
+  ["Kísértetek vonata",1933,["horror","mystery"],["kísértetek vonata","1933","hungarian film"]],
+  ["Cabiria",1914,["drama","adventure","silent"],["cabiria","1914","italian film"]],
+  ["Battleship Potemkin",1925,["drama","history","silent"],["battleship potemkin","1925","russian film"]],
+];
 
 
 
@@ -538,6 +546,17 @@ for (const [title, item] of Object.entries(PLAYABLE_CATALOG)) {
   })];
 }
 
+
+const MOVIE_LANGUAGES = Object.freeze({
+  "Le Chevalier de Maison-Rouge": "fr",
+  "Die keusche Susanne": "de",
+  "Wrzos": "pl",
+  "Ludzie bez jutra": "pl",
+  "Kísértetek vonata": "hu",
+  "Cabiria": "it",
+  "Battleship Potemkin": "ru"
+});
+
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>
   createMovie({
     id: "seed-" + String(year) + "-" + title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
@@ -546,6 +565,9 @@ export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>
     year,
     genres,
     searchTerms,
+    language: MOVIE_LANGUAGES[title] || null,
+    originalLanguage: MOVIE_LANGUAGES[title] || null,
+    languages: MOVIE_LANGUAGES[title] ? [MOVIE_LANGUAGES[title]] : [],
     posterUrl: PLAYABLE_CATALOG[title]?.posterUrl || "",
     durationSeconds: PLAYABLE_CATALOG[title]?.durationSeconds || 0,
     sources: TEST_SOURCES[title] || []

@@ -214,6 +214,36 @@ function isFullscreenActive() {
   return Boolean(document.fullscreenElement || document.webkitFullscreenElement);
 }
 
+function fitFullscreenVideo() {
+  const video = playerStage?.querySelector("video");
+  if (!video || !isFullscreenActive()) {
+    if (video) {
+      video.style.removeProperty("width");
+      video.style.removeProperty("height");
+    }
+    return;
+  }
+
+  const sourceWidth = Number(video.videoWidth);
+  const sourceHeight = Number(video.videoHeight);
+  if (!(sourceWidth > 0 && sourceHeight > 0)) return;
+
+  const stageWidth = playerStage.clientWidth || window.innerWidth;
+  const stageHeight = playerStage.clientHeight || window.innerHeight;
+  const ratio = sourceWidth / sourceHeight;
+
+  let width = stageWidth;
+  let height = width / ratio;
+
+  if (height > stageHeight) {
+    height = stageHeight;
+    width = height * ratio;
+  }
+
+  video.style.width = Math.max(1, Math.floor(width)) + "px";
+  video.style.height = Math.max(1, Math.floor(height)) + "px";
+}
+
 function syncFullscreenUi() {
   const active = isFullscreenActive();
   if (active) lockLandscapeOrientation();
@@ -223,11 +253,14 @@ function syncFullscreenUi() {
   fullscreenButton?.setAttribute("title", active ? "Exit fullscreen" : "Enter fullscreen");
   if (fullscreenButton) fullscreenButton.textContent = active ? "× EXIT FULLSCREEN" : "⛶ FULLSCREEN";
   playerStage?.classList.toggle("is-fullscreen", active);
+  window.requestAnimationFrame(fitFullscreenVideo);
 }
 
 function installFullscreenListeners() {
   document.addEventListener("fullscreenchange", syncFullscreenUi);
   document.addEventListener("webkitfullscreenchange", syncFullscreenUi);
+  window.addEventListener("resize", fitFullscreenVideo);
+  window.addEventListener("orientationchange", () => window.setTimeout(fitFullscreenVideo, 120));
   syncFullscreenUi();
 }
 
@@ -629,6 +662,7 @@ async function loadMedia(source, options = {}) {
     saveLastSource(currentMovie, source);
     if (video.videoWidth > 0 && video.videoHeight > 0) {
       playerStage.style.setProperty("--player-ratio", video.videoWidth + " / " + video.videoHeight);
+      fitFullscreenVideo();
     }
   }, { once: true });
 

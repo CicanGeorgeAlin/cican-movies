@@ -24,7 +24,9 @@ const checks = [
   [css.includes(".player-stage:fullscreen") && css.includes("object-fit:contain"), "fullscreen aspect-ratio preservation missing"],
   [css.includes(".player-stage:fullscreen video{width:auto;height:auto"), "fullscreen video must preserve native dimensions"],
   [css.includes(".player-stage video{width:100%;height:auto"), "normal video must preserve aspect ratio"],
-  [!css.includes(".fullscreen-exit") && !css.includes(".player-center-play"), "custom player overlays must be absent"],
+  [app.includes("cican-seek") && app.includes("currentTime"), "interactive movie timeline missing"],
+  [css.includes(".cican-video-controls") && css.includes(".cican-seek"), "movie timeline styles missing"],
+  [!app.includes("controls playsinline"), "native controls attribute must remain disabled for the custom player"],
   [schema.includes("default: Boolean(track.default)"), "subtitle default metadata missing"],
   [schema.includes("originalLanguage"), "movie original-language metadata missing"]
 ];

@@ -13,6 +13,9 @@ const checks = [
   [app.includes("cican-movies-source-v1"), "source memory key missing"],
   [!app.includes("cican-movies-playback-v1") && !app.includes("resume-notice") && !app.includes("savePosition("), "playback-position memory must be disabled"],
   [!app.includes("player-center-play"), "duplicate custom play control must be absent"],
+  [!app.includes("button.dataset.sourceId"), "source cards must not contain a second PLAY control"],
+  [!app.includes('loadSource(source, { userInitiated: true, fullscreen: true, autoplay: true })'), "source cards must not directly start playback"],
+
   [app.includes("screen.orientation?.lock") && app.includes("screen.orientation?.unlock"), "screen orientation handling missing"],
   [app.includes('document.createElement("track")'), "native HTML5 track element missing"],
   [!app.includes("subtitle-select") && !css.includes(".subtitle-controls"), "custom subtitle overlay must be absent; use native subtitle controls"],

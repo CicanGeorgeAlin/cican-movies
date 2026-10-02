@@ -398,6 +398,10 @@ const PLAYABLE_CATALOG = {
   "The Goddess": { durationSeconds: 4710, posterUrl: commonsThumb("The Goddess 神女 (1934) with soundtrack.webm"), mediaUrl: commonsMedia("The Goddess 神女 (1934) with soundtrack.webm") },
   "Der weiße Teufel": { durationSeconds: 6318, posterUrl: commonsThumb("Der weiße Teufel (1930).webm"), mediaUrl: commonsMedia("Der weiße Teufel (1930).webm") },
   "Faust": { durationSeconds: 6386, posterUrl: commonsThumb("Faust (1926).webm"), mediaUrl: commonsMedia("Faust (1926).webm") },
+
+  "Strike": { durationSeconds: 5276, posterUrl: commonsThumb("Strike (1925).webm"), mediaUrl: commonsMedia("Strike (1925).webm") },
+  "Twilight of a Woman's Soul": { durationSeconds: 2918, posterUrl: commonsThumb("Twilight of a Woman's Soul (1913).webm"), mediaUrl: commonsMedia("Twilight of a Woman's Soul (1913).webm") },
+  "Defence of Sevastopol": { durationSeconds: 2215, posterUrl: commonsThumb("Defence of Sevastopol.webm"), mediaUrl: commonsMedia("Defence of Sevastopol.webm") },
 };
 
 

@@ -371,6 +371,20 @@ const PLAYABLE_CATALOG = {
   "La Revue des revues": { durationSeconds: 6145, posterUrl: commonsThumb("La Revue des revues (1927).webm"), mediaUrl: commonsMedia("La Revue des revues (1927).webm") },
   "L'Inferno": { durationSeconds: 3908, posterUrl: commonsThumb("L'Inferno (1911).webm"), mediaUrl: commonsMedia("L'Inferno (1911).webm") },};
 
+  "Le Chevalier de Maison-Rouge": { durationSeconds: 6897, posterUrl: commonsThumb("Le Chevalier de Maison-Rouge (1914).webm"), mediaUrl: commonsMedia("Le Chevalier de Maison-Rouge (1914).webm") },
+  "Die keusche Susanne": { durationSeconds: 7277, posterUrl: commonsThumb("Die keusche Susanne (1926).webm"), mediaUrl: commonsMedia("Die keusche Susanne (1926).webm") },
+  "Wrzos": { durationSeconds: 6383, posterUrl: commonsThumb("Wrzos (1938).webm"), mediaUrl: commonsMedia("Wrzos (1938).webm") },
+  "Ludzie bez jutra": { durationSeconds: 4983, posterUrl: commonsThumb("Ludzie bez jutra (1919).webm"), mediaUrl: commonsMedia("Ludzie bez jutra (1919).webm") },
+  "Kísértetek vonata": { durationSeconds: 3862, posterUrl: commonsThumb("Kísértetek vonata (1933).webm"), mediaUrl: commonsMedia("Kísértetek vonata (1933).webm") },
+  "Cabiria": { durationSeconds: 7407, posterUrl: commonsThumb("Cabiria (1914).webm"), mediaUrl: commonsMedia("Cabiria (1914).webm") },
+  "Battleship Potemkin": { durationSeconds: 4392, posterUrl: commonsThumb("Battleship Potemkin (1925) with English subtitles.webm"), mediaUrl: commonsMedia("Battleship Potemkin (1925) with English subtitles.webm") },
+  "Queen Kelly": { durationSeconds: 4270, posterUrl: commonsThumb("Queen Kelly (1929).webm"), mediaUrl: commonsMedia("Queen Kelly (1929).webm") },
+  "Aelita: Queen of Mars": { durationSeconds: 6692, posterUrl: commonsThumb("Aelita Queen of Mars.webm"), mediaUrl: commonsMedia("Aelita Queen of Mars.webm") },
+  "Hårda viljor": { durationSeconds: 5158, posterUrl: commonsThumb("Hårda viljor (1923).webm"), mediaUrl: commonsMedia("Hårda viljor (1923).webm") },
+  "Gustaf Wasa": { durationSeconds: 5874, posterUrl: commonsThumb("Gustaf Wasa (1928).webm"), mediaUrl: commonsMedia("Gustaf Wasa (1928).webm") },
+  "Lahore": { durationSeconds: 4355, posterUrl: commonsThumb("Lahore (1949).webm"), mediaUrl: commonsMedia("Lahore (1949).webm") },
+  "Marthanda Varma": { durationSeconds: 5056, posterUrl: commonsThumb("Marthanda Varma (1933).webm"), mediaUrl: commonsMedia("Marthanda Varma (1933).webm") },
+
 const TEST_SOURCES = {
   "All Quiet on the Western Front": [createSource({
     id: "commons-all-quiet-1930",
@@ -532,19 +546,6 @@ const TEST_SOURCES = {
   "The Return of Dr Fu Manchu": { durationSeconds: 4394, posterUrl: commonsThumb("The Return of Dr Fu Manchu (1930).webm"), mediaUrl: commonsMedia("The Return of Dr Fu Manchu (1930).webm") },
   "Mammy": { durationSeconds: 5414, posterUrl: commonsThumb("Mammy 1930.webm"), mediaUrl: commonsMedia("Mammy 1930.webm") },
   "The Phantom Empire": { durationSeconds: 4145, posterUrl: commonsThumb("The Phantom Empire 1940.ogv"), mediaUrl: commonsMedia("The Phantom Empire 1940.ogv") },
-  "Le Chevalier de Maison-Rouge": { durationSeconds: 6897, posterUrl: commonsThumb("Le Chevalier de Maison-Rouge (1914).webm"), mediaUrl: commonsMedia("Le Chevalier de Maison-Rouge (1914).webm") },
-  "Die keusche Susanne": { durationSeconds: 7277, posterUrl: commonsThumb("Die keusche Susanne (1926).webm"), mediaUrl: commonsMedia("Die keusche Susanne (1926).webm") },
-  "Wrzos": { durationSeconds: 6383, posterUrl: commonsThumb("Wrzos (1938).webm"), mediaUrl: commonsMedia("Wrzos (1938).webm") },
-  "Ludzie bez jutra": { durationSeconds: 4983, posterUrl: commonsThumb("Ludzie bez jutra (1919).webm"), mediaUrl: commonsMedia("Ludzie bez jutra (1919).webm") },
-  "Kísértetek vonata": { durationSeconds: 3862, posterUrl: commonsThumb("Kísértetek vonata (1933).webm"), mediaUrl: commonsMedia("Kísértetek vonata (1933).webm") },
-  "Cabiria": { durationSeconds: 7407, posterUrl: commonsThumb("Cabiria (1914).webm"), mediaUrl: commonsMedia("Cabiria (1914).webm") },
-  "Battleship Potemkin": { durationSeconds: 4392, posterUrl: commonsThumb("Battleship Potemkin (1925) with English subtitles.webm"), mediaUrl: commonsMedia("Battleship Potemkin (1925) with English subtitles.webm") },
-  "Queen Kelly": { durationSeconds: 4270, posterUrl: commonsThumb("Queen Kelly (1929).webm"), mediaUrl: commonsMedia("Queen Kelly (1929).webm") },
-  "Aelita: Queen of Mars": { durationSeconds: 6692, posterUrl: commonsThumb("Aelita Queen of Mars.webm"), mediaUrl: commonsMedia("Aelita Queen of Mars.webm") },
-  "Hårda viljor": { durationSeconds: 5158, posterUrl: commonsThumb("Hårda viljor (1923).webm"), mediaUrl: commonsMedia("Hårda viljor (1923).webm") },
-  "Gustaf Wasa": { durationSeconds: 5874, posterUrl: commonsThumb("Gustaf Wasa (1928).webm"), mediaUrl: commonsMedia("Gustaf Wasa (1928).webm") },
-  "Lahore": { durationSeconds: 4355, posterUrl: commonsThumb("Lahore (1949).webm"), mediaUrl: commonsMedia("Lahore (1949).webm") },
-  "Marthanda Varma": { durationSeconds: 5056, posterUrl: commonsThumb("Marthanda Varma (1933).webm"), mediaUrl: commonsMedia("Marthanda Varma (1933).webm") },
 };
 
 

@@ -19,6 +19,8 @@ const checks = [
   [app.includes("srtToVtt"), "SRT-to-WebVTT conversion missing"],
   [app.includes("zh-hans") && app.includes("zh-hant"), "BCP-47 subtitle language labels missing"],
   [(app.match(/async function addSubtitleTracks/g) || []).length === 1, "duplicate subtitle loader detected"],
+  [app.includes("syncVideoAspectRatio") && app.includes("video.videoWidth") && app.includes("video.videoHeight"), "native video aspect-ratio synchronization missing"],
+  [css.includes("aspect-ratio:var(--player-ratio,16/9)"), "player stage must follow native movie aspect ratio"],
   [css.includes(".player-stage:fullscreen") && css.includes("object-fit:contain"), "fullscreen aspect-ratio preservation missing"],
   [schema.includes("default: Boolean(track.default)"), "subtitle default metadata missing"],
   [schema.includes("originalLanguage"), "movie original-language metadata missing"]

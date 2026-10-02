@@ -27,6 +27,12 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Build social sharing image
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq librsvg2-bin
+          rsvg-convert -w 1200 -h 630 -o assets/cican-movies-social.png assets/cican-movies-social.svg
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

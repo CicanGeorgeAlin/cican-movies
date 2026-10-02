@@ -217,6 +217,16 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
     if (playableLocal.length) return playableLocal;
   }
 
+  // A–Z is navigation, not a provider search. Render the verified local catalog
+  // immediately instead of waiting for every remote provider to scan an entire letter.
+  // This prevents mobile browsers from being overwhelmed by hundreds of remote metadata
+  // requests and ensures pressing a letter repeatedly always produces deterministic results.
+  if (browseLetter) {
+    return mergeMovies(localMatches, [], query, browseLetter)
+      .filter(movie => normaliseMovie(movie.title).startsWith(browseLetter))
+      .sort((a, b) => normaliseTitle(a.title).localeCompare(normaliseTitle(b.title)));
+  }
+
   if (id) {
     const directResults = await Promise.allSettled(
       providers.filter(provider => provider.enabled).map(provider => provider.getById?.(id))

@@ -526,7 +526,6 @@ async function loadMedia(source, options = {}) {
     escapeAttribute(source.mediaUrl) + '">' +
     'Your browser cannot play this media source.' +
     '<\/video>';
-  addFullscreenExitButton();
 
   const video = playerStage.querySelector("video");
   if (video) {

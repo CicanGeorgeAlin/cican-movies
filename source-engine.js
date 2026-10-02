@@ -190,28 +190,7 @@ function mergeMovies(localMovies, remoteMovies, query, browseLetter = "") {
     .map(item => item.movie);
 }
 
-export async function resolveMovies(query, { id = null, contentType = CONTENT_TYPES.MOVIE, country = "", language = "" } = {}) {
-  const normaliseFilter = value => normaliseMovie(String(value || ""));
-  const countryFilter = normaliseFilter(country);
-  const languageFilter = normaliseFilter(language);
-  const matchesBrowseFilters = movie => {
-    if (countryFilter) {
-      const countries = [
-        movie.country,
-        ...(Array.isArray(movie.countries) ? movie.countries : [])
-      ].filter(Boolean).map(normaliseFilter);
-      if (!countries.includes(countryFilter)) return false;
-    }
-    if (languageFilter) {
-      const languages = [
-        movie.originalLanguage,
-        movie.language,
-        ...(Array.isArray(movie.languages) ? movie.languages : [])
-      ].filter(Boolean).map(normaliseFilter);
-      if (!languages.includes(languageFilter)) return false;
-    }
-    return true;
-  };
+export async function resolveMovies(query, { id = null, contentType = CONTENT_TYPES.MOVIE } = {}) {
   const parsedQuery = parseQuery(query);
   const providerQuery = parsedQuery.title || parsedQuery.normalised;
   const allVideo = contentType === "other";
@@ -222,7 +201,6 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
   const localMatches = catalog.filter(movie => {
     if (id) return movie.id === id;
     if (!allVideo && movie.contentType && movie.contentType !== contentType) return false;
-    if (!matchesBrowseFilters(movie)) return false;
 
     // A–Z browsing is an explicit title-prefix operation. Do not route it
     // through general search scoring; that can discard valid local titles
@@ -246,11 +224,6 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
   if (browseLetter) {
     return mergeMovies(localMatches, [], query, browseLetter)
       .filter(movie => normaliseMovie(movie.title).startsWith(browseLetter))
-      .sort((a, b) => normaliseTitle(a.title).localeCompare(normaliseTitle(b.title)));
-  }
-
-  if (countryFilter || languageFilter) {
-    return localMatches
       .sort((a, b) => normaliseTitle(a.title).localeCompare(normaliseTitle(b.title)));
   }
 

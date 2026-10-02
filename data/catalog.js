@@ -311,6 +311,12 @@ const movieSeeds = [
   ["Just Pals",1920,["western","silent"],["just pals","john ford","1920"]],
   ["The Flapper",1920,["comedy","romance","silent"],["the flapper","olive thomas","alan crosland","1920"]],
   ["Heading Home",1920,["comedy","drama","silent"],["heading home","headin home","babe ruth","1920"]],
+  ["The Trap",1922,["western","drama","silent"],["the trap","tu ne tueras point","1922"]],
+  ["Daddy-Long-Legs",1919,["comedy","drama","silent"],["daddy-long-legs","mary pickford","1919"]],
+  ["Camille",1921,["drama","romance","silent"],["camille","la dame aux camélias","rudolph valentino","alla nazimova","1921"]],
+  ["The Shock",1923,["drama","silent"],["the shock","1923"]],
+  ["Beau Brummel",1924,["drama","history","silent"],["beau brummel","john barrymore","1924"]],
+  ["Greed",1924,["drama","silent"],["greed","erich von stroheim","1924"]],
 ];
 
 
@@ -667,6 +673,12 @@ const TEST_SOURCES = {
   "Why Worry?": { durationSeconds: 3806, posterUrl: commonsThumb("Why Worry? (1923).webm"), mediaUrl: commonsMedia("Why Worry? (1923).webm") },
   "Romola": { durationSeconds: 6322, posterUrl: commonsThumb("Romola (1924).webm"), mediaUrl: commonsMedia("Romola (1924).webm") },
   "The Virginian": { durationSeconds: 4771, posterUrl: commonsThumb("The Virginian (1923).webm"), mediaUrl: commonsMedia("The Virginian (1923).webm") },
+  "The Trap": { durationSeconds: 3693, posterUrl: commonsThumb("The Trap (1922).webm"), mediaUrl: commonsMedia("The Trap (1922).webm") },
+  "Daddy-Long-Legs": { durationSeconds: 5050, posterUrl: commonsThumb("Daddy-Long-Legs (film, 1919).webm"), mediaUrl: commonsMedia("Daddy-Long-Legs (film, 1919).webm") },
+  "Camille": { durationSeconds: 4169, posterUrl: commonsThumb("Camille (1921).webm"), mediaUrl: commonsMedia("Camille (1921).webm") },
+  "The Shock": { durationSeconds: 3835, posterUrl: commonsThumb("The Shock (1923).webm"), mediaUrl: commonsMedia("The Shock (1923).webm") },
+  "Beau Brummel": { durationSeconds: 7627, posterUrl: commonsThumb("Beau Brummel (1924).webm"), mediaUrl: commonsMedia("Beau Brummel (1924).webm") },
+  "Greed": { durationSeconds: 14179, posterUrl: commonsThumb("GREED 1924.webm"), mediaUrl: commonsMedia("GREED 1924.webm") },
 };
 
 
@@ -756,6 +768,12 @@ const MOVIE_LANGUAGES = Object.freeze({
   "Why Worry?": "en",
   "Romola": "en",
   "The Virginian": "en",
+  "The Trap": "en",
+  "Daddy-Long-Legs": "en",
+  "Camille": "en",
+  "The Shock": "en",
+  "Beau Brummel": "en",
+  "Greed": "en",
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

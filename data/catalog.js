@@ -253,6 +253,12 @@ const movieSeeds = [
   ["Kísértetek vonata",1933,["horror","mystery"],["kísértetek vonata","1933","hungarian film"]],
   ["Cabiria",1914,["drama","adventure","silent"],["cabiria","1914","italian film"]],
   ["Battleship Potemkin",1925,["drama","history","silent"],["battleship potemkin","1925","russian film"]],
+  ["Queen Kelly",1929,["drama","silent"],["queen kelly","1929","american film"]],
+  ["Aelita: Queen of Mars",1924,["sci-fi","silent"],["aelita queen of mars","aelita","1924","russian film"]],
+  ["Hårda viljor",1923,["drama","silent"],["hårda viljor","1923","swedish film"]],
+  ["Gustaf Wasa",1928,["drama","silent"],["gustaf wasa","1928","swedish film"]],
+  ["Lahore",1949,["drama"],["lahore","1949","hindi film","indian film"]],
+  ["Marthanda Varma",1933,["drama","silent"],["marthanda varma","1933","indian film"]],
 ];
 
 
@@ -554,7 +560,13 @@ const MOVIE_LANGUAGES = Object.freeze({
   "Ludzie bez jutra": "pl",
   "Kísértetek vonata": "hu",
   "Cabiria": "it",
-  "Battleship Potemkin": "ru"
+  "Battleship Potemkin": "ru",
+  "Queen Kelly": "en",
+  "Aelita: Queen of Mars": "ru",
+  "Hårda viljor": "sv",
+  "Gustaf Wasa": "sv",
+  "Lahore": "hi",
+  "Marthanda Varma": "ml"
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

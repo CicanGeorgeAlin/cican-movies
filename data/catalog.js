@@ -261,6 +261,8 @@ const movieSeeds = [
   ["Marthanda Varma",1933,["drama","silent"],["marthanda varma","1933","indian film"]],
   ["Days of Youth",1929,["comedy","silent"],["days of youth","student comedies","1929","japanese film"]],
   ["The Goddess",1934,["drama","silent"],["the goddess","shen nu","1934","chinese film"]],
+  ["Der weiße Teufel",1930,["drama","silent"],["der weiße teufel","the white devil","1930","german film"]],
+  ["Faust",1926,["drama","fantasy","silent"],["faust","1926","f w murnau","german film"]],
 ];
 
 
@@ -387,6 +389,8 @@ const PLAYABLE_CATALOG = {
   "Marthanda Varma": { durationSeconds: 5056, posterUrl: commonsThumb("Marthanda Varma (1933).webm"), mediaUrl: commonsMedia("Marthanda Varma (1933).webm") },
   "Days of Youth": { durationSeconds: 5912, posterUrl: commonsThumb("学生ロマンス 若き日 (1929).webm"), mediaUrl: commonsMedia("学生ロマンス 若き日 (1929).webm") },
   "The Goddess": { durationSeconds: 4710, posterUrl: commonsThumb("The Goddess 神女 (1934) with soundtrack.webm"), mediaUrl: commonsMedia("The Goddess 神女 (1934) with soundtrack.webm") },
+  "Der weiße Teufel": { durationSeconds: 6318, posterUrl: commonsThumb("Der weiße Teufel (1930).webm"), mediaUrl: commonsMedia("Der weiße Teufel (1930).webm") },
+  "Faust": { durationSeconds: 6386, posterUrl: commonsThumb("Faust (1926).webm"), mediaUrl: commonsMedia("Faust (1926).webm") },
 };
 
 
@@ -587,7 +591,9 @@ const MOVIE_LANGUAGES = Object.freeze({
   "Lahore": "hi",
   "Marthanda Varma": "ml",
   "Days of Youth": "ja",
-  "The Goddess": "zh"
+  "The Goddess": "zh",
+  "Der weiße Teufel": "de",
+  "Faust": "de"
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

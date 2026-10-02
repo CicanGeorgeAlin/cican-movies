@@ -219,12 +219,26 @@ function addFullscreenExitButton() {
   playerStage.appendChild(button);
 }
 
+async function lockLandscapeOrientation() {
+  try {
+    if (screen.orientation?.lock) await screen.orientation.lock("landscape");
+  } catch {}
+}
+
+function unlockScreenOrientation() {
+  try {
+    screen.orientation?.unlock?.();
+  } catch {}
+}
+
 function isFullscreenActive() {
   return Boolean(document.fullscreenElement || document.webkitFullscreenElement);
 }
 
 function syncFullscreenUi() {
   const active = isFullscreenActive();
+  if (active) lockLandscapeOrientation();
+  else unlockScreenOrientation();
   fullscreenButton?.setAttribute("aria-pressed", String(active));
   fullscreenButton?.setAttribute("aria-label", active ? "Exit fullscreen" : "Enter fullscreen");
   fullscreenButton?.setAttribute("title", active ? "Exit fullscreen" : "Enter fullscreen");
@@ -446,11 +460,6 @@ function showPlaybackFallback(message = "This source could not be played.", { au
   const failedSource = currentSource;
   if (failedSource?.id) failedSourceIds.add(failedSource.id);
 
-  const video = playerStage.querySelector("video");
-  if (video && currentMovie && video.currentTime > 0 && !video.ended) {
-    savePosition(currentMovie, video.currentTime, video.duration);
-  }
-
   currentSource = null;
   const next = getNextPlayableSource();
 
@@ -526,7 +535,6 @@ function selectBestSource(movie) {
   return candidates[0];
 }
 
-const PLAYBACK_KEY = "cican-movies-playback-v1";
 const SOURCE_MEMORY_KEY = "cican-movies-source-v1";
 
 function getLastSourceId(movie) {
@@ -552,95 +560,6 @@ function playbackId(movie) {
   return movie?.id ? String(movie.id) : "";
 }
 
-function getSavedPosition(movie) {
-  try {
-    const saved = JSON.parse(localStorage.getItem(PLAYBACK_KEY) || "{}");
-    const value = Number(saved[playbackId(movie)]);
-    return Number.isFinite(value) && value > 0 ? value : 0;
-  } catch {
-    return 0;
-  }
-}
-
-function savePosition(movie, position, duration = 0) {
-  const id = playbackId(movie);
-  if (!id || !Number.isFinite(position) || position < 5) return;
-
-  if (Number.isFinite(duration) && duration > 0 && position >= duration - 5) {
-    clearPosition(movie);
-    return;
-  }
-
-  try {
-    const saved = JSON.parse(localStorage.getItem(PLAYBACK_KEY) || "{}");
-    saved[id] = position;
-    localStorage.setItem(PLAYBACK_KEY, JSON.stringify(saved));
-  } catch {}
-}
-
-function clearPosition(movie) {
-  const id = playbackId(movie);
-  if (!id) return;
-  try {
-    const saved = JSON.parse(localStorage.getItem(PLAYBACK_KEY) || "{}");
-    delete saved[id];
-    localStorage.setItem(PLAYBACK_KEY, JSON.stringify(saved));
-  } catch {}
-}
-
-function restoreMediaPosition(video) {
-  const position = getSavedPosition(currentMovie);
-  if (!position) return;
-
-  const restore = () => {
-    if (Number.isFinite(video.duration) && position < video.duration - 2) {
-      try { video.currentTime = position; } catch {}
-    }
-    video.removeEventListener("loadedmetadata", restore);
-  };
-
-  video.addEventListener("loadedmetadata", restore);
-}
-
-function formatPlaybackTime(seconds) {
-  const total = Math.max(0, Math.floor(Number(seconds) || 0));
-  const minutes = Math.floor(total / 60);
-  const secs = total % 60;
-  return minutes + ":" + String(secs).padStart(2, "0");
-}
-
-function attachMediaMemory(video) {
-  const savedPosition = getSavedPosition(currentMovie);
-  restoreMediaPosition(video);
-
-  if (savedPosition > 5 && (!Number.isFinite(video.duration) || savedPosition < video.duration - 2)) {
-    const notice = document.createElement("div");
-    notice.className = "resume-notice";
-    notice.innerHTML =
-      '<strong>RESUME FROM ' + escapeHtml(formatPlaybackTime(savedPosition)) + '</strong>' +
-      '<button type="button" class="resume-start">START FROM BEGINNING</button>';
-    playerStage.appendChild(notice);
-
-    notice.querySelector(".resume-start")?.addEventListener("click", () => {
-      clearPosition(currentMovie);
-      try { video.currentTime = 0; } catch {}
-      notice.remove();
-    });
-  }
-
-  video.addEventListener("timeupdate", () => {
-    if (video.currentTime > 0 && !video.ended) {
-      savePosition(currentMovie, video.currentTime, video.duration);
-    }
-  });
-
-  video.addEventListener("pause", () => {
-    if (!video.ended) savePosition(currentMovie, video.currentTime, video.duration);
-  });
-
-  video.addEventListener("ended", () => clearPosition(currentMovie));
-}
-
 function loadEmbed(source, options = {}) {
   currentSource = source;
   playerStage.innerHTML =
@@ -664,24 +583,11 @@ async function loadMedia(source, options = {}) {
     '<video controls playsinline webkit-playsinline preload="metadata" src="' +
     escapeAttribute(source.mediaUrl) + '">' +
     'Your browser cannot play this media source.' +
-    '</video>' +
-    '<button class="player-center-play" type="button" aria-label="Play movie">▶</button>';
+    '<\/video>';
   addFullscreenExitButton();
 
   const video = playerStage.querySelector("video");
   if (video) {
-    attachMediaMemory(video);
-    const centerPlay = playerStage.querySelector(".player-center-play");
-    centerPlay?.addEventListener("click", async () => {
-      try { await video.play(); } catch {}
-      centerPlay.hidden = true;
-    });
-    video.addEventListener("play", () => {
-      if (centerPlay) centerPlay.hidden = true;
-    });
-    video.addEventListener("pause", () => {
-      if (centerPlay && !video.ended) centerPlay.hidden = false;
-    });
     video.addEventListener("loadeddata", () => saveLastSource(currentMovie, source));
     video.addEventListener("error", () => {
       if (currentSource?.id === source.id) {
@@ -732,10 +638,12 @@ async function toggleFullscreen() {
   try {
     if (document.fullscreenElement) {
       await document.exitFullscreen();
+      unlockScreenOrientation();
       return;
     }
     if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
       document.webkitExitFullscreen();
+      unlockScreenOrientation();
       return;
     }
     await requestPlayerFullscreen();

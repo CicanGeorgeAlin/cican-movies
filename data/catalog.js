@@ -369,8 +369,7 @@ const PLAYABLE_CATALOG = {
   "Finis Terræ": { durationSeconds: 4768, posterUrl: commonsThumb("Finis Terræ (1929).webm"), mediaUrl: commonsMedia("Finis Terræ (1929).webm") },
   "Mauprat": { durationSeconds: 5266, posterUrl: commonsThumb("Mauprat (1926).webm"), mediaUrl: commonsMedia("Mauprat (1926).webm") },
   "La Revue des revues": { durationSeconds: 6145, posterUrl: commonsThumb("La Revue des revues (1927).webm"), mediaUrl: commonsMedia("La Revue des revues (1927).webm") },
-  "L'Inferno": { durationSeconds: 3908, posterUrl: commonsThumb("L'Inferno (1911).webm"), mediaUrl: commonsMedia("L'Inferno (1911).webm") },};
-
+  "L'Inferno": { durationSeconds: 3908, posterUrl: commonsThumb("L'Inferno (1911).webm"), mediaUrl: commonsMedia("L'Inferno (1911).webm") },
   "Le Chevalier de Maison-Rouge": { durationSeconds: 6897, posterUrl: commonsThumb("Le Chevalier de Maison-Rouge (1914).webm"), mediaUrl: commonsMedia("Le Chevalier de Maison-Rouge (1914).webm") },
   "Die keusche Susanne": { durationSeconds: 7277, posterUrl: commonsThumb("Die keusche Susanne (1926).webm"), mediaUrl: commonsMedia("Die keusche Susanne (1926).webm") },
   "Wrzos": { durationSeconds: 6383, posterUrl: commonsThumb("Wrzos (1938).webm"), mediaUrl: commonsMedia("Wrzos (1938).webm") },
@@ -384,6 +383,8 @@ const PLAYABLE_CATALOG = {
   "Gustaf Wasa": { durationSeconds: 5874, posterUrl: commonsThumb("Gustaf Wasa (1928).webm"), mediaUrl: commonsMedia("Gustaf Wasa (1928).webm") },
   "Lahore": { durationSeconds: 4355, posterUrl: commonsThumb("Lahore (1949).webm"), mediaUrl: commonsMedia("Lahore (1949).webm") },
   "Marthanda Varma": { durationSeconds: 5056, posterUrl: commonsThumb("Marthanda Varma (1933).webm"), mediaUrl: commonsMedia("Marthanda Varma (1933).webm") },
+};
+
 
 const TEST_SOURCES = {
   "All Quiet on the Western Front": [createSource({

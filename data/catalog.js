@@ -358,7 +358,11 @@ const movieSeeds = [
   ["Damad",1951,["comedy","hindi"],["damad","1951","brij rani"]],
   ["Beqasoor",1950,["drama","hindi"],["beqasoor","बेकसूर","k. amarnath","1950"]],
   ["Dastan",1950,["drama","hindi"],["dastan","daastan","a. r. kard ar","1950"]],
-  ["Babul",1950,["drama","romance","hindi"],["babul","father's house","1950","s.u. sunny"]]
+  ["Babul",1950,["drama","romance","hindi"],["babul","father's house","1950","s.u. sunny"]],
+  ["Tarana",1951,["romance","musical","hindi"],["tarana","1951","ram daryani"]],
+  ["Deedar",1951,["drama","romance","hindi"],["deedar","1951","nitin bose"]],
+  ["赵一曼",1950,["biographical","war","chinese"],["赵一曼","zhao yiman","1950"]],
+  ["Awaara",1951,["drama","romance","hindi"],["awaara","awara","1951","raj kapoor"]],
   ["Aabroo",1943,["drama","hindi"],["aabroo","govind ram","1943"]],
   ["City Without Men",1943,["drama"],["city without men","sidney salkow","1943"]],
   ["Жди меня",1943,["war","drama","russian"],["zhdi menya","wait for me","1943"]],

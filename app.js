@@ -1,3 +1,4 @@
+import { catalog } from "./data/catalog.js?v=movie-count-20261002";
 import { resolveMovies } from "./source-engine.js?v=az-final3-20261002";
 
 const form = document.querySelector("#search-form");
@@ -12,6 +13,8 @@ const searchStatus = document.querySelector("#search-status");
 const shareButton = document.querySelector("#share-button");
 const fullscreenButton = document.querySelector("#fullscreen-button");
 const searchToggle = document.querySelector("#search-toggle");
+const movieCount = document.querySelector("#movie-count");
+if (movieCount) movieCount.textContent = String(catalog.length);
 
 let currentMovie = null;
 let currentSource = null;

@@ -15,13 +15,16 @@ const checks = [
   [!app.includes("player-center-play"), "duplicate custom play control must be absent"],
   [app.includes("screen.orientation.lock") && app.includes("screen.orientation?.unlock"), "screen orientation handling missing"],
   [app.includes('document.createElement("track")'), "native HTML5 track element missing"],
-  [app.includes("subtitle-select"), "subtitle language selector missing"],
+  [!app.includes("subtitle-select") && !css.includes(".subtitle-controls"), "custom subtitle overlay must be absent; use native subtitle controls"],
   [app.includes('kind = track.kind || "subtitles"'), "subtitle track kind missing"],
   [app.includes(".vtt") && app.includes(".srt"), "VTT/SRT subtitle discovery guard missing"],
   [app.includes("srtToVtt"), "SRT-to-WebVTT conversion missing"],
   [app.includes("zh-hans") && app.includes("zh-hant"), "BCP-47 subtitle language labels missing"],
   [(app.match(/async function addSubtitleTracks/g) || []).length === 1, "duplicate subtitle loader detected"],
   [css.includes(".player-stage:fullscreen") && css.includes("object-fit:contain"), "fullscreen aspect-ratio preservation missing"],
+  [css.includes(".player-stage:fullscreen video{width:auto;height:auto"), "fullscreen video must preserve native dimensions"],
+  [css.includes(".player-stage video{width:100%;height:auto"), "normal video must preserve aspect ratio"],
+  [!css.includes(".fullscreen-exit") && !css.includes(".player-center-play"), "custom player overlays must be absent"],
   [schema.includes("default: Boolean(track.default)"), "subtitle default metadata missing"],
   [schema.includes("originalLanguage"), "movie original-language metadata missing"]
 ];

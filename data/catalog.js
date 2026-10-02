@@ -1314,5 +1314,4 @@ export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>
         })]
       : [])
   })
-)ma.js";
-
+ );

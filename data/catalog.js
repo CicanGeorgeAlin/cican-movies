@@ -259,6 +259,8 @@ const movieSeeds = [
   ["Gustaf Wasa",1928,["drama","silent"],["gustaf wasa","1928","swedish film"]],
   ["Lahore",1949,["drama"],["lahore","1949","hindi film","indian film"]],
   ["Marthanda Varma",1933,["drama","silent"],["marthanda varma","1933","indian film"]],
+  ["Days of Youth",1929,["comedy","silent"],["days of youth","student comedies","1929","japanese film"]],
+  ["The Goddess",1934,["drama","silent"],["the goddess","shen nu","1934","chinese film"]],
 ];
 
 
@@ -383,6 +385,8 @@ const PLAYABLE_CATALOG = {
   "Gustaf Wasa": { durationSeconds: 5874, posterUrl: commonsThumb("Gustaf Wasa (1928).webm"), mediaUrl: commonsMedia("Gustaf Wasa (1928).webm") },
   "Lahore": { durationSeconds: 4355, posterUrl: commonsThumb("Lahore (1949).webm"), mediaUrl: commonsMedia("Lahore (1949).webm") },
   "Marthanda Varma": { durationSeconds: 5056, posterUrl: commonsThumb("Marthanda Varma (1933).webm"), mediaUrl: commonsMedia("Marthanda Varma (1933).webm") },
+  "Days of Youth": { durationSeconds: 5912, posterUrl: commonsThumb("学生ロマンス 若き日 (1929).webm"), mediaUrl: commonsMedia("学生ロマンス 若き日 (1929).webm") },
+  "The Goddess": { durationSeconds: 4710, posterUrl: commonsThumb("The Goddess 神女 (1934) with soundtrack.webm"), mediaUrl: commonsMedia("The Goddess 神女 (1934) with soundtrack.webm") },
 };
 
 
@@ -581,7 +585,9 @@ const MOVIE_LANGUAGES = Object.freeze({
   "Hårda viljor": "sv",
   "Gustaf Wasa": "sv",
   "Lahore": "hi",
-  "Marthanda Varma": "ml"
+  "Marthanda Varma": "ml",
+  "Days of Youth": "ja",
+  "The Goddess": "zh"
 });
 
 export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>

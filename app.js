@@ -67,12 +67,14 @@ const LANGUAGE_NAMES = {
   ko: "Korean", lt: "Lithuanian", lv: "Latvian", nl: "Dutch", no: "Norwegian",
   pl: "Polish", pt: "Portuguese", ro: "Romanian", ru: "Russian", sk: "Slovak",
   sl: "Slovenian", sr: "Serbian", sv: "Swedish", th: "Thai", tr: "Turkish",
-  uk: "Ukrainian", vi: "Vietnamese", zh: "Chinese"
+  uk: "Ukrainian", vi: "Vietnamese", ryu: "Okinawan",
+  zh: "Chinese", "zh-hans": "Simplified Chinese", "zh-hant": "Traditional Chinese"
 };
 
 function languageLabel(code) {
-  const key = String(code || "").toLowerCase().split("-")[0];
-  return LANGUAGE_NAMES[key] || String(code || "").toUpperCase();
+  const raw = String(code || "").toLowerCase();
+  const key = raw.split("-")[0];
+  return LANGUAGE_NAMES[raw] || LANGUAGE_NAMES[key] || String(code || "").toUpperCase();
 }
 
 function subtitleTracksForSource(source) {
@@ -109,7 +111,7 @@ async function discoverWikimediaSubtitles(source) {
       return pages.map(page => {
         const title = String(page.title || "");
         const suffix = title.slice(("TimedText:" + fileName + ".").length);
-        const languageMatch = suffix.match(/^([a-z]{2,3}(?:-[A-Z]{2})?)\.vtt$/i);
+        const languageMatch = suffix.match(/^([a-z]{2,3}(?:-[a-z]{4})?(?:-[A-Z]{2})?)\.(?:vtt|srt)$/i);
         if (!languageMatch) return null;
         const srclang = languageMatch[1].toLowerCase();
         return {

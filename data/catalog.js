@@ -603,6 +603,20 @@ export const catalog = movieSeeds.map(([title, year, genres, searchTerms]) =>
     languages: MOVIE_LANGUAGES[title] ? [MOVIE_LANGUAGES[title]] : [],
     posterUrl: PLAYABLE_CATALOG[title]?.posterUrl || "",
     durationSeconds: PLAYABLE_CATALOG[title]?.durationSeconds || 0,
-    sources: TEST_SOURCES[title] || []
+    sources: TEST_SOURCES[title] || (PLAYABLE_CATALOG[title]
+      ? [createSource({
+          id: "commons-auto-" + title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
+          provider: "wikimedia-commons",
+          name: "Wikimedia Commons",
+          type: SOURCE_TYPES.MEDIA,
+          status: SOURCE_STATUS.REVIEW,
+          rightsStatus: RIGHTS_STATUS.REVIEW,
+          mediaUrl: PLAYABLE_CATALOG[title].mediaUrl,
+          url: "https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(
+            decodeURIComponent(PLAYABLE_CATALOG[title].mediaUrl.split("/").pop() || "")
+          ),
+          rightsNote: "Playback source is linked from Wikimedia Commons. Review the file page for current rights and availability."
+        })]
+      : [])
   })
 );

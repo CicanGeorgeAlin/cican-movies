@@ -267,34 +267,6 @@ function addSubtitleSelector(video, tracks) {
   playerStage.appendChild(wrap);
 }
 
-async function addSubtitleTracks(video, source) {
-  const supplied = subtitleTracksForSource(source);
-  const discovered = await discoverWikimediaSubtitles(source);
-  const tracks = [...supplied, ...discovered]
-    .filter(track => /.vtt(?:[?#]|$)/i.test(String(track.src || "")))
-    .filter((track, index, all) =>
-      all.findIndex(item => item.src === track.src || item.srclang === track.srclang) === index
-    );
-
-  tracks.forEach((track, index) => {
-    const element = document.createElement("track");
-    element.kind = track.kind || "subtitles";
-    element.label = track.label || languageLabel(track.srclang);
-    element.srclang = track.srclang;
-    element.src = track.src;
-    element.default = Boolean(track.default) || (!tracks.some(item => item.default) && index === 0 && track.srclang.startsWith("en"));
-    video.appendChild(element);
-  });
-
-  if (tracks.length) {
-    source.capabilities = { ...(source.capabilities || {}), subtitles: true };
-    addSubtitleSelector(video, tracks);
-  } else {
-    source.capabilities = { ...(source.capabilities || {}), subtitles: false };
-  }
-  return tracks.length;
-}
-
 function sourcePriority(source) {
   if (source.type === "embed") return 0;
   if (source.type === "media") return 1;

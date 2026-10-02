@@ -75,7 +75,8 @@ export function createSource(source = {}) {
             src: String(track.src),
             srclang: String(track.srclang).toLowerCase(),
             label: String(track.label || track.srclang).trim(),
-            kind: String(track.kind || "subtitles")
+            kind: String(track.kind || "subtitles"),
+            default: Boolean(track.default)
           }))
       : []
   };
@@ -144,6 +145,9 @@ export function createMovie(movie = {}) {
     id: movie.id || "",
     contentType: movie.contentType || CONTENT_TYPES.MOVIE,
     title: movie.title || "Untitled",
+    language: movie.language || movie.originalLanguage || null,
+    originalLanguage: movie.originalLanguage || movie.language || null,
+    languages: Array.isArray(movie.languages) ? movie.languages : (movie.originalLanguage ? [movie.originalLanguage] : []),
     year: movie.year || null,
     description: movie.description || "",
     posterUrl: movie.posterUrl || "",

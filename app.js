@@ -60,6 +60,36 @@ function escapeAttribute(value) {
   return String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
 }
 
+const mediaUrlCache = new Map();
+
+async function resolveMediaUrl(source) {
+  const fallback = String(source?.mediaUrl || "");
+  if (!source || source.provider !== "wikimedia-commons") return fallback;
+
+  const fileName = getWikimediaFileName(source);
+  if (!fileName) return fallback;
+
+  const cacheKey = fileName.toLowerCase();
+  if (mediaUrlCache.has(cacheKey)) return mediaUrlCache.get(cacheKey);
+
+  const promise = fetch(
+    "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*" +
+    "&prop=imageinfo&iiprop=url&titles=" +
+    encodeURIComponent("File:" + fileName)
+  )
+    .then(response => response.ok ? response.json() : null)
+    .then(data => {
+      const pages = data?.query?.pages || {};
+      const page = Object.values(pages)[0];
+      const url = page?.imageinfo?.[0]?.url;
+      return url || fallback;
+    })
+    .catch(() => fallback);
+
+  mediaUrlCache.set(cacheKey, promise);
+  return promise;
+}
+
 const subtitleDiscoveryCache = new Map();
 
 const LANGUAGE_NAMES = {
@@ -689,9 +719,13 @@ function buildVideoControls(video) {
 
 async function loadMedia(source, options = {}) {
   currentSource = source;
+
+  const mediaUrl = await resolveMediaUrl(source);
+  if (currentSource?.id !== source.id) return;
+
   playerStage.innerHTML =
-    '<video playsinline webkit-playsinline preload="metadata" src="' +
-    escapeAttribute(source.mediaUrl) + '">' +
+    '<video playsinline webkit-playsinline preload="metadata" controlslist="nodownload" src="' +
+    escapeAttribute(mediaUrl) + '">' +
     'Your browser cannot play this media source.' +
     '</video>';
 
@@ -711,7 +745,12 @@ async function loadMedia(source, options = {}) {
 
   video.addEventListener("error", () => {
     if (currentSource?.id === source.id) {
-      showPlaybackFallback("This media source failed to load.", { autoTryNext: true });
+      const mediaError = video.error;
+      const code = mediaError?.code || 0;
+      const message = code === 4
+        ? "This media format or source is not supported by the browser."
+        : "This media source failed to load.";
+      showPlaybackFallback(message, { autoTryNext: true });
     }
   });
 

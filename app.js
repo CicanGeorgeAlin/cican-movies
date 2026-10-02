@@ -572,9 +572,25 @@ function buildVideoControls(video) {
     '</div>';
 
   const centerPlay = controls.querySelector(".cican-center-play");
+  const controlBar = controls.querySelector(".cican-control-bar");
   const seek = controls.querySelector(".cican-seek");
   const time = controls.querySelector(".cican-time");
   const fullscreen = controls.querySelector(".cican-control-fullscreen");
+  let hideTimer = null;
+  let interacting = false;
+
+  const showControls = () => {
+    controls.classList.remove("auto-hidden");
+    window.clearTimeout(hideTimer);
+    if (!video.paused && !video.ended && !interacting) {
+      hideTimer = window.setTimeout(() => {
+        hideTimer = null;
+        if (!video.paused && !video.ended && !interacting) {
+          controls.classList.add("auto-hidden");
+        }
+      }, 2200);
+    }
+  };
 
   const sync = () => {
     const duration = Number(video.duration);
@@ -587,6 +603,13 @@ function buildVideoControls(video) {
     centerPlay.classList.toggle("visible", paused);
     fullscreen.textContent = isFullscreenActive() ? "×" : "⛶";
     fullscreen.setAttribute("aria-label", isFullscreenActive() ? "Exit fullscreen" : "Enter fullscreen");
+    if (paused) {
+      controls.classList.remove("auto-hidden");
+      window.clearTimeout(hideTimer);
+      hideTimer = null;
+    } else if (!interacting && !controls.classList.contains("auto-hidden") && !hideTimer) {
+      showControls();
+    }
   };
 
   const togglePlay = async () => {
@@ -611,6 +634,23 @@ function buildVideoControls(video) {
     }
   });
 
+  seek.addEventListener("pointerdown", () => {
+    interacting = true;
+    showControls();
+  });
+  seek.addEventListener("pointerup", () => {
+    interacting = false;
+    showControls();
+  });
+  seek.addEventListener("touchstart", () => {
+    interacting = true;
+    showControls();
+  }, { passive: true });
+  seek.addEventListener("touchend", () => {
+    interacting = false;
+    showControls();
+  }, { passive: true });
+
   fullscreen.addEventListener("click", async () => {
     if (isFullscreenActive()) {
       try {
@@ -621,10 +661,16 @@ function buildVideoControls(video) {
       await requestPlayerFullscreen();
     }
     sync();
+    showControls();
   });
 
   video.addEventListener("click", () => {
     if (video.paused || video.ended) togglePlay();
+    else showControls();
+  });
+
+  ["pointermove", "pointerdown", "touchstart"].forEach(event => {
+    playerStage.addEventListener(event, showControls, { passive: event !== "pointerdown" });
   });
 
   ["loadedmetadata", "durationchange", "timeupdate", "play", "pause", "ended", "seeking", "seeked"].forEach(event => {

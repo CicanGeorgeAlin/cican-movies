@@ -83,4 +83,30 @@ if (!letterA.length || !letterT.length) {
   throw new Error("A-Z runtime smoke test failed: expected playable A and T titles");
 }
 
+const internationalTitles = [
+  ["Le Chevalier de Maison-Rouge", "fr"],
+  ["Die keusche Susanne", "de"],
+  ["Wrzos", "pl"],
+  ["Ludzie bez jutra", "pl"],
+  ["Kísértetek vonata", "hu"],
+  ["Cabiria", "it"],
+  ["Battleship Potemkin", "ru"]
+];
+
+for (const [title, language] of internationalTitles) {
+  const movie = catalog.find(item => item.title === title);
+  if (!movie) throw new Error("International catalog movie missing: " + title);
+  if (movie.originalLanguage !== language) throw new Error("International language metadata missing for: " + title);
+  if (!movie.posterUrl || Number(movie.durationSeconds) < 40 * 60) {
+    throw new Error("International feature metadata invalid for: " + title);
+  }
+  const media = movie.sources.find(source => source.mediaUrl && source.status !== "blocked" && source.status !== "unavailable");
+  if (!media) throw new Error("International playable source missing for: " + title);
+}
+
+const documentary = catalog.find(item => (item.genres || []).some(genre => String(genre).toLowerCase() === "documentary"));
+if (documentary && isFeatureMovie(documentary)) {
+  throw new Error("Documentary genre must not pass feature-movie filter: " + documentary.title);
+}
+
 console.log("MOVIE_INTEGRITY_OK");

@@ -12,7 +12,7 @@ const checks = [
   [app.includes("popstate"), "browser back-state handler missing"],
   [app.includes("cican-movies-playback-v1"), "playback memory key missing"],
   [app.includes("cican-movies-source-v1"), "source memory key missing"],
-  [app.includes("<track"), "native HTML5 track element missing"],
+  [app.includes('document.createElement("track")'), "native HTML5 track element missing"],
   [app.includes("subtitle-select"), "subtitle language selector missing"],
   [app.includes('kind = track.kind || "subtitles"'), "subtitle track kind missing"],
   [app.includes(".vtt"), "VTT-only subtitle guard missing"],

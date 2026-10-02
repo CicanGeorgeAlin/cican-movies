@@ -354,6 +354,8 @@ function openMovie(movie) {
   syncWatchUrl(movie);
   currentSource = null;
   playerTitle.textContent = movie.title;
+  playerStage.style.removeProperty("--player-ratio");
+  delete playerStage.dataset.videoRatio;
   playerStage.innerHTML =
     '<div class="player-empty"><div class="play-orb">▶</div>' +
     '<p>Choose a source below.</p></div>';
@@ -651,6 +653,8 @@ function attachMediaMemory(video) {
 
 function loadEmbed(source, options = {}) {
   currentSource = source;
+  playerStage.style.removeProperty("--player-ratio");
+  delete playerStage.dataset.videoRatio;
   playerStage.innerHTML =
     '<iframe src="' + escapeAttribute(source.embedUrl) +
     '" title="' + escapeAttribute(currentMovie.title) +

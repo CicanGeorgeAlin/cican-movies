@@ -661,7 +661,7 @@ function loadEmbed(source, options = {}) {
 async function loadMedia(source, options = {}) {
   currentSource = source;
   playerStage.innerHTML =
-    '<video controls playsinline webkit-playsinline preload="metadata" crossorigin="anonymous" src="' +
+    '<video controls playsinline webkit-playsinline preload="metadata" src="' +
     escapeAttribute(source.mediaUrl) + '">' +
     'Your browser cannot play this media source.' +
     '</video>' +

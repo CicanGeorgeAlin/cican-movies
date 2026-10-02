@@ -420,19 +420,273 @@ Then:
 
 REPEAT FOREVER AS NEW SOURCES APPEAR.
 
-## Evidence base checked for v1.1
+## 17. New discovery layer: open-access repository directories
 
-- FIAF Online Directory
-- FIAF Film/AV Collection Catalogues and Databases
+CICAN must also search directories whose job is to index repositories rather than films themselves.
+
+Primary example:
+- OpenDOAR — quality-assured global directory of open-access repositories with searchable records and API access.
+
+For each country/language pass:
+repository directory
+→ identify relevant repository
+→ inspect audiovisual/film collections
+→ follow to source institution
+→ rights review
+→ film verification
+
+This prevents university and institutional film collections from being missed simply because they are not indexed by a film-specific directory.
+
+## 18. New dimension: rights provenance
+
+Rights are not just a single status. Each usable candidate should retain an evidence chain:
+
+rightsSourceUrl
+rightsStatement
+rightsHolder
+licence
+licenceVersion
+jurisdiction
+rightsCheckedAt
+rightsCheckedBy
+rightsEvidenceNote
+permissionDocument (when applicable)
+
+A catalogue entry should be considered rights-verified only when the evidence can be traced to a reliable rights statement, licence, rightsholder authorization, or sufficiently documented public-domain determination.
+
+The Library of Congress is a useful warning model: material being online does not itself grant reuse rights, and even public-domain material can sometimes have donor/collection restrictions. citeturn0search4turn0search5
+
+## 19. New dimension: jurisdiction matrix
+
+A film can have different rights situations in different territories.
+
+For CICAN, record at least:
+- source jurisdiction
+- production/origin country
+- intended playback territory
+- copyright/public-domain basis
+- known territorial restrictions
+- EU/EEA status where relevant
+- U.S. status where relevant
+- worldwide status only when actually supported
+
+Never convert a U.S. public-domain finding into a worldwide public-domain claim without checking the relevant law.
+
+## 20. New dimension: source reliability
+
+Every source should receive an operational confidence state:
+
+SOURCE_VERIFIED
+SOURCE_PARTIALLY_VERIFIED
+SOURCE_DISCOVERY_ONLY
+SOURCE_RIGHTS_UNCLEAR
+SOURCE_BROKEN
+SOURCE_RETIRED
+
+And every film/source pair should be independently verified.
+
+A trusted institution can host a film for viewing while not owning the copyright. The source institution and the rights holder therefore remain separate fields.
+
+## 21. New dimension: technical playback
+
+Rights verification is not enough.
+
+For every playback source record:
+- sourceType: direct_media / HLS / DASH / authorized_embed / official_player
+- mediaFormat
+- codec when known
+- duration
+- resolution when known
+- aspectRatio when known
+- audioTracks
+- subtitleTracks
+- embedPolicy
+- referrer requirements
+- region restrictions
+- authentication requirement
+- sourceHealthCheckedAt
+
+The source must work through the actual CICAN player architecture before being counted as playback-verified.
+
+This is especially important for YouTube and archive embeds: an available web page is not the same thing as a playable source.
+
+## 22. New dimension: subtitle and accessibility matrix
+
+Subtitles become a separate global acquisition dimension.
+
+For every movie:
+- original audio language
+- available subtitle languages
+- subtitle source
+- subtitle licence/permission
+- subtitle format
+- subtitle timing quality
+- SDH/CC availability when known
+
+Never claim a subtitle exists merely because another website lists a language.
+
+Search subtitles independently when legally reusable/authorized, while preserving the original audio.
+
+This means CICAN can measure:
+- films with subtitles
+- subtitle languages represented
+- original-language films without subtitles
+- films with multiple subtitle tracks
+
+## 23. New dimension: search completeness
+
+For every country/language/source pass, record:
+
+searchLanguage
+script
+transliteration
+nativeTitle
+internationalTitle
+alternateTitle
+yearRange
+genreTerms
+archiveTerms
+rightsTerms
+searchEngine/sourceUsed
+searchedAt
+coverageStatus
+
+Examples:
+Romanian searches should include Romanian diacritics and non-diacritic variants.
+Arabic, Cyrillic, Greek, Hebrew, Devanagari, CJK and other scripts should be searched in native script plus accepted transliterations/romanizations.
+
+This reduces the risk of losing films because the search engine cannot match an English spelling.
+
+## 24. New dimension: source-state lifecycle
+
+A source is not permanently exhausted.
+
+Use:
+DISCOVERED
+→ PROFILED
+→ RIGHTS-MAPPED
+→ SEARCHING
+→ PARTIALLY_EXHAUSTED
+→ EXHAUSTED_FOR_CURRENT_INDEX
+→ RECHECK_DUE
+→ RETIRED
+
+Recheck is triggered by:
+- new digitised collections
+- new uploads
+- catalogue/API changes
+- licence changes
+- broken-source recovery
+- newly discovered country/language aliases
+
+This prevents the word “exhausted” from becoming a false permanent claim.
+
+## 25. New dimension: preservation vs playback source
+
+Keep separate:
+- archival/master source
+- public-access source
+- CICAN playback source
+
+An archive may hold the best preservation copy but expose only a web player. Another authorized source may provide the actual playable stream.
+
+CICAN should preserve the provenance chain rather than pretending the playback URL is the archival original.
+
+## 26. New dimension: source substitution and fallback
+
+For each movie:
+PRIMARY_VERIFIED_SOURCE
+→ SECONDARY_VERIFIED_SOURCE
+→ TERTIARY_VERIFIED_SOURCE
+
+Fallback is allowed only between individually verified sources.
+
+A dead source should not cause the movie to disappear if another legitimate verified source remains.
+
+## 27. New dimension: duplicate identity
+
+Deduplication should use more than title.
+
+Canonical identity should consider:
+- original title
+- alternate titles
+- release year
+- director
+- country
+- original language
+- known catalogue identifiers
+- runtime
+- source identifiers
+- restoration/version identifiers
+
+Different restorations/transfers of the same film should normally remain one canonical movie with multiple source/version records unless they are materially different works.
+
+## 28. New dimension: missing-film and permission queue
+
+A film discovered in a reputable archive but not legally playable should not simply disappear.
+
+Maintain:
+PERMISSION_REQUIRED
+→ rights-holder research
+→ archive contact
+→ permission request
+→ permission granted/rejected
+→ catalogue decision
+
+This lets CICAN expand beyond public-domain/open-license material without lowering the rights standard.
+
+## 29. New dimension: source-quality scoring without political-style rankings
+
+Do not rank films by quality. For source operations, use factual flags instead:
+
+- rights evidence present
+- complete feature verified
+- media playable
+- original language verified
+- subtitles verified
+- metadata confidence
+- source health
+- provenance completeness
+
+The final inclusion decision remains rule-based rather than a subjective score.
+
+## 30. Final definition of a CICAN-ready film
+
+A movie becomes CATALOG_READY only when:
+
+1. canonical identity is established
+2. original language is established
+3. feature completeness is established
+4. rights basis is documented
+5. playback source is authorized
+6. media is technically playable
+7. duration is verified
+8. duplicate status is resolved
+9. source provenance is recorded
+10. subtitle data is truthful
+11. metadata is sufficient
+12. jurisdiction restrictions are understood for the intended deployment
+
+Then:
+
+CATALOG_READY
+→ PLAYBACK_VERIFIED
+→ MONITORED
+
+
+## Evidence base checked for v1.2
+
+- FIAF Online Directory and Film/AV Collection Catalogues
 - FIAF Affiliate Online Collections
 - FIAT/IFTA member network
-- IASA worldwide audiovisual-archive links database
-- Library of Congress digital moving-image collections
-- European Film Gateway
-- Filmarchives Online / MIDAS
+- IASA audiovisual-archive directory
+- OpenDOAR open-access repository directory
+- Europeana / European Film Gateway
 - EUscreen
+- Filmarchives Online / MIDAS
 - UNESCO Memory of the World
-- Creative Commons search ecosystem
+- Library of Congress moving-image collections and rights guidance
+- Creative Commons / Openverse
 - Open Images / Open Beelden
 - Wikimedia Commons
 - Internet Archive
@@ -442,4 +696,4 @@ REPEAT FOREVER AS NEW SOURCES APPEAR.
 - CINEPUB
 - Romanian audiovisual/archive sources
 
-Important: these references establish discovery/source categories and examples. They do not grant CICAN rights to every film found through them. Item-level rights verification remains mandatory.
+Important: discovery indexes identify collections; they do not grant CICAN rights to every item. Item-level rights, technical playback, territorial restrictions and subtitle claims remain subject to verification.

@@ -90,7 +90,13 @@ const internationalTitles = [
   ["Ludzie bez jutra", "pl"],
   ["Kísértetek vonata", "hu"],
   ["Cabiria", "it"],
-  ["Battleship Potemkin", "ru"]
+  ["Battleship Potemkin", "ru"],
+  ["Queen Kelly", "en"],
+  ["Aelita: Queen of Mars", "ru"],
+  ["Hårda viljor", "sv"],
+  ["Gustaf Wasa", "sv"],
+  ["Lahore", "hi"],
+  ["Marthanda Varma", "ml"]
 ];
 
 for (const [title, language] of internationalTitles) {

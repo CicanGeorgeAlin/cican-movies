@@ -4,43 +4,39 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000">
-<meta name="description" content="CICAN MOVIES — search, find and play movies from legitimate, openly accessible sources."><meta property="og:type" content="website"><meta property="og:title" content="CICAN MOVIES"><meta property="og:description" content="SEARCH • FIND • PLAY — a growing movie library with A–Z discovery."><meta property="og:image" content="https://cicangeorgealin.github.io/cican-movies/assets/cican-movies-social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="CICAN MOVIES — SEARCH • FIND • PLAY"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="CICAN MOVIES"><meta name="twitter:description" content="SEARCH • FIND • PLAY — a growing movie library with A–Z discovery."><meta name="twitter:image" content="https://cicangeorgealin.github.io/cican-movies/assets/cican-movies-social.png"><meta name="twitter:image:alt" content="CICAN MOVIES — SEARCH • FIND • PLAY">
-<title>CICAN MOVIES — SEARCH • FIND • PLAY</title>
-<link rel="stylesheet" href="styles.css?v=landing-browse-20261002">
+<meta name="description" content="CICAN MOVIES — search, find and play free and legitimately accessible movies.">
+<title>CICAN MOVIES</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <main class="app-shell">
 <header class="brand">
-  <div class="brand-mark" aria-label="CICAN">CICAN</div>
+  <div class="brand-mark">CICAN</div>
   <div class="brand-sub">MOVIES</div>
 </header>
 
 <section class="hero">
-  <p class="eyebrow">CICAN MOVIES</p>
-  <h1>Find something to watch.</h1>
-  <p class="hero-note hero-intro">Browse the available movie library by letter. <strong>A–Z is live.</strong></p>
-  <button type="button" id="search-toggle" class="search-toggle" aria-expanded="false">⌕ SEARCH MOVIES</button>
-  <form id="search-form" class="search-box" role="search" hidden>
+  <p class="eyebrow">SEARCH THE MOVIE WORLD</p>
+  <h1>Find it. Play it.</h1>
+  <div class="movie-mode" aria-label="Current category">
+    <span class="movie-mode-dot"></span>
+    <span>MOVIE SEARCH</span>
+  </div>
+  <form id="search-form" class="search-box" role="search">
     <input id="search-input" type="search" autocomplete="off"
       placeholder="Search a movie title or year…" aria-label="Search movies">
+    <button type="button" id="voice-button" class="voice-button" aria-label="Search by voice" title="Search by voice">🎙</button>
+    <button type="submit">SEARCH</button>
   </form>
+  <p class="hero-note">Search by movie title or year. CICAN finds available legitimate sources and opens the best playable one.</p>
   <p id="search-status" class="search-status" aria-live="polite"></p>
-  <div class="library-hint">Choose a letter. Find a movie. Press WATCH.</div>
-  <div class="support-wrap">
-    <a class="support-button" href="https://buymeacoffee.com/cican" target="_blank" rel="noopener noreferrer" aria-label="Support CICAN MOVIES on Buy Me a Coffee">
-      ☕ SUPPORT CICAN MOVIES
-    </a>
-  </div>
-  <div class="alphabet-wrap"><span class="alphabet-label">MOVIES A–Z</span><div class="alphabet" id="movie-alphabet" aria-label="Browse movies alphabetically">
-    <button type="button" class="alphabet-button" data-letter="A">A</button><button type="button" class="alphabet-button" data-letter="B">B</button><button type="button" class="alphabet-button" data-letter="C">C</button><button type="button" class="alphabet-button" data-letter="D">D</button><button type="button" class="alphabet-button" data-letter="E">E</button><button type="button" class="alphabet-button" data-letter="F">F</button><button type="button" class="alphabet-button" data-letter="G">G</button><button type="button" class="alphabet-button" data-letter="H">H</button><button type="button" class="alphabet-button" data-letter="I">I</button><button type="button" class="alphabet-button" data-letter="J">J</button><button type="button" class="alphabet-button" data-letter="K">K</button><button type="button" class="alphabet-button" data-letter="L">L</button><button type="button" class="alphabet-button" data-letter="M">M</button><button type="button" class="alphabet-button" data-letter="N">N</button><button type="button" class="alphabet-button" data-letter="O">O</button><button type="button" class="alphabet-button" data-letter="P">P</button><button type="button" class="alphabet-button" data-letter="Q">Q</button><button type="button" class="alphabet-button" data-letter="R">R</button><button type="button" class="alphabet-button" data-letter="S">S</button><button type="button" class="alphabet-button" data-letter="T">T</button><button type="button" class="alphabet-button" data-letter="U">U</button><button type="button" class="alphabet-button" data-letter="V">V</button><button type="button" class="alphabet-button" data-letter="W">W</button><button type="button" class="alphabet-button" data-letter="X">X</button><button type="button" class="alphabet-button" data-letter="Y">Y</button><button type="button" class="alphabet-button" data-letter="Z">Z</button>
-  </div></div>
 </section>
 
 <section id="results" class="results" aria-live="polite"></section>
 
 <section id="player-view" class="player-view" hidden>
   <div class="player-head">
-    <button id="back-button" class="ghost-button" type="button">← MOVIES</button>
+    <button id="back-button" class="ghost-button" type="button">← BACK</button>
     <div>
       <span class="player-kicker">CICAN PLAYER</span>
       <h2 id="player-title">Ready</h2>
@@ -59,7 +55,7 @@
   <div id="source-list" class="source-list"></div>
 </section>
 </main>
-<script src="config.js?v=landing-az-social-20261002"></script>
-<script type="module" src="app.js?v=landing-browse-20261002"></script>
+<script src="config.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>

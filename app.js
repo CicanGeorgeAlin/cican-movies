@@ -507,11 +507,6 @@ async function requestPlayerFullscreen() {
 }
 
 function loadSource(source, options = {}) {
-  const previousVideo = playerStage.querySelector("video");
-  if (previousVideo && currentMovie && previousVideo.currentTime > 0 && !previousVideo.ended) {
-    savePosition(currentMovie, previousVideo.currentTime, previousVideo.duration);
-  }
-
   const index = currentSources.findIndex(item => item.id === source.id);
   currentSourceIndex = index;
   currentSource = source;

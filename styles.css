@@ -126,7 +126,6 @@ a{text-decoration:none}
   background:linear-gradient(transparent,rgba(0,0,0,.94) 35%);
   color:#fff;
 }
-.cican-control-play,
 .cican-control-fullscreen{
   flex:0 0 auto;
   width:34px;
@@ -179,7 +178,6 @@ a{text-decoration:none}
   white-space:nowrap;
   text-align:center;
 }
-.cican-control-play:focus-visible,
 .cican-control-fullscreen:focus-visible,
 .cican-center-play:focus-visible,
 .cican-seek:focus-visible{
@@ -197,7 +195,6 @@ a{text-decoration:none}
     min-height:48px;
     padding:8px 7px;
   }
-  .cican-control-play,
   .cican-control-fullscreen{
     width:30px;
     height:28px;

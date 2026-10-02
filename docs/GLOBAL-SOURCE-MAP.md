@@ -697,3 +697,281 @@ CATALOG_READY
 - Romanian audiovisual/archive sources
 
 Important: discovery indexes identify collections; they do not grant CICAN rights to every item. Item-level rights, technical playback, territorial restrictions and subtitle claims remain subject to verification.
+
+## 31. Metadata-only discovery layer
+
+CICAN must distinguish film discovery from playback discovery.
+
+Metadata discovery sources can reveal works that are not yet legally playable. Maintain a separate metadata layer for:
+- WorldCat and union library catalogues
+- national library catalogues
+- institutional collection catalogues
+- Wikidata and other structured knowledge graphs
+- specialist filmographies and archive finding aids
+- historical film journals and bibliographic indexes
+
+Metadata-only discovery can create a CANDIDATE_FILM or RIGHTS_LEAD, but never CATALOG_READY by itself.
+
+## 32. Persistent identifiers and identity graph
+
+Where available, preserve stable identifiers instead of relying on titles:
+- archive catalogue IDs
+- library identifiers
+- VIAF/authority identifiers
+- Wikidata Q IDs
+- ISAN or other audiovisual identifiers when legitimately available
+- source-specific video/media IDs
+- DOI/ARK/Handle/URI identifiers
+
+Build an identity graph so that alternate titles, restorations, translations and archive records can resolve to one canonical work without losing provenance.
+
+## 33. Machine-readable access and harvesting
+
+For every source, record whether structured access exists:
+- API
+- OAI-PMH
+- IIIF
+- RSS/Atom
+- sitemap
+- bulk catalogue export
+- CSV/JSON/XML
+- SRU/Z39.50 where relevant
+- structured webpage search
+- manual-only discovery
+
+Prefer documented APIs/exports and respectful crawling over brittle scraping. Record API terms, authentication requirements, rate limits and attribution requirements.
+
+## 34. Source capability profile
+
+Each source gets a capability profile:
+
+DISCOVERY | METADATA | STREAM | EMBED | DOWNLOAD | SUBTITLES | RIGHTS_INFO | API | BULK_EXPORT
+
+This makes it immediately clear why a source is useful and what additional verification is required.
+
+## 35. Acquisition pathway
+
+Record the exact lawful path from source to CICAN playback:
+
+CATALOGUE_RECORD
+→ PUBLIC_WEB_PLAYER
+→ AUTHORIZED_EMBED
+
+or:
+
+CATALOGUE_RECORD
+→ LICENSED/DIRECT_MEDIA
+→ CICAN_PLAYER
+
+or:
+
+CATALOGUE_RECORD
+→ RIGHTS_PERMISSION
+→ AUTHORIZED_MEDIA
+→ CICAN_PLAYER
+
+A discovery URL must never silently become a playback URL.
+
+## 36. Terms, access and technical constraints
+
+For each source, record:
+- termsOfUseUrl
+- robotsPolicy where relevant
+- attributionRequirement
+- hotlinkPolicy
+- embedPolicy
+- CORS requirement
+- referrer requirement
+- authentication requirement
+- geographic restriction
+- age/access restriction when relevant
+- rateLimit
+- APIKeyRequired
+- downloadAllowed
+- redistributionAllowed
+
+Technical access and legal permission remain separate decisions.
+
+## 37. Source monitoring and dead-link recovery
+
+Every verified source should have a health lifecycle:
+
+HEALTHY
+→ DEGRADED
+→ FAILED
+→ RECOVERY_SEARCH
+→ REPLACED / RESTORED
+
+Monitor important playback sources periodically. If a URL fails, search the same institution and canonical identifier for a replacement before removing the movie.
+
+Never silently substitute an unrelated upload.
+
+## 38. Evidence snapshots and audit trail
+
+For important rights and provenance decisions, retain enough evidence to reproduce the decision later:
+- source URL
+- access date
+- relevant licence/rights text
+- catalogue identifier
+- media identifier
+- verification result
+- reviewer/automation record
+
+Where legally and technically appropriate, preserve a small rights/provenance snapshot or archived reference rather than relying only on a live page that may change.
+
+## 39. Candidate queues and negative knowledge
+
+Maintain separate queues:
+- NEW_DISCOVERY
+- NEEDS_IDENTITY
+- NEEDS_RIGHTS
+- NEEDS_FEATURE_CHECK
+- NEEDS_PLAYBACK_CHECK
+- NEEDS_SUBTITLES
+- NEEDS_PERMISSION
+- READY_TO_IMPORT
+- REJECTED_WITH_REASON
+- RECHECK_LATER
+
+Rejected candidates are valuable negative knowledge. Record why they failed so CICAN does not repeatedly investigate the same fragments, duplicates, blocked rights or broken sources.
+
+## 40. Coverage accounting
+
+Coverage should be measurable by:
+- country
+- territory
+- original language
+- script
+- decade/year
+- source class
+- archive institution
+- genre where meaningful
+- feature status
+- rights status
+- playback status
+- subtitle language
+
+A country is not marked COMPLETE merely because one national archive was searched. Completion requires all applicable source classes and major indexes in the country/language pass to reach their defined exhaustion state.
+
+## 41. Reproducible search recipes
+
+Each systematic pass should record the query recipe, not only the result:
+- native-language queries
+- transliteration variants
+- title aliases
+- archive-specific filters
+- date ranges
+- genre terms
+- rights terms
+- source-specific search syntax
+- API/filter parameters
+
+This makes a country pass repeatable and auditable by another researcher or by a future CICAN hunting agent.
+
+## 42. Controlled vocabulary and canonical schema
+
+Source Map terminology must use one controlled vocabulary for:
+- country codes
+- language codes
+- script codes
+- rights states
+- source states
+- playback states
+- content types
+- subtitle types
+- media types
+
+Prefer established international standards such as ISO country/language/script identifiers where applicable, while preserving the archive's original wording as source metadata.
+
+## 43. Quality gates for automated imports
+
+Automation may discover candidates, but automated import must stop when required evidence is missing.
+
+Minimum gates:
+IDENTITY_OK
+LANGUAGE_OK
+FEATURE_OK
+RIGHTS_OK
+SOURCE_OK
+MEDIA_OK
+DUPLICATE_OK
+METADATA_OK
+
+If any mandatory gate fails, the candidate remains outside the playable catalogue.
+
+## 44. Human-review escalation
+
+Automation should escalate rather than guess when:
+- copyright ownership is ambiguous
+- multiple films share an identity
+- source terms conflict
+- territory restrictions are unclear
+- subtitle rights are unclear
+- restoration/version identity is uncertain
+- a source requires permission
+- a source appears authorized but the authorization cannot be documented
+
+Human review is a controlled state, not a bypass around the evidence requirements.
+
+## 45. Security and source integrity
+
+Treat external source metadata and media URLs as untrusted input.
+
+The hunting pipeline must:
+- validate URLs and schemes
+- reject executable or suspicious payloads
+- avoid unsafe HTML injection
+- sanitize titles/metadata before rendering
+- avoid leaking API keys
+- keep provider credentials out of public catalog files
+- validate subtitle files before loading them
+- avoid downloading media merely to test it when lawful streaming/embed verification is sufficient
+
+## 46. Global coverage ledger
+
+Maintain a machine-readable ledger alongside this human-readable map.
+
+Recommended dimensions:
+country × language × source × year-range × search-state × rights-state × playback-state × subtitle-state
+
+This becomes the operational dashboard for deciding what has been searched, what remains, and where the next hunting pass should go.
+
+## 47. Final source-map completion test
+
+Before declaring the Source Map complete, CICAN must be able to answer:
+
+1. Where do we discover films?
+2. Where do we discover archives that contain films?
+3. Where do we discover metadata when playback is unavailable?
+4. How do we identify the same work across archives and languages?
+5. How do we prove the rights basis?
+6. How do we understand territorial restrictions?
+7. How do we verify a complete feature rather than a fragment?
+8. How do we verify the actual playback path?
+9. How do we discover and verify subtitles?
+10. How do we harvest machine-readable catalogues lawfully?
+11. How do we monitor broken sources?
+12. How do we preserve an audit trail?
+13. How do we measure geographic/language coverage?
+14. How do we prevent automation from importing uncertain candidates?
+15. How do we recover newly discovered sources and newly digitised films?
+16. How do we know what we already rejected and why?
+
+The Source Map is operationally complete only when all sixteen questions have an explicit procedure.
+
+## 48. Source-map completion status
+
+STATUS: OPERATIONALLY COMPLETE
+
+The map is not a claim that every film source on Earth has been discovered. It is a complete operating framework for discovering, evaluating, harvesting, verifying, monitoring and rechecking global movie sources without lowering CICAN's rights, identity, feature-integrity or playback standards.
+
+Next phase after this status is locked:
+GLOBAL MOVIE HUNT
+→ SOURCE EXHAUSTION
+→ COUNTRY/LANGUAGE PASSES
+→ VERIFY
+→ IMPORT
+→ DEDUPLICATE
+→ TEST
+→ DEPLOY
+→ REPEAT

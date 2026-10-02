@@ -358,7 +358,7 @@ function openMovie(movie) {
   playerTitle.textContent = movie.title;
   playerStage.innerHTML =
     '<div class="player-empty"><div class="play-orb">▶</div>' +
-    '<p>Choose a source below.</p></div>';
+    '<p>Loading movie source…</p></div>';
 
   sourceList.innerHTML = "";
   currentSources = playableSources(movie);
@@ -392,15 +392,7 @@ function openMovie(movie) {
        (source.type === "media" && source.mediaUrl));
 
     if (canPlay) {
-      const button = document.createElement("button");
-      button.className = "play-button";
-      button.dataset.sourceId = source.id;
-      button.textContent = failedSourceIds.has(source.id) ? "RETRY" : "PLAY";
-      button.onclick = () => {
-        failedSourceIds.delete(source.id);
-        loadSource(source, { userInitiated: true, fullscreen: true, autoplay: true });
-      };
-      row.appendChild(button);
+      row.classList.add("source-ready");
     } else if (source.url) {
       const link = document.createElement("a");
       link.className = "play-button";

@@ -103,6 +103,9 @@ export function parseDurationSeconds(value = 0) {
 }
 
 export function isFeatureMovie(movie = {}) {
+  const genres = Array.isArray(movie.genres) ? movie.genres.map(item => String(item).toLowerCase()) : [];
+  if (genres.some(genre => genre === "documentary" || genre === "documentaries")) return false;
+
   const text = String([
     movie.title || "",
     movie.description || "",

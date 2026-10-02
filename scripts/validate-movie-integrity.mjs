@@ -96,7 +96,9 @@ const internationalTitles = [
   ["Hårda viljor", "sv"],
   ["Gustaf Wasa", "sv"],
   ["Lahore", "hi"],
-  ["Marthanda Varma", "ml"]
+  ["Marthanda Varma", "ml"],
+  ["Days of Youth", "ja"],
+  ["The Goddess", "zh"]
 ];
 
 for (const [title, language] of internationalTitles) {

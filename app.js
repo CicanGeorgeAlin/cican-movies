@@ -191,32 +191,11 @@ async function addSubtitleTracks(video, source) {
 
   if (tracks.length) {
     source.capabilities = { ...(source.capabilities || {}), subtitles: true };
-    addSubtitleSelector(video, tracks);
+
   } else {
     source.capabilities = { ...(source.capabilities || {}), subtitles: false };
   }
   return tracks.length;
-}
-
-function addFullscreenExitButton() {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "fullscreen-exit";
-  button.setAttribute("aria-label", "Exit fullscreen");
-  button.title = "Exit fullscreen";
-  button.textContent = "×";
-  button.addEventListener("click", async () => {
-    try {
-      if (document.fullscreenElement) {
-        await document.exitFullscreen();
-      } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  });
-  playerStage.appendChild(button);
 }
 
 async function lockLandscapeOrientation() {
@@ -250,37 +229,6 @@ function installFullscreenListeners() {
   document.addEventListener("fullscreenchange", syncFullscreenUi);
   document.addEventListener("webkitfullscreenchange", syncFullscreenUi);
   syncFullscreenUi();
-}
-
-function addSubtitleSelector(video, tracks) {
-  const existing = playerStage.querySelector(".subtitle-controls");
-  existing?.remove();
-  if (!tracks.length) return;
-
-  const wrap = document.createElement("div");
-  wrap.className = "subtitle-controls";
-  const label = document.createElement("label");
-  label.setAttribute("for", "subtitle-select");
-  label.textContent = "SUBTITLES";
-  const select = document.createElement("select");
-  select.id = "subtitle-select";
-  select.className = "subtitle-select";
-  select.setAttribute("aria-label", "Subtitle language");
-  select.innerHTML = '<option value="">OFF</option>' +
-    tracks.map((track, index) =>
-      '<option value="' + index + '">' + escapeHtml(track.label || languageLabel(track.srclang)) + '</option>'
-    ).join("");
-
-  select.addEventListener("change", () => {
-    const selected = select.value === "" ? -1 : Number(select.value);
-    Array.from(video.textTracks || []).forEach((textTrack, index) => {
-      textTrack.mode = index === selected ? "showing" : "disabled";
-    });
-  });
-
-  wrap.appendChild(label);
-  wrap.appendChild(select);
-  playerStage.appendChild(wrap);
 }
 
 function sourcePriority(source) {
@@ -562,7 +510,6 @@ function loadEmbed(source, options = {}) {
     '" title="' + escapeAttribute(currentMovie.title) +
     '" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" ' +
     'allowfullscreen></iframe>';
-  addFullscreenExitButton();
 
   const frame = playerStage.querySelector("iframe");
   frame?.addEventListener("load", () => saveLastSource(currentMovie, source));
@@ -589,7 +536,6 @@ async function loadMedia(source, options = {}) {
         showPlaybackFallback("This media source failed to load.", { autoTryNext: true });
       }
     });
-
     addSubtitleTracks(video, source).catch(() => {
       source.capabilities = { ...(source.capabilities || {}), subtitles: false };
     });

@@ -41,19 +41,6 @@ a{text-decoration:none}
 .player-stage{position:relative}
 .player-empty{text-align:center;color:#666}
 .play-orb{font-size:2rem;color:#fff;margin-bottom:10px}
-.subtitle-controls{
-  position:absolute;
-  left:12px;
-  bottom:12px;
-  z-index:6;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:7px 9px;
-  background:rgba(0,0,0,.82);
-  border:1px solid rgba(255,255,255,.2);
-  backdrop-filter:blur(6px);
-}
 .subtitle-controls label{
   color:#aaa;
   font-size:.58rem;
@@ -71,10 +58,6 @@ a{text-decoration:none}
 .subtitle-select:focus-visible{
   outline:2px solid #fff;
   outline-offset:2px;
-}
-@media(max-width:600px){
-  .subtitle-controls{left:8px;right:8px;bottom:8px;justify-content:space-between}
-  .subtitle-select{flex:1;min-width:0}
 }
 
 .source-list{display:grid;gap:8px;margin-top:12px}
@@ -153,19 +136,6 @@ a{text-decoration:none}
   cursor: pointer;
 }
 
-@media (max-width: 600px) {
-  .resume-notice {
-    left: .6rem;
-    right: .6rem;
-    bottom: .6rem;
-    justify-content: space-between;
-    gap: .5rem;
-  }
-
-  .resume-start {
-    flex-shrink: 0;
-  }
-}
 
 
 .category-picker{

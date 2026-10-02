@@ -331,7 +331,7 @@ const movieSeeds = [
   ["The Kid Brother",1927,["comedy","silent"],["the kid brother","harold lloyd","1927"]],
   ["Old Ironsides",1926,["adventure","silent"],["old ironsides","james cruze","1926"]],
   ["Torrent",1926,["drama","romance","silent"],["torrent","monta bell","1926"]],
-  ["Flesh and the Devil",1927,["drama","romance","silent"],["flesh and the devil","greta garbo","john gilbert","1927"]],
+
   ["Three’s a Crowd",1927,["comedy","silent"],["three s a crowd","harry langdon","1927"]],
   ["Brief Encounter",1945,["romance","drama","british"],["brief encounter","david lean","1945"]],
   ["The Killers",1946,["crime","film noir"],["the killers","robert siodmak","1946"]],

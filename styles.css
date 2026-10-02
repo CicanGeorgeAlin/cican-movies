@@ -1098,3 +1098,90 @@ a{text-decoration:none}
   outline:2px solid #fff;
   outline-offset:3px;
 }
+
+
+/* Simple global browse controls */
+.browse-switcher{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  margin:22px auto 0;
+}
+.browse-switch{
+  border:1px solid #242424;
+  background:#030303;
+  color:#777;
+  padding:9px 12px;
+  font-size:.58rem;
+  font-weight:800;
+  letter-spacing:.13em;
+  cursor:pointer;
+  transition:color .16s ease,border-color .16s ease,background .16s ease;
+}
+.browse-switch:hover{
+  color:#fff;
+  border-color:#666;
+}
+.browse-switch.active{
+  color:#000;
+  background:#fff;
+  border-color:#fff;
+}
+.browse-panel{
+  display:flex;
+  justify-content:center;
+  align-items:end;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:14px auto 0;
+  max-width:720px;
+}
+.browse-field{
+  display:grid;
+  gap:5px;
+  min-width:min(280px,100%);
+}
+.browse-field label{
+  color:#555;
+  font-size:.54rem;
+  font-weight:800;
+  letter-spacing:.16em;
+}
+.browse-field input,
+.browse-field select{
+  width:100%;
+  min-height:38px;
+  border:1px solid #242424;
+  background:#050505;
+  color:#ddd;
+  padding:9px 11px;
+  font:inherit;
+  font-size:.7rem;
+  outline:none;
+}
+.browse-field input:focus,
+.browse-field select:focus{
+  border-color:#777;
+}
+.browse-clear{
+  min-height:38px;
+  border:1px solid #242424;
+  background:transparent;
+  color:#666;
+  padding:9px 11px;
+  font-size:.55rem;
+  font-weight:800;
+  letter-spacing:.12em;
+  cursor:pointer;
+}
+.browse-clear:hover{
+  color:#fff;
+  border-color:#666;
+}
+@media(max-width:600px){
+  .browse-switcher{gap:4px}
+  .browse-switch{padding:8px 9px;font-size:.53rem}
+  .browse-panel{padding-inline:10px}
+  .browse-field{min-width:100%}
+  .browse-clear{width:100%}
+}

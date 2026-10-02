@@ -148,9 +148,42 @@ for (let offset = 0; offset < uniqueFiles.length; offset += 25) {
     if (!info?.url || !String(info.mime || "").startsWith("video/")) {
       throw new Error("Broken/missing Commons video link: " + item.movie.title + " -> " + item.fileName);
     }
+
+    let head = await fetch(info.url, { method: "HEAD", redirect: "follow" });
+    if (!head.ok) {
+      head = await fetch(info.url, {
+        method: "GET",
+        headers: { Range: "bytes=0-0" },
+        redirect: "follow"
+      });
+    }
+    if (!head.ok) {
+      throw new Error("Commons media endpoint failed: " + item.movie.title + " -> " + head.status);
+    }
+  }
+}
+
+const nonCommonsMedia = catalog.flatMap(movie =>
+  movie.sources
+    .filter(source => source.mediaUrl && source.provider !== "wikimedia-commons")
+    .map(source => ({ movie, source }))
+);
+
+for (const item of nonCommonsMedia) {
+  let head = await fetch(item.source.mediaUrl, { method: "HEAD", redirect: "follow" });
+  if (!head.ok) {
+    head = await fetch(item.source.mediaUrl, {
+      method: "GET",
+      headers: { Range: "bytes=0-0" },
+      redirect: "follow"
+    });
+  }
+  if (!head.ok) {
+    throw new Error("External media endpoint failed: " + item.movie.title + " -> " + head.status);
   }
 }
 
 console.log("COMMONS_MEDIA_LINKS_OK: " + uniqueFiles.length);
+console.log("NON_COMMONS_MEDIA_LINKS_OK: " + nonCommonsMedia.length);
 
 console.log("MOVIE_INTEGRITY_OK");

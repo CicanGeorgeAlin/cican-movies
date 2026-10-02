@@ -222,6 +222,7 @@ export async function resolveMovies(query, { id = null, contentType = CONTENT_TY
   const localMatches = catalog.filter(movie => {
     if (id) return movie.id === id;
     if (!allVideo && movie.contentType && movie.contentType !== contentType) return false;
+    if (!matchesBrowseFilters(movie)) return false;
 
     // A–Z browsing is an explicit title-prefix operation. Do not route it
     // through general search scoring; that can discard valid local titles
